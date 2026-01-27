@@ -7,11 +7,72 @@ datasource db {
   provider = "postgresql"
 }
 
+// Modelei o banco pensando no domínio financeiro real. 
+// O usuário possui contas, categorias e transações. 
+// Cada transação está associada a uma conta e a uma categoria, 
+// o que permite relatórios financeiros, filtros por período e 
+// cálculo de saldo de forma consistente.
+
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  password     String
+  accounts     Account[]
+  categories   Category[]
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Account {
+  id           String        @id @default(uuid())
+  name         String
+  type         AccountType
+  balance      Decimal       @db.Decimal(10, 2)
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+}
+
+enum AccountType {
+  CHECKING
+  CREDIT
+  CASH
+}
+
+model Category {
+  id           String          @id @default(uuid())
+  name         String
+  type         TransactionType
+  userId       String
+  user         User            @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+  createdAt    DateTime        @default(now())
+
+  @@unique([name, userId])
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  amount      Decimal         @db.Decimal(10, 2)
+  description String?
+  date        DateTime
+  type        TransactionType
+
+  userId     String
+  accountId  String
+  categoryId String
+
+  user     User     @relation(fields: [userId], references: [id])
+  account  Account  @relation(fields: [accountId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
 }
