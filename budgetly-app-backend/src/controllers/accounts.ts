@@ -23,9 +23,7 @@ export const createAccount: FastifyPluginAsyncZod = async (app) => {
           type: z.enum(['CHECKING', 'CREDIT', 'CASH']),
         }),
         response: {
-          200: z.object({
-            account: accountSchema,
-          }),
+          200: accountSchema,
           401: z.object({ message: z.string() }),
           404: z.object({ message: z.string() }),
           500: z.object({ message: z.string() }),
@@ -50,7 +48,7 @@ export const createAccount: FastifyPluginAsyncZod = async (app) => {
           userId,
         })
 
-        return reply.send({ account: newAccount })
+        return reply.send(newAccount)
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })
