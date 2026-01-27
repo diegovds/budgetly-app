@@ -1,6 +1,5 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { mapAccountForResponse } from '../mappers/account'
 import { accountSchema } from '../schemas/account'
 import { insertAccount } from '../services/accounts'
 import { findUserById } from '../services/users'
@@ -51,8 +50,7 @@ export const createAccount: FastifyPluginAsyncZod = async (app) => {
           userId,
         })
 
-        const mappedNewAccount = mapAccountForResponse(newAccount)
-        return reply.send(mappedNewAccount)
+        return reply.send({ account: newAccount })
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })

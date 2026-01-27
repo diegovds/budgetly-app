@@ -14,7 +14,7 @@ export async function insertAccount({
   balance,
   userId,
 }: InsertAccountInput) {
-  return prisma.account.create({
+  const newAccount = await prisma.account.create({
     data: {
       name,
       type,
@@ -22,4 +22,10 @@ export async function insertAccount({
       userId,
     },
   })
+
+  return {
+    ...newAccount,
+    balance: Number(newAccount.balance),
+    createdAt: newAccount.createdAt.toISOString(),
+  }
 }
