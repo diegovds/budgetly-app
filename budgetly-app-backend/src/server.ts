@@ -5,10 +5,10 @@ import fastifySwaggerUi from '@fastify/swagger-ui'
 import fastify from 'fastify'
 import fastifyBcrypt from 'fastify-bcrypt'
 import {
-    jsonSchemaTransform,
-    serializerCompiler,
-    validatorCompiler,
-    ZodTypeProvider,
+  jsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
+  ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 import { env } from './env'
 import { routes } from './routes/main'
@@ -17,7 +17,6 @@ const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
-
 
 // CORS
 app.register(fastifyCors, {

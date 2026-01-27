@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { env } from "../env"
+import { env } from '../env'
 
 export async function routes(app: FastifyInstance) {
   app.get('/', async (request, reply) => {
@@ -8,6 +8,6 @@ export async function routes(app: FastifyInstance) {
     })
   })
 
-  //app.register(getBanners)
-  //app.register(getAllProducts)
+  // app.register(getBanners)
+  // app.register(getAllProducts)
 }
