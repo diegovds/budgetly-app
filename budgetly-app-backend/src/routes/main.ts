@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { auth } from '../controllers/users'
+import { auth, getUser } from '../controllers/users'
 import { env } from '../env'
 
 export async function routes(app: FastifyInstance) {
@@ -10,4 +10,5 @@ export async function routes(app: FastifyInstance) {
   })
 
   app.register(auth)
+  app.register(getUser)
 }

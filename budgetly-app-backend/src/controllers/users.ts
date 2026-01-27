@@ -1,6 +1,10 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
-import { findUserByEmail, insertUser } from '../services/users'
+import { mapUserForResponse } from '../mappers/user'
+import { accountSchema } from '../schemas/account'
+import { categorySchema } from '../schemas/category'
+import { transactionSchema } from '../schemas/transaction'
+import { findUserByEmail, findUserById, insertUser } from '../services/users'
 
 export const auth: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -93,6 +97,47 @@ export const auth: FastifyPluginAsyncZod = async (app) => {
       }
 
       return reply.status(400).send({ message: 'Ocorreu um erro no servidor.' })
+    },
+  )
+}
+
+export const getUser: FastifyPluginAsyncZod = async (app) => {
+  app.get(
+    '/user',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['User'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Retorna os dados do usuário autenticado',
+        response: {
+          200: z.object({
+            name: z.string(),
+            accounts: z.array(accountSchema),
+            categories: z.array(categorySchema),
+            transactions: z.array(transactionSchema),
+          }),
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const mappedUser = mapUserForResponse(user)
+        return reply.send(mappedUser)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
     },
   )
 }
