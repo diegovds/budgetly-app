@@ -11,6 +11,13 @@ type InsertTransactionInput = {
   categoryId: string
 }
 
+type UpdateTransactionInput = {
+  id: string
+  amount: number
+  description: string | null
+  date: string
+}
+
 export async function insertTransaction({
   accountId,
   amount,
@@ -54,5 +61,28 @@ export async function deleteTransaction(id: string) {
     amount: Number(deleteTransaction.amount),
     date: deleteTransaction.date.toISOString(),
     createdAt: deleteTransaction.createdAt.toISOString(),
+  }
+}
+
+export async function updateTransaction({
+  amount,
+  date,
+  description,
+  id,
+}: UpdateTransactionInput) {
+  const updateTransaction = await prisma.transaction.update({
+    where: { id },
+    data: {
+      amount,
+      date,
+      description,
+    },
+  })
+
+  return {
+    ...updateTransaction,
+    amount: Number(updateTransaction.amount),
+    date: updateTransaction.date.toISOString(),
+    createdAt: updateTransaction.createdAt.toISOString(),
   }
 }

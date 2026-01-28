@@ -5,6 +5,7 @@ import {
   deleteTransaction,
   getTransactionById,
   insertTransaction,
+  updateTransaction,
 } from '../services/transactions'
 import { findUserById } from '../services/users'
 
@@ -105,6 +106,66 @@ export const dropTransaction: FastifyPluginAsyncZod = async (app) => {
         const deletedTransaction = await deleteTransaction(id)
 
         return reply.send(deletedTransaction)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const updateTransaction_: FastifyPluginAsyncZod = async (app) => {
+  app.patch(
+    '/transaction/:id',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Transaction'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Atualiza uma transação pelo ID para o usuário autenticado.',
+        params: z.object({
+          id: z.uuid(),
+        }),
+        body: z.object({
+          amount: z.number(),
+          description: z.string().nullable(),
+          date: z.iso.datetime(),
+        }),
+        response: {
+          200: transactionSchema,
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const { id } = request.params
+        const { amount, description, date } = request.body
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const transaction = await getTransactionById(id)
+
+        if (!transaction || transaction.userId !== userId) {
+          return reply
+            .status(404)
+            .send({ message: 'Transação não encontrada.' })
+        }
+
+        const updatedTransaction = await updateTransaction({
+          id,
+          amount,
+          description,
+          date,
+        })
+
+        return reply.send(updatedTransaction)
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })
