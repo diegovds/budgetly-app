@@ -27,23 +27,66 @@ export async function insertTransaction({
   type,
   userId,
 }: InsertTransactionInput) {
-  const newTransaction = await prisma.transaction.create({
-    data: {
-      amount,
-      date,
-      description,
-      type,
+  const category = await prisma.category.findFirst({
+    where: {
+      id: categoryId,
       userId,
-      categoryId,
-      accountId,
     },
   })
 
+  if (!category) {
+    throw new Error('Categoria não encontrada')
+  }
+
+  if (category.type !== type) {
+    throw new Error(
+      `Tipo da transação (${type}) diferente do tipo da categoria (${category.type})`,
+    )
+  }
+
+  const account = await prisma.account.findFirst({
+    where: {
+      id: accountId,
+      userId,
+    },
+  })
+
+  if (!account) {
+    throw new Error('Conta não encontrada')
+  }
+
+  const transaction = await prisma.$transaction(async (tx) => {
+    const newTransaction = await tx.transaction.create({
+      data: {
+        amount,
+        date,
+        description,
+        type,
+        userId,
+        categoryId,
+        accountId,
+      },
+    })
+
+    const balanceChange = type === 'INCOME' ? amount : -amount
+
+    await tx.account.update({
+      where: { id: accountId },
+      data: {
+        balance: {
+          increment: balanceChange,
+        },
+      },
+    })
+
+    return newTransaction
+  })
+
   return {
-    ...newTransaction,
-    amount: Number(newTransaction.amount),
-    date: newTransaction.date.toISOString(),
-    createdAt: newTransaction.createdAt.toISOString(),
+    ...transaction,
+    amount: Number(transaction.amount),
+    date: transaction.date.toISOString(),
+    createdAt: transaction.createdAt.toISOString(),
   }
 }
 
@@ -54,13 +97,37 @@ export async function getTransactionById(id: string) {
 }
 
 export async function deleteTransaction(id: string) {
-  const deleteTransaction = await prisma.transaction.delete({ where: { id } })
+  const transaction = await prisma.transaction.findUnique({
+    where: { id },
+  })
+
+  if (!transaction) {
+    throw new Error('Transaction not found')
+  }
+
+  const deletedTransaction = await prisma.$transaction(async (tx) => {
+    const balanceChange =
+      transaction.type === 'INCOME' ? -transaction.amount : transaction.amount
+
+    await tx.account.update({
+      where: { id: transaction.accountId },
+      data: {
+        balance: {
+          increment: balanceChange,
+        },
+      },
+    })
+
+    return await tx.transaction.delete({
+      where: { id },
+    })
+  })
 
   return {
-    ...deleteTransaction,
-    amount: Number(deleteTransaction.amount),
-    date: deleteTransaction.date.toISOString(),
-    createdAt: deleteTransaction.createdAt.toISOString(),
+    ...deletedTransaction,
+    amount: Number(deletedTransaction.amount),
+    date: deletedTransaction.date.toISOString(),
+    createdAt: deletedTransaction.createdAt.toISOString(),
   }
 }
 
@@ -70,19 +137,44 @@ export async function updateTransaction({
   description,
   id,
 }: UpdateTransactionInput) {
-  const updateTransaction = await prisma.transaction.update({
+  const transaction = await prisma.transaction.findUnique({
     where: { id },
-    data: {
-      amount,
-      date,
-      description,
-    },
+  })
+
+  if (!transaction) {
+    throw new Error('Transaction not found')
+  }
+
+  const updatedTransaction = await prisma.$transaction(async (tx) => {
+    const diff = amount - Number(transaction.amount)
+
+    if (diff !== 0) {
+      const balanceChange = transaction.type === 'INCOME' ? diff : -diff
+
+      await tx.account.update({
+        where: { id: transaction.accountId },
+        data: {
+          balance: {
+            increment: balanceChange,
+          },
+        },
+      })
+    }
+
+    return await tx.transaction.update({
+      where: { id },
+      data: {
+        amount,
+        date,
+        description,
+      },
+    })
   })
 
   return {
-    ...updateTransaction,
-    amount: Number(updateTransaction.amount),
-    date: updateTransaction.date.toISOString(),
-    createdAt: updateTransaction.createdAt.toISOString(),
+    ...updatedTransaction,
+    amount: Number(updatedTransaction.amount),
+    date: updatedTransaction.date.toISOString(),
+    createdAt: updatedTransaction.createdAt.toISOString(),
   }
 }
