@@ -25,3 +25,12 @@ export async function insertCategory({
     createdAt: newCategory.createdAt.toISOString(),
   }
 }
+
+export async function getCategoryById(id: string, userId: string) {
+  return await prisma.category.findFirst({
+    where: {
+      id,
+      userId,
+    },
+  })
+}

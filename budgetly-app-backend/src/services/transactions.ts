@@ -1,5 +1,7 @@
 import { TransactionType } from '../lib/generated/prisma/client'
 import { prisma } from '../lib/prisma'
+import { getAccountById, updateAccountBalance } from './accounts'
+import { getCategoryById } from './categories'
 
 type InsertTransactionInput = {
   amount: number
@@ -11,11 +13,17 @@ type InsertTransactionInput = {
   categoryId: string
 }
 
+type DeleleteTransactionInput = {
+  id: string
+  transaction: InsertTransactionInput
+}
+
 type UpdateTransactionInput = {
   id: string
   amount: number
   description: string | null
   date: string
+  transaction: InsertTransactionInput
 }
 
 export async function insertTransaction({
@@ -27,12 +35,7 @@ export async function insertTransaction({
   type,
   userId,
 }: InsertTransactionInput) {
-  const category = await prisma.category.findFirst({
-    where: {
-      id: categoryId,
-      userId,
-    },
-  })
+  const category = await getCategoryById(categoryId, userId)
 
   if (!category) {
     throw new Error('Categoria não encontrada')
@@ -44,12 +47,7 @@ export async function insertTransaction({
     )
   }
 
-  const account = await prisma.account.findFirst({
-    where: {
-      id: accountId,
-      userId,
-    },
-  })
+  const account = await getAccountById(accountId, userId)
 
   if (!account) {
     throw new Error('Conta não encontrada')
@@ -70,14 +68,7 @@ export async function insertTransaction({
 
     const balanceChange = type === 'INCOME' ? amount : -amount
 
-    await tx.account.update({
-      where: { id: accountId },
-      data: {
-        balance: {
-          increment: balanceChange,
-        },
-      },
-    })
+    await updateAccountBalance(accountId, balanceChange)
 
     return newTransaction
   })
@@ -96,27 +87,15 @@ export async function getTransactionById(id: string) {
   })
 }
 
-export async function deleteTransaction(id: string) {
-  const transaction = await prisma.transaction.findUnique({
-    where: { id },
-  })
-
-  if (!transaction) {
-    throw new Error('Transaction not found')
-  }
-
+export async function deleteTransaction({
+  id,
+  transaction,
+}: DeleleteTransactionInput) {
   const deletedTransaction = await prisma.$transaction(async (tx) => {
     const balanceChange =
       transaction.type === 'INCOME' ? -transaction.amount : transaction.amount
 
-    await tx.account.update({
-      where: { id: transaction.accountId },
-      data: {
-        balance: {
-          increment: balanceChange,
-        },
-      },
-    })
+    await updateAccountBalance(transaction.accountId, balanceChange)
 
     return await tx.transaction.delete({
       where: { id },
@@ -136,29 +115,15 @@ export async function updateTransaction({
   date,
   description,
   id,
+  transaction,
 }: UpdateTransactionInput) {
-  const transaction = await prisma.transaction.findUnique({
-    where: { id },
-  })
-
-  if (!transaction) {
-    throw new Error('Transaction not found')
-  }
-
   const updatedTransaction = await prisma.$transaction(async (tx) => {
     const diff = amount - Number(transaction.amount)
 
     if (diff !== 0) {
       const balanceChange = transaction.type === 'INCOME' ? diff : -diff
 
-      await tx.account.update({
-        where: { id: transaction.accountId },
-        data: {
-          balance: {
-            increment: balanceChange,
-          },
-        },
-      })
+      await updateAccountBalance(transaction.accountId, balanceChange)
     }
 
     return await tx.transaction.update({

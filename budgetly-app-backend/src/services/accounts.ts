@@ -29,3 +29,23 @@ export async function insertAccount({
     createdAt: newAccount.createdAt.toISOString(),
   }
 }
+
+export async function updateAccountBalance(id: string, amount: number) {
+  return await prisma.account.update({
+    where: { id },
+    data: {
+      balance: {
+        increment: amount,
+      },
+    },
+  })
+}
+
+export async function getAccountById(id: string, userId: string) {
+  return await prisma.account.findFirst({
+    where: {
+      id,
+      userId,
+    },
+  })
+}
