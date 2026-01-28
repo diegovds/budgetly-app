@@ -1,7 +1,11 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
 import { transactionSchema } from '../schemas/transaction'
-import { insertTransaction } from '../services/transactions'
+import {
+  deleteTransaction,
+  getTransactionById,
+  insertTransaction,
+} from '../services/transactions'
 import { findUserById } from '../services/users'
 
 export const createTransaction: FastifyPluginAsyncZod = async (app) => {
@@ -52,6 +56,55 @@ export const createTransaction: FastifyPluginAsyncZod = async (app) => {
         })
 
         return reply.send(newTransaction)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const dropTransaction: FastifyPluginAsyncZod = async (app) => {
+  app.delete(
+    '/transaction/:id',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Transaction'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Exclui uma transação pelo ID para o usuário autenticado.',
+        params: z.object({
+          id: z.uuid(),
+        }),
+        response: {
+          200: transactionSchema,
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const { id } = request.params
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const transaction = await getTransactionById(id)
+
+        if (!transaction || transaction.userId !== userId) {
+          return reply
+            .status(404)
+            .send({ message: 'Transação não encontrada.' })
+        }
+
+        const deletedTransaction = await deleteTransaction(id)
+
+        return reply.send(deletedTransaction)
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })

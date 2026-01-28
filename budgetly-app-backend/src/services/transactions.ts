@@ -39,3 +39,20 @@ export async function insertTransaction({
     createdAt: newTransaction.createdAt.toISOString(),
   }
 }
+
+export async function getTransactionById(id: string) {
+  return await prisma.transaction.findUnique({
+    where: { id },
+  })
+}
+
+export async function deleteTransaction(id: string) {
+  const deleteTransaction = await prisma.transaction.delete({ where: { id } })
+
+  return {
+    ...deleteTransaction,
+    amount: Number(deleteTransaction.amount),
+    date: deleteTransaction.date.toISOString(),
+    createdAt: deleteTransaction.createdAt.toISOString(),
+  }
+}
