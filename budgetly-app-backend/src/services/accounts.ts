@@ -30,8 +30,12 @@ export async function insertAccount({
   }
 }
 
-export async function updateAccountBalance(id: string, amount: number) {
-  return await prisma.account.update({
+export async function updateAccountBalance(
+  id: string,
+  amount: number,
+  tx: Prisma.TransactionClient,
+) {
+  return tx.account.update({
     where: { id },
     data: {
       balance: {

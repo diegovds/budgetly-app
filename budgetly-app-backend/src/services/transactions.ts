@@ -13,7 +13,7 @@ type InsertTransactionInput = {
   categoryId: string
 }
 
-type DeleleteTransactionInput = {
+type DeleteTransactionInput = {
   id: string
   transaction: InsertTransactionInput
 }
@@ -57,7 +57,7 @@ export async function insertTransaction({
     const newTransaction = await tx.transaction.create({
       data: {
         amount,
-        date,
+        date: new Date(date),
         description,
         type,
         userId,
@@ -68,7 +68,7 @@ export async function insertTransaction({
 
     const balanceChange = type === 'INCOME' ? amount : -amount
 
-    await updateAccountBalance(accountId, balanceChange)
+    await updateAccountBalance(accountId, balanceChange, tx)
 
     return newTransaction
   })
@@ -90,12 +90,12 @@ export async function getTransactionById(id: string) {
 export async function deleteTransaction({
   id,
   transaction,
-}: DeleleteTransactionInput) {
+}: DeleteTransactionInput) {
   const deletedTransaction = await prisma.$transaction(async (tx) => {
     const balanceChange =
       transaction.type === 'INCOME' ? -transaction.amount : transaction.amount
 
-    await updateAccountBalance(transaction.accountId, balanceChange)
+    await updateAccountBalance(transaction.accountId, balanceChange, tx)
 
     return await tx.transaction.delete({
       where: { id },
@@ -123,7 +123,7 @@ export async function updateTransaction({
     if (diff !== 0) {
       const balanceChange = transaction.type === 'INCOME' ? diff : -diff
 
-      await updateAccountBalance(transaction.accountId, balanceChange)
+      await updateAccountBalance(transaction.accountId, balanceChange, tx)
     }
 
     return await tx.transaction.update({
