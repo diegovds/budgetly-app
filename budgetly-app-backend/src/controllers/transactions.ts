@@ -59,7 +59,7 @@ export const createTransaction: FastifyPluginAsyncZod = async (app) => {
         return reply.send(newTransaction)
       } catch (err) {
         console.error(err)
-        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+        throw err
       }
     },
   )

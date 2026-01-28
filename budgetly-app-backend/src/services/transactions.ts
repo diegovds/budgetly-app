@@ -1,3 +1,4 @@
+import { BadRequestError, NotFoundError } from '../errors/http'
 import { TransactionType } from '../lib/generated/prisma/client'
 import { prisma } from '../lib/prisma'
 import { getAccountById, updateAccountBalance } from './accounts'
@@ -38,11 +39,11 @@ export async function insertTransaction({
   const category = await getCategoryById(categoryId, userId)
 
   if (!category) {
-    throw new Error('Categoria não encontrada')
+    throw new NotFoundError('Categoria não encontrada')
   }
 
   if (category.type !== type) {
-    throw new Error(
+    throw new BadRequestError(
       `Tipo da transação (${type}) diferente do tipo da categoria (${category.type})`,
     )
   }
@@ -50,7 +51,7 @@ export async function insertTransaction({
   const account = await getAccountById(accountId, userId)
 
   if (!account) {
-    throw new Error('Conta não encontrada')
+    throw new NotFoundError('Conta não encontrada')
   }
 
   const transaction = await prisma.$transaction(async (tx) => {
