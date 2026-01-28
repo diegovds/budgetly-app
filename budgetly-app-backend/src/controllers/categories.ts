@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
 import { categorySchema } from '../schemas/category'
-import { insertCategory } from '../services/category'
+import { insertCategory } from '../services/categories'
 import { findUserById } from '../services/users'
 
 export const createCategory: FastifyPluginAsyncZod = async (app) => {
