@@ -11,7 +11,7 @@ export const getFinancial: FastifyPluginAsyncZod = async (app) => {
     {
       preHandler: [app.authenticate],
       schema: {
-        tags: ['Transaction'],
+        tags: ['Financial'],
         security: [{ bearerAuth: [] }],
         summary:
           'Obtém uma visão geral financeira do usuário autenticado, incluindo contas, categorias e transações.',
