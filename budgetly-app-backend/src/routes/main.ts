@@ -5,6 +5,7 @@ import { main } from '../controllers/main'
 import {
   createTransaction,
   dropTransaction,
+  getTransactions,
   updateTransaction_,
 } from '../controllers/transactions'
 import { auth, getUser } from '../controllers/users'
@@ -18,4 +19,5 @@ export async function routes(app: FastifyInstance) {
   app.register(createTransaction)
   app.register(dropTransaction)
   app.register(updateTransaction_)
+  app.register(getTransactions)
 }

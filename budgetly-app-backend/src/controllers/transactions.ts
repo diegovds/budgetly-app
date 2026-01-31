@@ -1,10 +1,15 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { transactionSchema } from '../schemas/transaction'
+import {
+  listTransactionsSchema,
+  paginationMetaSchema,
+  transactionSchema,
+} from '../schemas/transaction'
 import {
   deleteTransaction,
   getTransactionById,
   insertTransaction,
+  listTransactions,
   updateTransaction,
 } from '../services/transactions'
 import { findUserById } from '../services/users'
@@ -178,6 +183,52 @@ export const updateTransaction_: FastifyPluginAsyncZod = async (app) => {
         })
 
         return reply.send(updatedTransaction)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const getTransactions: FastifyPluginAsyncZod = async (app) => {
+  app.get(
+    '/transactions',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Transaction'],
+        security: [{ bearerAuth: [] }],
+        summary:
+          'Lista as transações do usuário autenticado com filtros e paginação.',
+        querystring: listTransactionsSchema,
+        response: {
+          200: z.object({
+            transactions: z.array(transactionSchema),
+            meta: paginationMetaSchema,
+          }),
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+        const query = request.query
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const transactions = await listTransactions({
+          ...query,
+          userId,
+        })
+
+        return reply.send(transactions)
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })
