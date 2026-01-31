@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
-    "vercel-build": "prisma generate && prisma migrate deploy"
+    "vercel-build": "prisma generate && prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +15,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.2.2",
+    "@types/bcrypt": "^6.0.0",
     "@types/node": "^25.0.10",
     "@types/pg": "^8.16.0",
     "eslint": "^8.57.1",
@@ -29,6 +32,7 @@
     "@fastify/swagger-ui": "^5.2.5",
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "fastify": "^5.7.2",
     "fastify-bcrypt": "^1.0.1",
