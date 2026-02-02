@@ -14,9 +14,6 @@ export const createAccount: FastifyPluginAsyncZod = async (app) => {
         security: [{ bearerAuth: [] }],
         summary: 'Cria uma nova conta para o usuário autenticado',
         body: z.object({
-          balance: z
-            .number()
-            .min(0, { message: 'O saldo não pode ser negativo' }),
           name: z
             .string()
             .min(2, { message: 'O nome deve ter pelo menos 2 caracteres' }),
