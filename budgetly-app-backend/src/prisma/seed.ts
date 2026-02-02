@@ -17,7 +17,7 @@ function randomDateInLastYear() {
 }
 
 async function main() {
-  // 🧑 User
+  // 🔐 Usuário
   const passwordHash = await bcrypt.hash('123456', 10)
 
   const user = await prisma.user.create({
@@ -28,70 +28,74 @@ async function main() {
     },
   })
 
-  // 🏦 Accounts
-  const accounts = await prisma.account.createMany({
+  // 🏦 Contas (saldo inicia em 0)
+  await prisma.account.createMany({
     data: [
       {
-        name: 'Checking Account',
+        name: 'Conta Corrente',
         type: AccountType.CHECKING,
-        balance: 5000,
+        balance: 0,
         userId: user.id,
       },
       {
-        name: 'Credit Card',
+        name: 'Cartão de Crédito',
         type: AccountType.CREDIT,
-        balance: -1200,
+        balance: 0,
         userId: user.id,
       },
       {
-        name: 'Cash',
+        name: 'Carteira',
         type: AccountType.CASH,
-        balance: 800,
+        balance: 0,
         userId: user.id,
       },
     ],
   })
 
-  const userAccounts = await prisma.account.findMany({
+  const accounts = await prisma.account.findMany({
     where: { userId: user.id },
   })
 
-  // 🗂 Categories
-  const categories = await prisma.category.createMany({
+  // 🗂 Categorias
+  await prisma.category.createMany({
     data: [
-      { name: 'Salary', type: TransactionType.INCOME, userId: user.id },
+      { name: 'Salário', type: TransactionType.INCOME, userId: user.id },
       { name: 'Freelance', type: TransactionType.INCOME, userId: user.id },
-      { name: 'Food', type: TransactionType.EXPENSE, userId: user.id },
-      { name: 'Rent', type: TransactionType.EXPENSE, userId: user.id },
-      { name: 'Transport', type: TransactionType.EXPENSE, userId: user.id },
-      { name: 'Entertainment', type: TransactionType.EXPENSE, userId: user.id },
+      { name: 'Alimentação', type: TransactionType.EXPENSE, userId: user.id },
+      { name: 'Aluguel', type: TransactionType.EXPENSE, userId: user.id },
+      { name: 'Transporte', type: TransactionType.EXPENSE, userId: user.id },
+      { name: 'Lazer', type: TransactionType.EXPENSE, userId: user.id },
     ],
   })
 
-  const userCategories = await prisma.category.findMany({
+  const categories = await prisma.category.findMany({
     where: { userId: user.id },
   })
 
-  // 💸 Transactions (últimos 12 meses)
-  const transactions = []
+  // 💸 Transações (12 meses)
+  const transactions: any[] = []
 
-  for (let i = 0; i < 120; i++) {
-    const category =
-      userCategories[Math.floor(Math.random() * userCategories.length)]
-    const account =
-      userAccounts[Math.floor(Math.random() * userAccounts.length)]
+  for (let i = 0; i < 150; i++) {
+    const category = categories[Math.floor(Math.random() * categories.length)]
+    const account = accounts[Math.floor(Math.random() * accounts.length)]
 
-    const amount =
-      category.type === TransactionType.INCOME
-        ? randomBetween(1500, 6000)
-        : randomBetween(20, 500)
+    const isIncome = category.type === TransactionType.INCOME
+
+    const amount = isIncome ? randomBetween(2500, 6000) : randomBetween(20, 600)
 
     transactions.push({
       amount: Number(amount.toFixed(2)),
-      description:
-        category.type === TransactionType.INCOME
-          ? 'Income transaction'
-          : 'Expense transaction',
+      description: isIncome
+        ? category.name === 'Salário'
+          ? 'Salário mensal'
+          : 'Pagamento de freelance'
+        : category.name === 'Alimentação'
+          ? 'Compra em supermercado'
+          : category.name === 'Aluguel'
+            ? 'Pagamento do aluguel'
+            : category.name === 'Transporte'
+              ? 'Uber / combustível'
+              : 'Lazer e entretenimento',
       date: randomDateInLastYear(),
       type: category.type,
       userId: user.id,
@@ -104,7 +108,27 @@ async function main() {
     data: transactions,
   })
 
-  console.log('✅ Seed completed successfully')
+  // 🔄 Atualizar saldo das contas com base nas transações
+  for (const account of accounts) {
+    const accountTransactions = transactions.filter(
+      (t) => t.accountId === account.id,
+    )
+
+    const balance = accountTransactions.reduce((total, t) => {
+      return t.type === TransactionType.INCOME
+        ? total + t.amount
+        : total - t.amount
+    }, 0)
+
+    await prisma.account.update({
+      where: { id: account.id },
+      data: {
+        balance: Number(balance.toFixed(2)),
+      },
+    })
+  }
+
+  console.log('✅ Seed financeiro criado com sucesso')
 }
 
 main()
