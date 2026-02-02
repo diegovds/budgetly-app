@@ -132,7 +132,7 @@ export const getUser: FastifyPluginAsyncZod = async (app) => {
           return reply.status(404).send({ message: 'Usuário não encontrado.' })
         }
 
-        const mappedUser = mapUserForResponse(user)
+        const mappedUser = await mapUserForResponse(user)
         return reply.send(mappedUser)
       } catch (err) {
         console.error(err)
