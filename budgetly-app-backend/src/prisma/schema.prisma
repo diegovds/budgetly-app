@@ -29,7 +29,6 @@ model Account {
   id           String        @id @default(uuid())
   name         String
   type         AccountType
-  balance      Decimal       @db.Decimal(10, 2)
   userId       String
   user         User          @relation(fields: [userId], references: [id])
   transactions Transaction[]
