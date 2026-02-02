@@ -2,24 +2,25 @@ import bcrypt from 'bcrypt'
 import { AccountType, TransactionType } from '../lib/generated/prisma/enums'
 import { prisma } from '../lib/prisma'
 
+// ---------- helpers ----------
+function randomItem<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
 function randomBetween(min: number, max: number) {
-  return Math.random() * (max - min) + min
+  return Number((Math.random() * (max - min) + min).toFixed(2))
 }
 
-function randomDateInLastYear() {
-  const now = new Date()
-  const past = new Date()
-  past.setFullYear(now.getFullYear() - 1)
-
-  return new Date(
-    past.getTime() + Math.random() * (now.getTime() - past.getTime()),
-  )
+function dateInMonth(year: number, month: number, day = 5) {
+  return new Date(year, month, day)
 }
 
+// ---------- seed ----------
 async function main() {
-  // 🔐 Usuário
-  const passwordHash = await bcrypt.hash('123456', 10)
+  console.log('🌱 Iniciando seed...')
 
+  // 🧑 Usuário
+  const passwordHash = await bcrypt.hash('123456', 10)
   const user = await prisma.user.create({
     data: {
       name: 'Diego Viana',
@@ -28,91 +29,189 @@ async function main() {
     },
   })
 
-  // 🏦 Contas (saldo inicia em 0)
-  await prisma.account.createMany({
-    data: [
-      {
-        name: 'Conta Corrente',
-        type: AccountType.CHECKING,
-        userId: user.id,
-      },
-      {
-        name: 'Cartão de Crédito',
-        type: AccountType.CREDIT,
-        userId: user.id,
-      },
-      {
-        name: 'Carteira',
-        type: AccountType.CASH,
-        userId: user.id,
-      },
-    ],
+  // 🏦 Contas
+  const checking = await prisma.account.create({
+    data: {
+      name: 'Conta Corrente',
+      type: AccountType.CHECKING,
+      userId: user.id,
+    },
   })
 
-  const accounts = await prisma.account.findMany({
-    where: { userId: user.id },
+  const credit = await prisma.account.create({
+    data: {
+      name: 'Cartão de Crédito',
+      type: AccountType.CREDIT,
+      userId: user.id,
+    },
+  })
+
+  const cash = await prisma.account.create({
+    data: {
+      name: 'Dinheiro',
+      type: AccountType.CASH,
+      userId: user.id,
+    },
   })
 
   // 🗂 Categorias
-  await prisma.category.createMany({
+  const categories = await prisma.category.createMany({
     data: [
       { name: 'Salário', type: TransactionType.INCOME, userId: user.id },
       { name: 'Freelance', type: TransactionType.INCOME, userId: user.id },
-      { name: 'Alimentação', type: TransactionType.EXPENSE, userId: user.id },
+
       { name: 'Aluguel', type: TransactionType.EXPENSE, userId: user.id },
+      {
+        name: 'Energia Elétrica',
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+      },
+      { name: 'Internet', type: TransactionType.EXPENSE, userId: user.id },
+      { name: 'Alimentação', type: TransactionType.EXPENSE, userId: user.id },
       { name: 'Transporte', type: TransactionType.EXPENSE, userId: user.id },
+
       { name: 'Lazer', type: TransactionType.EXPENSE, userId: user.id },
+      { name: 'Compras', type: TransactionType.EXPENSE, userId: user.id },
+      { name: 'Viagem', type: TransactionType.EXPENSE, userId: user.id },
     ],
   })
 
-  const categories = await prisma.category.findMany({
+  const allCategories = await prisma.category.findMany({
     where: { userId: user.id },
   })
 
-  // 💸 Transações (12 meses)
-  const transactions: any[] = []
+  const byName = (name: string) => allCategories.find((c) => c.name === name)!
 
-  for (let i = 0; i < 150; i++) {
-    const category = categories[Math.floor(Math.random() * categories.length)]
-    const account = accounts[Math.floor(Math.random() * accounts.length)]
+  // 📆 Últimos 12 meses
+  const now = new Date()
+  const transactions = []
 
-    const isIncome = category.type === TransactionType.INCOME
+  for (let i = 0; i < 12; i++) {
+    const month = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    const year = month.getFullYear()
+    const monthIndex = month.getMonth()
 
-    const amount = isIncome ? randomBetween(2500, 6000) : randomBetween(20, 600)
+    // 💰 Salário fixo
+    transactions.push({
+      amount: 4800,
+      description: 'Salário mensal',
+      date: dateInMonth(year, monthIndex, 5),
+      type: TransactionType.INCOME,
+      userId: user.id,
+      accountId: checking.id,
+      categoryId: byName('Salário').id,
+    })
+
+    // 🏠 Contas fixas
+    transactions.push(
+      {
+        amount: 1200,
+        description: 'Aluguel do apartamento',
+        date: dateInMonth(year, monthIndex, 8),
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+        accountId: checking.id,
+        categoryId: byName('Aluguel').id,
+      },
+      {
+        amount: randomBetween(120, 180),
+        description: 'Conta de energia elétrica',
+        date: dateInMonth(year, monthIndex, 10),
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+        accountId: checking.id,
+        categoryId: byName('Energia Elétrica').id,
+      },
+      {
+        amount: 110,
+        description: 'Plano de internet residencial',
+        date: dateInMonth(year, monthIndex, 12),
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+        accountId: checking.id,
+        categoryId: byName('Internet').id,
+      },
+    )
+
+    // 🍔 Alimentação e transporte
+    transactions.push(
+      {
+        amount: randomBetween(200, 350),
+        description: 'Compras de supermercado',
+        date: dateInMonth(year, monthIndex, 15),
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+        accountId: checking.id,
+        categoryId: byName('Alimentação').id,
+      },
+      {
+        amount: randomBetween(80, 150),
+        description: 'Combustível',
+        date: dateInMonth(year, monthIndex, 18),
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+        accountId: checking.id,
+        categoryId: byName('Transporte').id,
+      },
+    )
+
+    // 🎮 Lazer criativo (variável)
+    const leisureDescriptions = [
+      'Cinema com amigos',
+      'Jantar em restaurante',
+      'Assinatura de streaming',
+      'Bar no final de semana',
+      'Show local',
+    ]
 
     transactions.push({
-      amount: Number(amount.toFixed(2)),
-      description: isIncome
-        ? category.name === 'Salário'
-          ? 'Salário mensal'
-          : 'Pagamento de freelance'
-        : category.name === 'Alimentação'
-          ? 'Compra em supermercado'
-          : category.name === 'Aluguel'
-            ? 'Pagamento do aluguel'
-            : category.name === 'Transporte'
-              ? 'Uber / combustível'
-              : 'Lazer e entretenimento',
-      date: randomDateInLastYear(),
-      type: category.type,
+      amount: randomBetween(60, 180),
+      description: randomItem(leisureDescriptions),
+      date: dateInMonth(year, monthIndex, 22),
+      type: TransactionType.EXPENSE,
       userId: user.id,
-      accountId: account.id,
-      categoryId: category.id,
+      accountId: credit.id,
+      categoryId: byName('Lazer').id,
     })
+
+    // 🛒 Compras esporádicas
+    if (Math.random() > 0.5) {
+      transactions.push({
+        amount: randomBetween(200, 900),
+        description: randomItem([
+          'Compra de roupas',
+          'Teclado mecânico',
+          'Fone de ouvido',
+          'Mochila nova',
+          'Cadeira de escritório',
+        ]),
+        date: dateInMonth(year, monthIndex, 25),
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+        accountId: credit.id,
+        categoryId: byName('Compras').id,
+      })
+    }
+
+    // ✈️ Viagem ocasional
+    if (monthIndex === 6 || monthIndex === 11) {
+      transactions.push({
+        amount: randomBetween(1200, 2800),
+        description: 'Viagem de lazer',
+        date: dateInMonth(year, monthIndex, 20),
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+        accountId: credit.id,
+        categoryId: byName('Viagem').id,
+      })
+    }
   }
 
-  await prisma.transaction.createMany({
-    data: transactions,
-  })
+  await prisma.transaction.createMany({ data: transactions })
 
-  console.log('✅ Seed financeiro criado com sucesso')
+  console.log('✅ Seed concluído com sucesso')
 }
 
 main()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+  .catch(console.error)
+  .finally(async () => prisma.$disconnect())
