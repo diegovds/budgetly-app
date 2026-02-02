@@ -34,19 +34,16 @@ async function main() {
       {
         name: 'Conta Corrente',
         type: AccountType.CHECKING,
-        balance: 0,
         userId: user.id,
       },
       {
         name: 'Cartão de Crédito',
         type: AccountType.CREDIT,
-        balance: 0,
         userId: user.id,
       },
       {
         name: 'Carteira',
         type: AccountType.CASH,
-        balance: 0,
         userId: user.id,
       },
     ],
@@ -107,26 +104,6 @@ async function main() {
   await prisma.transaction.createMany({
     data: transactions,
   })
-
-  // 🔄 Atualizar saldo das contas com base nas transações
-  for (const account of accounts) {
-    const accountTransactions = transactions.filter(
-      (t) => t.accountId === account.id,
-    )
-
-    const balance = accountTransactions.reduce((total, t) => {
-      return t.type === TransactionType.INCOME
-        ? total + t.amount
-        : total - t.amount
-    }, 0)
-
-    await prisma.account.update({
-      where: { id: account.id },
-      data: {
-        balance: Number(balance.toFixed(2)),
-      },
-    })
-  }
 
   console.log('✅ Seed financeiro criado com sucesso')
 }
