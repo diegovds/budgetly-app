@@ -1,7 +1,7 @@
 import { BadRequestError, NotFoundError } from '../errors/http'
 import { Prisma, TransactionType } from '../lib/generated/prisma/client'
 import { prisma } from '../lib/prisma'
-import { getAccountById, updateAccountBalance } from './accounts'
+import { getAccountById } from './accounts'
 import { getCategoryById } from './categories'
 
 type InsertTransactionInput = {
@@ -83,10 +83,6 @@ export async function insertTransaction({
       },
     })
 
-    const balanceChange = type === 'INCOME' ? amount : -amount
-
-    await updateAccountBalance(accountId, balanceChange, tx)
-
     return newTransaction
   })
 
@@ -104,16 +100,8 @@ export async function getTransactionById(id: string) {
   })
 }
 
-export async function deleteTransaction({
-  id,
-  transaction,
-}: DeleteTransactionInput) {
+export async function deleteTransaction({ id }: DeleteTransactionInput) {
   const deletedTransaction = await prisma.$transaction(async (tx) => {
-    const balanceChange =
-      transaction.type === 'INCOME' ? -transaction.amount : transaction.amount
-
-    await updateAccountBalance(transaction.accountId, balanceChange, tx)
-
     return await tx.transaction.delete({
       where: { id },
     })
@@ -132,17 +120,8 @@ export async function updateTransaction({
   date,
   description,
   id,
-  transaction,
 }: UpdateTransactionInput) {
   const updatedTransaction = await prisma.$transaction(async (tx) => {
-    const diff = amount - Number(transaction.amount)
-
-    if (diff !== 0) {
-      const balanceChange = transaction.type === 'INCOME' ? diff : -diff
-
-      await updateAccountBalance(transaction.accountId, balanceChange, tx)
-    }
-
     return await tx.transaction.update({
       where: { id },
       data: {

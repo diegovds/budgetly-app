@@ -39,10 +39,9 @@ export const createAccount: FastifyPluginAsyncZod = async (app) => {
           return reply.status(404).send({ message: 'Usuário não encontrado.' })
         }
 
-        const { balance, name, type } = request.body
+        const { name, type } = request.body
 
         const newAccount = await insertAccount({
-          balance,
           name,
           type,
           userId,
