@@ -1,9 +1,10 @@
 import { Prisma } from '../lib/generated/prisma/client'
 import { prisma } from '../lib/prisma'
 import {
-    FinancialOverviewAccount,
-    ListFinancialOverviewResponse,
+  FinancialOverviewAccount,
+  ListFinancialOverviewResponse,
 } from '../schemas/financial-overview'
+import { getAccountBalance } from './balances'
 import { ListTransactionsFilters } from './transactions'
 
 export async function listFinancialOverview(
@@ -83,7 +84,7 @@ export async function listFinancialOverview(
       accountsMap.set(tx.accountId, {
         id: tx.account.id,
         name: tx.account.name,
-        balance: Number(tx.account.balance),
+        balance: await getAccountBalance(tx.accountId),
         categories: [],
       })
     }
