@@ -1,5 +1,6 @@
 import { AccountType } from '../lib/generated/prisma/client'
 import { prisma } from '../lib/prisma'
+import { getAccountBalance } from './balances'
 
 type InsertAccountInput = {
   name: string
@@ -33,4 +34,25 @@ export async function getAccountById(id: string, userId: string) {
       userId,
     },
   })
+}
+
+export async function getAccountsByUserId(userId: string) {
+  const accounts = await prisma.account.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  })
+
+  const accountsWithBalance = await Promise.all(
+    accounts.map(async (account) => ({
+      ...account,
+      balance: await getAccountBalance(account.id),
+    })),
+  )
+
+  return accountsWithBalance
 }
