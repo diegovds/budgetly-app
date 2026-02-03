@@ -1,7 +1,8 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { MyAccounts } from '@/components/home/my-accounts'
 import { SummaryInformation } from '@/components/home/summary-information'
 import { Button } from '@/components/ui/button'
-import { getFinancialSummary } from '@/http/api'
+import { getAccount, getFinancialSummary } from '@/http/api'
 import { redirect } from 'next/navigation'
 
 export default async function Home() {
@@ -14,8 +15,10 @@ export default async function Home() {
   const { monthExpense, monthIncome, totalBalance } =
     await getFinancialSummary()
 
+  const accounts = await getAccount()
+
   return (
-    <div className="w-full">
+    <div className="w-full space-y-8">
       <header className="lg-gap-0 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
         <div>
           <h1 className="mb-4 text-3xl font-bold">Visão Geral Financeira</h1>
@@ -25,12 +28,14 @@ export default async function Home() {
         </div>
         <Button>+ Adicionat Transação</Button>
       </header>
-      <div>
-        <SummaryInformation
-          monthExpense={monthExpense}
-          monthIncome={monthIncome}
-          totalBalance={totalBalance}
-        />
+      <SummaryInformation
+        monthExpense={monthExpense}
+        monthIncome={monthIncome}
+        totalBalance={totalBalance}
+      />
+      <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
+        <MyAccounts accounts={accounts} totalBalance={totalBalance} />
+        <div className="bg-accent flex-2 rounded p-4">2</div>
       </div>
     </div>
   )
