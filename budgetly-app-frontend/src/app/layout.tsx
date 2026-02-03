@@ -28,7 +28,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} dark flex min-h-dvh flex-col antialiased`}
       >
         <div className="bg-pink-500 p-4">navbar</div>
-        <main className="container mx-auto my-5 flex flex-1 px-4 md:my-10 md:px-1">
+        <main className="container mx-auto my-5 flex flex-1 px-4 md:my-10 md:px-10">
           {children}
         </main>
         <div className="bg-pink-500 p-4">footer</div>
