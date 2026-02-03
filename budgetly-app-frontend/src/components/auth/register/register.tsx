@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
+import { useAuthMutation } from '@/hooks/useAuthMutation'
 import { Eye, EyeOff, Lock, Mail, User } from 'lucide-react'
 
 export const registerSchema = z
@@ -34,6 +35,7 @@ export type RegisterFormData = z.infer<typeof registerSchema>
 
 export function Register() {
   const [showPassword, setShowPassword] = useState(false)
+  const { mutate, isPending, error, isSuccess } = useAuthMutation()
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -46,7 +48,11 @@ export function Register() {
   })
 
   function onSubmit(data: RegisterFormData) {
-    console.log('Register data:', data)
+    mutate({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    })
   }
 
   return (
@@ -166,7 +172,11 @@ export function Register() {
                 />
               </div>
 
-              <Button type="submit" className="w-full">
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isPending || isSuccess}
+              >
                 Criar conta
               </Button>
             </form>
