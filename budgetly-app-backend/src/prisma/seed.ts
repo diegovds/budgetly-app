@@ -102,6 +102,17 @@ async function main() {
       categoryId: byName('Salário').id,
     })
 
+    // Freelance ocasional
+    transactions.push({
+      amount: Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000,
+      description: 'Freelance ocasional',
+      date: dateInMonth(year, monthIndex, 5),
+      type: TransactionType.INCOME,
+      userId: user.id,
+      accountId: cash.id,
+      categoryId: byName('Freelance').id,
+    })
+
     // 🏠 Contas fixas
     transactions.push(
       {
