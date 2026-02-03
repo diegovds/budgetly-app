@@ -59,7 +59,7 @@ export function Register() {
   return (
     <>
       {/* FORM SIDE */}
-      <section className="bg-background flex w-full flex-1 items-center">
+      <section className="bg-background flex w-full flex-1 items-center justify-center">
         <div className="w-full max-w-md space-y-8">
           <header className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">Criar conta</h1>
