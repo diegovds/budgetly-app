@@ -13,7 +13,7 @@ export function SummaryInformation({
   totalBalance,
 }: SummaryInformationProps) {
   return (
-    <div className="mt-8 grid gap-4 lg:grid-cols-3 lg:gap-8">
+    <div className="grid gap-4 lg:grid-cols-3 lg:gap-8">
       <BalanceInformation
         balance={totalBalance}
         icon={<Landmark />}
