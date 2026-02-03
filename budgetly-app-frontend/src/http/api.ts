@@ -640,6 +640,24 @@ export type GetFinancialOverview500 = {
   message: string
 }
 
+export type GetFinancialSummary200 = {
+  totalBalance: number
+  monthIncome: number
+  monthExpense: number
+}
+
+export type GetFinancialSummary401 = {
+  message: string
+}
+
+export type GetFinancialSummary404 = {
+  message: string
+}
+
+export type GetFinancialSummary500 = {
+  message: string
+}
+
 /**
  * Retorna uma mensagem de boas-vindas e um link para a documentação da API.
  * @summary Página inicial da API
@@ -844,4 +862,20 @@ export const getFinancialOverview = async (
       method: 'GET',
     },
   )
+}
+
+/**
+ * @summary Obtém um resumo financeiro do usuário autenticado.
+ */
+export const getGetFinancialSummaryUrl = () => {
+  return `/financial/summary`
+}
+
+export const getFinancialSummary = async (
+  options?: RequestInit,
+): Promise<GetFinancialSummary200> => {
+  return customFetch<GetFinancialSummary200>(getGetFinancialSummaryUrl(), {
+    ...options,
+    method: 'GET',
+  })
 }
