@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input'
 
 import { useAuthMutation } from '@/hooks/useAuthMutation'
 import { Eye, EyeOff, Lock, Mail, User } from 'lucide-react'
+import Link from 'next/link'
 
 export const registerSchema = z
   .object({
@@ -184,12 +185,12 @@ export function Register() {
 
           <p className="text-muted-foreground text-center text-sm">
             Já tem uma conta?{' '}
-            <a
+            <Link
               href="/login"
               className="text-primary font-medium hover:underline"
             >
               Entrar
-            </a>
+            </Link>
           </p>
         </div>
       </section>
