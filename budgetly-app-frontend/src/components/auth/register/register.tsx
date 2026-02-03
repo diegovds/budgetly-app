@@ -60,7 +60,7 @@ export function Register() {
     <>
       {/* FORM SIDE */}
       <section className="bg-background flex w-full flex-1 items-center">
-        <div className="w-full space-y-6">
+        <div className="w-full max-w-md space-y-8">
           <header className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">Criar conta</h1>
             <p className="text-muted-foreground">
