@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { createAccount } from '../controllers/accounts'
 import { createCategory } from '../controllers/categories'
-import { getFinancial } from '../controllers/financial'
+import { getFinancial, getFinancialSummary } from '../controllers/financial'
 import { main } from '../controllers/main'
 import {
   createTransaction,
@@ -22,4 +22,5 @@ export async function routes(app: FastifyInstance) {
   app.register(updateTransaction_)
   app.register(getTransactions)
   app.register(getFinancial)
+  app.register(getFinancialSummary)
 }

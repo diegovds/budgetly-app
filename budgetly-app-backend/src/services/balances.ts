@@ -1,6 +1,12 @@
 import { TransactionType } from '../lib/generated/prisma/enums'
 import { prisma } from '../lib/prisma'
 
+type FinancialOverviewSummary = {
+  totalBalance: number
+  monthIncome: number
+  monthExpense: number
+}
+
 export async function getAccountBalance(accountId: string) {
   const transactions = await prisma.transaction.findMany({
     where: { accountId },
@@ -132,4 +138,80 @@ export async function getBalanceByCategory({
     ...c,
     total: Number(c.total.toFixed(2)),
   }))
+}
+
+function getCurrentMonthRange() {
+  const now = new Date()
+
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+  const endOfMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() + 1,
+    0,
+    23,
+    59,
+    59,
+  )
+
+  return { startOfMonth, endOfMonth }
+}
+
+export async function getFinancialOverviewSummary(
+  userId: string,
+): Promise<FinancialOverviewSummary> {
+  const { startOfMonth, endOfMonth } = getCurrentMonthRange()
+
+  const [incomeAgg, expenseAgg] = await Promise.all([
+    prisma.transaction.aggregate({
+      where: {
+        userId,
+        type: TransactionType.INCOME,
+      },
+      _sum: { amount: true },
+    }),
+
+    prisma.transaction.aggregate({
+      where: {
+        userId,
+        type: TransactionType.EXPENSE,
+      },
+      _sum: { amount: true },
+    }),
+  ])
+
+  const monthIncomeAgg = await prisma.transaction.aggregate({
+    where: {
+      userId,
+      type: TransactionType.INCOME,
+      date: {
+        gte: startOfMonth,
+        lte: endOfMonth,
+      },
+    },
+    _sum: { amount: true },
+  })
+
+  const monthExpenseAgg = await prisma.transaction.aggregate({
+    where: {
+      userId,
+      type: TransactionType.EXPENSE,
+      date: {
+        gte: startOfMonth,
+        lte: endOfMonth,
+      },
+    },
+    _sum: { amount: true },
+  })
+
+  const totalIncome = Number(incomeAgg._sum.amount ?? 0)
+  const totalExpense = Number(expenseAgg._sum.amount ?? 0)
+
+  const monthIncome = Number(monthIncomeAgg._sum.amount ?? 0)
+  const monthExpense = Number(monthExpenseAgg._sum.amount ?? 0)
+
+  return {
+    totalBalance: totalIncome - totalExpense,
+    monthIncome,
+    monthExpense,
+  }
 }
