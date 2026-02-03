@@ -134,7 +134,7 @@ export function Register() {
                           <button
                             type="button"
                             onClick={() => setShowPassword((prev) => !prev)}
-                            className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"
+                            className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
                           >
                             {showPassword ? (
                               <EyeOff className="size-5" />
