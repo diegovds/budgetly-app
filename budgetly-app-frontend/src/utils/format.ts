@@ -17,3 +17,25 @@ export function formatDate(date: Date): string {
 
   return formatted.replace(' às ', ', ')
 }
+
+export function formatCurrencyString(value: string) {
+  const numeric = value.replace(/\D/g, '')
+
+  const number = Number(numeric) / 100
+
+  return number.toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  })
+}
+
+
+export function currencyToNumber(value: string) {
+  return Number(
+    value
+      .replace(/\s/g, '')
+      .replace('R$', '')
+      .replace(/\./g, '')
+      .replace(',', '.'),
+  )
+}

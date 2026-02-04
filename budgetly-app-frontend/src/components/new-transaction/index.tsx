@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useTransactionInsertionMutation } from '@/hooks/useTransactionInsertionMutation'
 import { GetAccount200Item, GetCategory200CategoriesItem } from '@/http/api'
+import { currencyToNumber, formatCurrencyString } from '@/utils/format'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -36,9 +37,15 @@ type NewTransactionProps = {
 }
 
 const createTransactionSchema = z.object({
-  amount: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-    message: 'Valor inválido',
-  }),
+  amount: z.string().refine(
+    (val) => {
+      const number = currencyToNumber(val)
+      return !isNaN(number) && number > 0
+    },
+    {
+      message: 'Valor inválido',
+    },
+  ),
   description: z.string(),
   date: z.date(),
   accountId: z.uuid(),
@@ -64,16 +71,14 @@ export function NewTransaction({ accounts, categories }: NewTransactionProps) {
   function onSubmit(data: CreateNewTransactionFormData) {
     const category = categories.find((c) => c.id === data.categoryId)
 
-    if (category) {
-      const payload = {
-        ...data,
-        amount: Number(data.amount),
-        date: data.date.toISOString(),
-        type: category.type,
-      }
+    if (!category) return
 
-      mutate(payload)
-    }
+    mutate({
+      ...data,
+      date: data.date.toISOString(),
+      type: category.type,
+      amount: currencyToNumber(data.amount),
+    })
   }
 
   return (
@@ -99,9 +104,15 @@ export function NewTransaction({ accounts, categories }: NewTransactionProps) {
                       <FormLabel>Valor</FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
-                          placeholder="Ex: 1000"
-                          {...field}
+                          type="text"
+                          placeholder="R$ 1.000,00"
+                          value={field.value ?? ''}
+                          onChange={(e) => {
+                            const formatted = formatCurrencyString(
+                              e.target.value,
+                            )
+                            field.onChange(formatted)
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -218,7 +229,7 @@ export function NewTransaction({ accounts, categories }: NewTransactionProps) {
                       <FormControl>
                         <Input
                           type="text"
-                          placeholder="Ex: Conta da luz"
+                          placeholder="Conta da luz"
                           {...field}
                         />
                       </FormControl>
