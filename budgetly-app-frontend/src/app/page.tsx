@@ -10,6 +10,7 @@ import {
   getTransactionsSummary,
 } from '@/http/api'
 import { CirclePlus } from 'lucide-react'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 export default async function Home() {
@@ -37,9 +38,11 @@ export default async function Home() {
             Bem-vindo de volta, aqui está o seu resumo financeiro.
           </p>
         </div>
-        <Button className="w-fit">
-          <CirclePlus /> Adicionar Transação
-        </Button>
+        <Link href="/transaction/new">
+          <Button className="w-fit">
+            <CirclePlus /> Adicionar Transação
+          </Button>
+        </Link>
       </header>
       <SummaryInformation
         monthExpense={monthExpense}
