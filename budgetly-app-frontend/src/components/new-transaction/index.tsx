@@ -1,9 +1,9 @@
 import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card'
 import { GetAccount200Item, GetCategory200CategoriesItem } from '@/http/api'
 import Link from 'next/link'
@@ -16,7 +16,7 @@ type NewTransactionProps = {
 
 export function NewTransaction({ accounts, categories }: NewTransactionProps) {
   return (
-    <Card className="h-fit w-full max-w-lg">
+    <Card className="h-fit w-full max-w-xl">
       <CardHeader>
         <CardTitle className="text-3xl font-bold tracking-tight">
           Adicionar Transação
