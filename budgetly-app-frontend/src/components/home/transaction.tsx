@@ -17,7 +17,7 @@ export function Transaction({ category }: TransactionProps) {
         </Link>
       </div>
       <div className="space-y-2">
-        <p>Últimos 30 dias</p>
+        <p className="text-muted-foreground text-sm">Últimos 30 dias</p>
         <span
           className={`text-xl font-medium ${category.total < 0 ? 'text-red-500' : 'text-green-500'}`}
         >
