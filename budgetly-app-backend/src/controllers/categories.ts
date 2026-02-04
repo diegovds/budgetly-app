@@ -1,7 +1,10 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { categorySchema } from '../schemas/category'
-import { insertCategory } from '../services/categories'
+import {
+  categorySchema,
+  ListCategoriesSummaryResponseSchema,
+} from '../schemas/category'
+import { insertCategory, listCategoriesSummary } from '../services/categories'
 import { findUserById } from '../services/users'
 
 export const createCategory: FastifyPluginAsyncZod = async (app) => {
@@ -45,6 +48,51 @@ export const createCategory: FastifyPluginAsyncZod = async (app) => {
         })
 
         return reply.send(newCategory)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const listCategories: FastifyPluginAsyncZod = async (app) => {
+  app.get(
+    '/category',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Category'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Lista um resumo das categorias do usuário autenticado.',
+        querystring: z.object({
+          page: z.coerce.number().int().min(1).default(1),
+          limit: z.coerce.number().int().min(1).max(100).default(6),
+        }),
+        response: {
+          200: ListCategoriesSummaryResponseSchema,
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+        const query = request.query
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const categories = await listCategoriesSummary({
+          ...query,
+          userId,
+        })
+
+        return reply.send(categories)
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })
