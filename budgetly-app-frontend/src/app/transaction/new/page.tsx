@@ -11,7 +11,7 @@ export default async function NewTransactionPage() {
   }
 
   const accounts = await getAccount()
-  const { categories } = await getCategory()
+  const { categories } = await getCategory({ limit: 50 })
 
   return (
     <div className="flex w-full items-center justify-center">
