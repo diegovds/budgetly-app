@@ -12,6 +12,7 @@ export const CategorySummarySchema = z.object({
   id: z.uuid(),
   name: z.string(),
   total: z.number(),
+  type: transactionTypeSchema,
 })
 
 export type CategorySummary = z.infer<typeof CategorySummarySchema>

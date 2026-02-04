@@ -97,6 +97,7 @@ export async function listCategoriesSummary({
       return {
         id: category.id,
         name: category.name,
+        type: category.type,
         total: category.type === TransactionType.EXPENSE ? -total : total,
       }
     }),
