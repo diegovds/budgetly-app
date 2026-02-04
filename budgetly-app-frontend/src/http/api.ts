@@ -161,6 +161,25 @@ export type PostAccount500 = {
   message: string
 }
 
+export type GetAccount200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string
+  name: string
+  balance: number
+}
+
+export type GetAccount401 = {
+  message: string
+}
+
+export type GetAccount404 = {
+  message: string
+}
+
+export type GetAccount500 = {
+  message: string
+}
+
 export type PostCategoryBodyType =
   (typeof PostCategoryBodyType)[keyof typeof PostCategoryBodyType]
 
@@ -201,6 +220,50 @@ export type PostCategory404 = {
 }
 
 export type PostCategory500 = {
+  message: string
+}
+
+export type GetCategoryParams = {
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number
+}
+
+export type GetCategory200CategoriesItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string
+  name: string
+  total: number
+}
+
+export type GetCategory200Meta = {
+  page: number
+  limit: number
+  totalCategories: number
+  totalPages: number
+}
+
+export type GetCategory200 = {
+  categories: GetCategory200CategoriesItem[]
+  meta: GetCategory200Meta
+}
+
+export type GetCategory401 = {
+  message: string
+}
+
+export type GetCategory404 = {
+  message: string
+}
+
+export type GetCategory500 = {
   message: string
 }
 
@@ -727,6 +790,22 @@ export const postAccount = async (
 }
 
 /**
+ * @summary Obtém todas as contas do usuário autenticado
+ */
+export const getGetAccountUrl = () => {
+  return `/account`
+}
+
+export const getAccount = async (
+  options?: RequestInit,
+): Promise<GetAccount200Item[]> => {
+  return customFetch<GetAccount200Item[]>(getGetAccountUrl(), {
+    ...options,
+    method: 'GET',
+  })
+}
+
+/**
  * @summary Cria uma nova categoria para o usuário autenticado.
  */
 export const getPostCategoryUrl = () => {
@@ -742,6 +821,35 @@ export const postCategory = async (
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(postCategoryBody),
+  })
+}
+
+/**
+ * @summary Lista um resumo das categorias do usuário autenticado.
+ */
+export const getGetCategoryUrl = (params?: GetCategoryParams) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  const stringifiedParams = normalizedParams.toString()
+
+  return stringifiedParams.length > 0
+    ? `/category?${stringifiedParams}`
+    : `/category`
+}
+
+export const getCategory = async (
+  params?: GetCategoryParams,
+  options?: RequestInit,
+): Promise<GetCategory200> => {
+  return customFetch<GetCategory200>(getGetCategoryUrl(params), {
+    ...options,
+    method: 'GET',
   })
 }
 
