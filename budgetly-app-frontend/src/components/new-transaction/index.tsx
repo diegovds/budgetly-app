@@ -46,7 +46,7 @@ const createTransactionSchema = z.object({
       message: 'Valor inválido',
     },
   ),
-  description: z.string(),
+  description: z.string().min(1, 'Descrição é obrigatória'),
   date: z.date(),
   accountId: z.uuid(),
   categoryId: z.uuid(),
