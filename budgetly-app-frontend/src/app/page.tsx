@@ -1,8 +1,9 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { MyAccounts } from '@/components/home/my-accounts'
+import { MyTransactions } from '@/components/home/my-transactions'
 import { SummaryInformation } from '@/components/home/summary-information'
 import { Button } from '@/components/ui/button'
-import { getAccount, getFinancialSummary } from '@/http/api'
+import { getAccount, getCategory, getFinancialSummary } from '@/http/api'
 import { CirclePlus } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
@@ -17,6 +18,8 @@ export default async function Home() {
     await getFinancialSummary()
 
   const accounts = await getAccount()
+
+  const { categories } = await getCategory()
 
   return (
     <div className="w-full space-y-8">
@@ -38,7 +41,7 @@ export default async function Home() {
       />
       <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
         <MyAccounts accounts={accounts} totalBalance={totalBalance} />
-        <div className="bg-accent flex-2 rounded p-4">2</div>
+        <MyTransactions categories={categories} />
       </div>
     </div>
   )
