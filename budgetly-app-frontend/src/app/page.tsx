@@ -3,6 +3,7 @@ import { MyAccounts } from '@/components/home/my-accounts'
 import { SummaryInformation } from '@/components/home/summary-information'
 import { Button } from '@/components/ui/button'
 import { getAccount, getFinancialSummary } from '@/http/api'
+import { CirclePlus } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
 export default async function Home() {
@@ -26,7 +27,9 @@ export default async function Home() {
             Bem-vindo de volta, aqui está o seu resumo financeiro.
           </p>
         </div>
-        <Button>+ Adicionat Transação</Button>
+        <Button className="w-fit">
+          <CirclePlus /> Adicionar Transação
+        </Button>
       </header>
       <SummaryInformation
         monthExpense={monthExpense}
