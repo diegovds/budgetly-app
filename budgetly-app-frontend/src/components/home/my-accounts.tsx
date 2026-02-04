@@ -1,5 +1,6 @@
 import { formatCurrency } from '@/utils/format'
 import { CirclePlus } from 'lucide-react'
+import Link from 'next/link'
 import { Button } from '../ui/button'
 import { Account } from './account'
 
@@ -26,9 +27,11 @@ export function MyAccounts({ accounts, totalBalance }: MyAccountsProps) {
           <Account key={account.id} account={account} />
         ))}
       </div>
-      <Button variant="outline">
-        <CirclePlus /> Adicionar Nova Conta
-      </Button>
+      <Link href="/account/new">
+        <Button variant="outline">
+          <CirclePlus /> Adicionar Nova Conta
+        </Button>
+      </Link>
     </div>
   )
 }
