@@ -11,7 +11,7 @@ export function Transaction({ transaction }: TransactionProps) {
       <div className="space-y-2">
         <h3 className="text-xl font-medium">{transaction.name}</h3>
         <p className="text-muted-foreground text-sm">
-          {formatDate(transaction.date)}
+          {formatDate(new Date(transaction.date))}
         </p>
       </div>
       <p
