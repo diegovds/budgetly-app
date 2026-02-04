@@ -11,8 +11,21 @@ function randomBetween(min: number, max: number) {
   return Number((Math.random() * (max - min) + min).toFixed(2))
 }
 
-function dateInMonth(year: number, month: number, day = 5) {
-  return new Date(year, month, day)
+function randomTime(startHour: number, endHour: number) {
+  const hour = Math.floor(Math.random() * (endHour - startHour + 1)) + startHour
+  const minute = Math.floor(Math.random() * 60)
+  return { hour, minute }
+}
+
+function dateInMonthWithTime(
+  year: number,
+  month: number,
+  day: number,
+  startHour = 8,
+  endHour = 18,
+) {
+  const { hour, minute } = randomTime(startHour, endHour)
+  return new Date(year, month, day, hour, minute)
 }
 
 // ---------- seed ----------
@@ -55,7 +68,7 @@ async function main() {
   })
 
   // 🗂 Categorias
-  const categories = await prisma.category.createMany({
+  await prisma.category.createMany({
     data: [
       { name: 'Salário', type: TransactionType.INCOME, userId: user.id },
       { name: 'Freelance', type: TransactionType.INCOME, userId: user.id },
@@ -76,37 +89,37 @@ async function main() {
     ],
   })
 
-  const allCategories = await prisma.category.findMany({
+  const categories = await prisma.category.findMany({
     where: { userId: user.id },
   })
 
-  const byName = (name: string) => allCategories.find((c) => c.name === name)!
+  const byName = (name: string) => categories.find((c) => c.name === name)!
 
   // 📆 Últimos 12 meses
   const now = new Date()
-  const transactions = []
+  const transactions: any[] = []
 
   for (let i = 0; i < 12; i++) {
-    const month = new Date(now.getFullYear(), now.getMonth() - i, 1)
-    const year = month.getFullYear()
-    const monthIndex = month.getMonth()
+    const baseDate = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    const year = baseDate.getFullYear()
+    const month = baseDate.getMonth()
 
-    // 💰 Salário fixo
+    // 💰 Salário (manhã)
     transactions.push({
       amount: 4800,
       description: 'Salário mensal',
-      date: dateInMonth(year, monthIndex, 5),
+      date: dateInMonthWithTime(year, month, 5, 8, 10),
       type: TransactionType.INCOME,
       userId: user.id,
       accountId: checking.id,
       categoryId: byName('Salário').id,
     })
 
-    // Freelance ocasional
+    // 💻 Freelance (tarde)
     transactions.push({
-      amount: Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000,
-      description: 'Freelance ocasional',
-      date: dateInMonth(year, monthIndex, 5),
+      amount: randomBetween(1200, 3000),
+      description: 'Projeto freelance',
+      date: dateInMonthWithTime(year, month, 7, 14, 18),
       type: TransactionType.INCOME,
       userId: user.id,
       accountId: cash.id,
@@ -118,7 +131,7 @@ async function main() {
       {
         amount: 1200,
         description: 'Aluguel do apartamento',
-        date: dateInMonth(year, monthIndex, 8),
+        date: dateInMonthWithTime(year, month, 8, 9, 11),
         type: TransactionType.EXPENSE,
         userId: user.id,
         accountId: checking.id,
@@ -127,7 +140,7 @@ async function main() {
       {
         amount: randomBetween(120, 180),
         description: 'Conta de energia elétrica',
-        date: dateInMonth(year, monthIndex, 10),
+        date: dateInMonthWithTime(year, month, 10, 10, 15),
         type: TransactionType.EXPENSE,
         userId: user.id,
         accountId: checking.id,
@@ -136,7 +149,7 @@ async function main() {
       {
         amount: 110,
         description: 'Plano de internet residencial',
-        date: dateInMonth(year, monthIndex, 12),
+        date: dateInMonthWithTime(year, month, 12, 9, 12),
         type: TransactionType.EXPENSE,
         userId: user.id,
         accountId: checking.id,
@@ -147,18 +160,18 @@ async function main() {
     // 🍔 Alimentação e transporte
     transactions.push(
       {
-        amount: randomBetween(200, 350),
+        amount: randomBetween(220, 380),
         description: 'Compras de supermercado',
-        date: dateInMonth(year, monthIndex, 15),
+        date: dateInMonthWithTime(year, month, 15, 11, 14),
         type: TransactionType.EXPENSE,
         userId: user.id,
         accountId: checking.id,
         categoryId: byName('Alimentação').id,
       },
       {
-        amount: randomBetween(80, 150),
-        description: 'Combustível',
-        date: dateInMonth(year, monthIndex, 18),
+        amount: randomBetween(80, 160),
+        description: 'Abastecimento de veículo',
+        date: dateInMonthWithTime(year, month, 18, 16, 19),
         type: TransactionType.EXPENSE,
         userId: user.id,
         accountId: checking.id,
@@ -166,7 +179,7 @@ async function main() {
       },
     )
 
-    // 🎮 Lazer criativo (variável)
+    // 🎮 Lazer (noite)
     const leisureDescriptions = [
       'Cinema com amigos',
       'Jantar em restaurante',
@@ -176,9 +189,9 @@ async function main() {
     ]
 
     transactions.push({
-      amount: randomBetween(60, 180),
+      amount: randomBetween(60, 200),
       description: randomItem(leisureDescriptions),
-      date: dateInMonth(year, monthIndex, 22),
+      date: dateInMonthWithTime(year, month, 22, 19, 23),
       type: TransactionType.EXPENSE,
       userId: user.id,
       accountId: credit.id,
@@ -196,7 +209,7 @@ async function main() {
           'Mochila nova',
           'Cadeira de escritório',
         ]),
-        date: dateInMonth(year, monthIndex, 25),
+        date: dateInMonthWithTime(year, month, 25, 15, 21),
         type: TransactionType.EXPENSE,
         userId: user.id,
         accountId: credit.id,
@@ -204,12 +217,12 @@ async function main() {
       })
     }
 
-    // ✈️ Viagem ocasional
-    if (monthIndex === 6 || monthIndex === 11) {
+    // ✈️ Viagem (2x por ano)
+    if (month === 6 || month === 11) {
       transactions.push({
         amount: randomBetween(1200, 2800),
         description: 'Viagem de lazer',
-        date: dateInMonth(year, monthIndex, 20),
+        date: dateInMonthWithTime(year, month, 20, 6, 22),
         type: TransactionType.EXPENSE,
         userId: user.id,
         accountId: credit.id,
@@ -218,11 +231,18 @@ async function main() {
     }
   }
 
-  await prisma.transaction.createMany({ data: transactions })
+  await prisma.transaction.createMany({
+    data: transactions,
+  })
 
   console.log('✅ Seed concluído com sucesso')
 }
 
 main()
-  .catch(console.error)
-  .finally(async () => prisma.$disconnect())
+  .catch((e) => {
+    console.error(e)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
