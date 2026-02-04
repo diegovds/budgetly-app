@@ -1,6 +1,7 @@
 import { BadRequestError, NotFoundError } from '../errors/http'
 import { Prisma, TransactionType } from '../lib/generated/prisma/client'
 import { prisma } from '../lib/prisma'
+import { ListTransactionsSummaryResponse } from '../schemas/transaction'
 import { getAccountById } from './accounts'
 import { getCategoryById } from './categories'
 
@@ -217,6 +218,64 @@ export async function listTransactions(filters: ListTransactionsFilters) {
       limit: take,
       total,
       totalPages: Math.ceil(total / take),
+    },
+  }
+}
+
+type ListCategoriesSummaryProps = {
+  userId: string
+  page: number
+  limit: number
+}
+
+export async function listRecentTransactions({
+  limit,
+  page,
+  userId,
+}: ListCategoriesSummaryProps): Promise<ListTransactionsSummaryResponse> {
+  const skip = (page - 1) * limit
+
+  const [transactions, total] = await Promise.all([
+    prisma.transaction.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+        description: true,
+        amount: true,
+        date: true,
+        type: true,
+      },
+      orderBy: {
+        date: 'desc',
+      },
+      skip,
+      take: limit,
+    }),
+
+    prisma.transaction.count({
+      where: {
+        userId,
+      },
+    }),
+  ])
+
+  return {
+    transactions: transactions.map((tx) => ({
+      id: tx.id,
+      name: tx.description ?? 'Transação',
+      amount:
+        tx.type === TransactionType.EXPENSE
+          ? -Number(tx.amount)
+          : Number(tx.amount),
+      date: tx.date.toISOString(),
+    })),
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
     },
   }
 }

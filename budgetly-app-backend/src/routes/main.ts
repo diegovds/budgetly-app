@@ -7,6 +7,7 @@ import {
   createTransaction,
   dropTransaction,
   getTransactions,
+  listTransactionsSummary,
   updateTransaction_,
 } from '../controllers/transactions'
 import { auth, getUser } from '../controllers/users'
@@ -25,4 +26,5 @@ export async function routes(app: FastifyInstance) {
   app.register(getFinancialSummary)
   app.register(getAccounts)
   app.register(listCategories)
+  app.register(listTransactionsSummary)
 }

@@ -2,6 +2,7 @@ import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
 import {
   listTransactionsSchema,
+  ListTransactionsSummaryResponseSchema,
   paginationMetaSchema,
   transactionSchema,
 } from '../schemas/transaction'
@@ -9,6 +10,7 @@ import {
   deleteTransaction,
   getTransactionById,
   insertTransaction,
+  listRecentTransactions,
   listTransactions,
   updateTransaction,
 } from '../services/transactions'
@@ -224,6 +226,52 @@ export const getTransactions: FastifyPluginAsyncZod = async (app) => {
         }
 
         const transactions = await listTransactions({
+          ...query,
+          userId,
+        })
+
+        return reply.send(transactions)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const listTransactionsSummary: FastifyPluginAsyncZod = async (app) => {
+  app.get(
+    '/transactions/summary',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Transaction'],
+        security: [{ bearerAuth: [] }],
+        summary:
+          'Lista um resumo das transações recentes do usuário autenticado.',
+        querystring: z.object({
+          page: z.coerce.number().int().min(1).default(1),
+          limit: z.coerce.number().int().min(1).max(100).default(3),
+        }),
+        response: {
+          200: ListTransactionsSummaryResponseSchema,
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+        const query = request.query
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const transactions = await listRecentTransactions({
           ...query,
           userId,
         })

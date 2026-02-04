@@ -62,3 +62,19 @@ export const paginationMetaSchema = z.object({
   total: z.number().int().min(0),
   totalPages: z.number().int().min(0),
 })
+
+export const transactionsSummarySchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  amount: z.number(),
+  date: z.iso.datetime(),
+})
+
+export const ListTransactionsSummaryResponseSchema = z.object({
+  transactions: z.array(transactionsSummarySchema),
+  meta: paginationMetaSchema,
+})
+
+export type ListTransactionsSummaryResponse = z.infer<
+  typeof ListTransactionsSummaryResponseSchema
+>
