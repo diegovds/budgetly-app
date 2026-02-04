@@ -3,7 +3,12 @@ import { MyAccounts } from '@/components/home/my-accounts'
 import { MyTransactions } from '@/components/home/my-transactions'
 import { SummaryInformation } from '@/components/home/summary-information'
 import { Button } from '@/components/ui/button'
-import { getAccount, getCategory, getFinancialSummary } from '@/http/api'
+import {
+  getAccount,
+  getCategory,
+  getFinancialSummary,
+  getTransactionsSummary,
+} from '@/http/api'
 import { CirclePlus } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
@@ -20,6 +25,8 @@ export default async function Home() {
   const accounts = await getAccount()
 
   const { categories } = await getCategory()
+
+  const { transactions } = await getTransactionsSummary()
 
   return (
     <div className="w-full space-y-8">
@@ -41,7 +48,7 @@ export default async function Home() {
       />
       <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
         <MyAccounts accounts={accounts} totalBalance={totalBalance} />
-        <MyTransactions categories={categories} />
+        <MyTransactions categories={categories} transactions={transactions} />
       </div>
     </div>
   )

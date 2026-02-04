@@ -1,29 +1,22 @@
-import { GetCategory200CategoriesItem } from '@/http/api'
+import { GetTransactionsSummary200TransactionsItem } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
-import { ChevronRight } from 'lucide-react'
-import Link from 'next/link'
 
 type TransactionProps = {
-  category: GetCategory200CategoriesItem
+  transaction: GetTransactionsSummary200TransactionsItem
 }
 
-export function Transaction({ category }: TransactionProps) {
+export function Transaction({ transaction }: TransactionProps) {
   return (
-    <div className="ring-muted-foreground space-y-4 rounded p-4 ring">
-      <div className="flex items-center justify-between">
-        <h3 className="text-xl font-medium">{category.name}</h3>
-        <Link href="/">
-          <ChevronRight />
-        </Link>
-      </div>
+    <div className="ring-muted-foreground flex items-center justify-between rounded p-4 ring">
       <div className="space-y-2">
-        <p className="text-muted-foreground text-sm">Últimos 30 dias</p>
-        <span
-          className={`text-xl font-medium ${category.total < 0 ? 'text-red-500' : 'text-green-500'}`}
-        >
-          {formatCurrency(category.total)}
-        </span>
+        <h3 className="text-xl font-medium">{transaction.name}</h3>
+        <p className="text-muted-foreground text-sm">{transaction.date}</p>
       </div>
+      <p
+        className={`font-semibold ${transaction.amount < 0 ? 'text-red-500' : 'text-green-500'}`}
+      >
+        {formatCurrency(transaction.amount)}
+      </p>
     </div>
   )
 }
