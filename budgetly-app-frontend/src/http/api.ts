@@ -783,6 +783,23 @@ export type GetTransactionsSummary500 = {
   message: string
 }
 
+export type GetAccountTypes200Item = {
+  value: string
+  label: string
+}
+
+export type GetAccountTypes401 = {
+  message: string
+}
+
+export type GetAccountTypes404 = {
+  message: string
+}
+
+export type GetAccountTypes500 = {
+  message: string
+}
+
 /**
  * Retorna uma mensagem de boas-vindas e um link para a documentação da API.
  * @summary Página inicial da API
@@ -1082,4 +1099,20 @@ export const getTransactionsSummary = async (
       method: 'GET',
     },
   )
+}
+
+/**
+ * @summary Lista os tipos de conta disponíveis
+ */
+export const getGetAccountTypesUrl = () => {
+  return `/account/types`
+}
+
+export const getAccountTypes = async (
+  options?: RequestInit,
+): Promise<GetAccountTypes200Item[]> => {
+  return customFetch<GetAccountTypes200Item[]>(getGetAccountTypesUrl(), {
+    ...options,
+    method: 'GET',
+  })
 }
