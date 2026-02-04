@@ -721,6 +721,68 @@ export type GetFinancialSummary500 = {
   message: string
 }
 
+export type GetTransactionsSummaryParams = {
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number
+}
+
+export type GetTransactionsSummary200TransactionsItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string
+  name: string
+  amount: number
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  date: string
+}
+
+export type GetTransactionsSummary200Meta = {
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page: number
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  limit: number
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  total: number
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  totalPages: number
+}
+
+export type GetTransactionsSummary200 = {
+  transactions: GetTransactionsSummary200TransactionsItem[]
+  meta: GetTransactionsSummary200Meta
+}
+
+export type GetTransactionsSummary401 = {
+  message: string
+}
+
+export type GetTransactionsSummary404 = {
+  message: string
+}
+
+export type GetTransactionsSummary500 = {
+  message: string
+}
+
 /**
  * Retorna uma mensagem de boas-vindas e um link para a documentação da API.
  * @summary Página inicial da API
@@ -986,4 +1048,38 @@ export const getFinancialSummary = async (
     ...options,
     method: 'GET',
   })
+}
+
+/**
+ * @summary Lista um resumo das transações recentes do usuário autenticado.
+ */
+export const getGetTransactionsSummaryUrl = (
+  params?: GetTransactionsSummaryParams,
+) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  const stringifiedParams = normalizedParams.toString()
+
+  return stringifiedParams.length > 0
+    ? `/transactions/summary?${stringifiedParams}`
+    : `/transactions/summary`
+}
+
+export const getTransactionsSummary = async (
+  params?: GetTransactionsSummaryParams,
+  options?: RequestInit,
+): Promise<GetTransactionsSummary200> => {
+  return customFetch<GetTransactionsSummary200>(
+    getGetTransactionsSummaryUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
 }
