@@ -16,7 +16,7 @@ export function Category({ category }: CategoryProps) {
           <ChevronRight />
         </Link>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-0.5">
         <p className="text-muted-foreground text-sm">Últimos 30 dias</p>
         <span
           className={`text-xl font-medium ${category.total < 0 ? 'text-red-500' : 'text-green-500'}`}
