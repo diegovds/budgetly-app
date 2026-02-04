@@ -1,5 +1,6 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
+import { AccountType } from '../lib/generated/prisma/enums'
 import { accountSchema, accountTypeSchema } from '../schemas/account'
 import { getAccountsByUserId, insertAccount } from '../services/accounts'
 import { findUserById } from '../services/users'
@@ -88,6 +89,54 @@ export const getAccounts: FastifyPluginAsyncZod = async (app) => {
         const accounts = await getAccountsByUserId(userId)
 
         return reply.send(accounts)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const getAccountTypes: FastifyPluginAsyncZod = async (app) => {
+  app.get(
+    '/account/types',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Account'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Lista os tipos de conta disponíveis',
+        response: {
+          200: z.array(
+            z.object({
+              value: z.string(),
+              label: z.string(),
+            }),
+          ),
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        return Object.values(AccountType).map((type) => ({
+          value: type,
+          label:
+            type === 'CHECKING'
+              ? 'Conta Corrente'
+              : type === 'CREDIT'
+                ? 'Cartão de Crédito'
+                : 'Dinheiro',
+        }))
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })
