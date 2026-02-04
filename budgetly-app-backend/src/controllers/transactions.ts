@@ -5,6 +5,7 @@ import {
   ListTransactionsSummaryResponseSchema,
   paginationMetaSchema,
   transactionSchema,
+  transactionTypeSchema,
 } from '../schemas/transaction'
 import {
   deleteTransaction,
@@ -29,7 +30,7 @@ export const createTransaction: FastifyPluginAsyncZod = async (app) => {
           amount: z.number(),
           description: z.string().nullable(),
           date: z.iso.datetime(),
-          type: z.enum(['INCOME', 'EXPENSE']),
+          type: transactionTypeSchema,
           accountId: z.uuid(),
           categoryId: z.uuid(),
         }),

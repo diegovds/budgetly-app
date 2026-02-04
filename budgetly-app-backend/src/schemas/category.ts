@@ -1,9 +1,10 @@
 import z from 'zod'
+import { transactionTypeSchema } from './transaction'
 
 export const categorySchema = z.object({
   id: z.uuid(),
   name: z.string(),
-  type: z.enum(['INCOME', 'EXPENSE']),
+  type: transactionTypeSchema,
   createdAt: z.iso.datetime(),
 })
 

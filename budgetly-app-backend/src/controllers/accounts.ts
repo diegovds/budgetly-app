@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { accountSchema } from '../schemas/account'
+import { accountSchema, accountTypeSchema } from '../schemas/account'
 import { getAccountsByUserId, insertAccount } from '../services/accounts'
 import { findUserById } from '../services/users'
 
@@ -17,7 +17,7 @@ export const createAccount: FastifyPluginAsyncZod = async (app) => {
           name: z
             .string()
             .min(2, { message: 'O nome deve ter pelo menos 2 caracteres' }),
-          type: z.enum(['CHECKING', 'CREDIT', 'CASH']),
+          type: accountTypeSchema,
         }),
         response: {
           200: accountSchema,

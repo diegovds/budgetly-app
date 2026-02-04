@@ -1,12 +1,14 @@
 import z from 'zod'
 import { TransactionType } from '../lib/generated/prisma/client'
 
+export const transactionTypeSchema = z.enum(TransactionType)
+
 export const transactionSchema = z.object({
   id: z.uuid(),
   amount: z.number(),
   description: z.string().nullable(),
   date: z.iso.datetime(),
-  type: z.enum(['INCOME', 'EXPENSE']),
+  type: transactionTypeSchema,
   createdAt: z.iso.datetime(),
 
   accountId: z.uuid(),

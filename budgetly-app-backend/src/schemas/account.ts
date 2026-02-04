@@ -1,9 +1,12 @@
 import { z } from 'zod'
+import { AccountType } from '../lib/generated/prisma/enums'
+
+export const accountTypeSchema = z.enum(AccountType)
 
 export const accountSchema = z.object({
   id: z.uuid(),
   name: z.string(),
-  type: z.enum(['CHECKING', 'CREDIT', 'CASH']),
+  type: accountTypeSchema,
   balance: z.number().optional(),
   createdAt: z.iso.datetime(),
 })

@@ -4,6 +4,7 @@ import {
   categorySchema,
   ListCategoriesSummaryResponseSchema,
 } from '../schemas/category'
+import { transactionTypeSchema } from '../schemas/transaction'
 import { insertCategory, listCategoriesSummary } from '../services/categories'
 import { findUserById } from '../services/users'
 
@@ -20,7 +21,7 @@ export const createCategory: FastifyPluginAsyncZod = async (app) => {
           name: z
             .string()
             .min(2, { message: 'O nome deve ter pelo menos 2 caracteres' }),
-          type: z.enum(['INCOME', 'EXPENSE']),
+          type: transactionTypeSchema,
         }),
         response: {
           200: categorySchema,
