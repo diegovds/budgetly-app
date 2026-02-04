@@ -1,16 +1,34 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+'use client'
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useTransactionInsertionMutation } from '@/hooks/useTransactionInsertionMutation'
 import { GetAccount200Item, GetCategory200CategoriesItem } from '@/http/api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { CalendarIcon } from 'lucide-react'
 import Link from 'next/link'
+import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { Button } from '../ui/button'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { Calendar } from '../ui/calendar'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../ui/form'
+import { Input } from '../ui/input'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select'
 
 type NewTransactionProps = {
   accounts: GetAccount200Item[]
@@ -18,10 +36,11 @@ type NewTransactionProps = {
 }
 
 const createTransactionSchema = z.object({
-  amount: z.number(),
-  description: z.string().nullable(),
-  date: z.iso.datetime(),
-  type: z.enum(['INCOME', 'EXPENSE']),
+  amount: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+    message: 'Valor inválido',
+  }),
+  description: z.string(),
+  date: z.date(),
   accountId: z.uuid(),
   categoryId: z.uuid(),
 })
@@ -29,17 +48,33 @@ const createTransactionSchema = z.object({
 type CreateNewTransactionFormData = z.infer<typeof createTransactionSchema>
 
 export function NewTransaction({ accounts, categories }: NewTransactionProps) {
+  const { mutate, isPending, error, isSuccess } =
+    useTransactionInsertionMutation()
   const form = useForm<CreateNewTransactionFormData>({
     resolver: zodResolver(createTransactionSchema),
     defaultValues: {
-      type: 'INCOME',
-      amount: 0,
-      date: new Date().toISOString(),
+      amount: '',
+      date: new Date(),
       accountId: accounts[0]?.id || '',
       categoryId: categories[0]?.id || '',
-      description: null,
+      description: '',
     },
   })
+
+  function onSubmit(data: CreateNewTransactionFormData) {
+    const category = categories.find((c) => c.id === data.categoryId)
+
+    if (category) {
+      const payload = {
+        ...data,
+        amount: Number(data.amount),
+        date: data.date.toISOString(),
+        type: category.type,
+      }
+
+      mutate(payload)
+    }
+  }
 
   return (
     <Card className="h-fit w-full max-w-xl">
@@ -49,14 +84,162 @@ export function NewTransaction({ accounts, categories }: NewTransactionProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6 rounded-xl border p-6 shadow-sm"
+          >
+            <div className="space-y-4">
+              <div>
+                <FormField
+                  control={form.control}
+                  name="amount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Valor</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Ex: 1000"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="accountId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Conta</FormLabel>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Selecione a Conta" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {accounts.map((account) => (
+                            <SelectItem key={account.id} value={account.id}>
+                              {account.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="categoryId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Categoria</FormLabel>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Selecione a Categoria" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Data</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              className={`w-full justify-start text-left font-normal ${
+                                !field.value && 'text-muted-foreground'
+                              }`}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4" />
+                              {field.value ? (
+                                format(field.value, 'dd/MM/yyyy', {
+                                  locale: ptBR,
+                                })
+                              ) : (
+                                <span>Data</span>
+                              )}
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(day) =>
+                              day < new Date(new Date().setHours(0, 0, 0, 0))
+                            }
+                            locale={ptBR}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Descrição</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Ex: Conta da luz"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-4">
+              <Link href="/transactions">
+                <Button variant="outline">Cancelar</Button>
+              </Link>
+              <Button type="submit" disabled={isPending || isSuccess}>
+                Salvar Transação
+              </Button>
+            </div>
+          </form>
+        </Form>
       </CardContent>
-      <CardFooter className="flex justify-end gap-4">
-        <Link href="/transactions">
-          <Button variant="outline">Cancelar</Button>
-        </Link>
-        <Button type="submit">Salvar Transação</Button>
-      </CardFooter>
     </Card>
   )
 }
