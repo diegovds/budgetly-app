@@ -1,4 +1,5 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { Navbar } from '@/components/navbar'
 import { QueryClientContext } from '@/providers/query-client'
 import { StoreHydration } from '@/providers/store-hydration'
 import type { Metadata } from 'next'
@@ -40,7 +41,7 @@ export default async function RootLayout({
       >
         <QueryClientContext>
           <StoreHydration token={token} />
-          <div className="bg-pink-500 p-4">navbar</div>
+          <Navbar token={token} />
           <main className="container mx-auto my-5 flex flex-1 px-4 md:my-10 md:px-10">
             {children}
           </main>
