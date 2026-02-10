@@ -6,6 +6,7 @@ import {
   paginationMetaSchema,
   transactionSchema,
   transactionTypeSchema,
+  transactioWithRelationsNamesSchema,
 } from '../schemas/transaction'
 import {
   deleteTransaction,
@@ -207,7 +208,7 @@ export const getTransactions: FastifyPluginAsyncZod = async (app) => {
         querystring: listTransactionsSchema,
         response: {
           200: z.object({
-            transactions: z.array(transactionSchema),
+            transactions: z.array(transactioWithRelationsNamesSchema),
             meta: paginationMetaSchema,
           }),
           401: z.object({ message: z.string() }),

@@ -15,6 +15,20 @@ export const transactionSchema = z.object({
   categoryId: z.uuid(),
 })
 
+export const transactioWithRelationsNamesSchema = z.object({
+  id: z.uuid(),
+  amount: z.number(),
+  description: z.string().nullable(),
+  date: z.iso.datetime(),
+  type: transactionTypeSchema,
+  createdAt: z.iso.datetime(),
+  accountName: z.string(),
+  categoryName: z.string(),
+
+  accountId: z.uuid(),
+  categoryId: z.uuid(),
+})
+
 export const listTransactionsSchema = z
   .object({
     accountId: z.uuid().optional(),

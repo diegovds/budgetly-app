@@ -196,6 +196,18 @@ export async function listTransactions(filters: ListTransactionsFilters) {
 
   const [transactions, total] = await prisma.$transaction([
     prisma.transaction.findMany({
+      include: {
+        account: {
+          select: {
+            name: true,
+          },
+        },
+        category: {
+          select: {
+            name: true,
+          },
+        },
+      },
       where,
       take,
       skip,
@@ -212,6 +224,8 @@ export async function listTransactions(filters: ListTransactionsFilters) {
       amount: Number(t.amount),
       date: t.date.toISOString(),
       createdAt: t.createdAt.toISOString(),
+      accountName: t.account.name,
+      categoryName: t.category.name,
     })),
     meta: {
       page,
