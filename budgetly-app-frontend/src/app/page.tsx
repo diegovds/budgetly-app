@@ -10,8 +10,13 @@ import {
   getTransactionsSummary,
 } from '@/http/api'
 import { CirclePlus } from 'lucide-react'
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: 'Home | Budgetly',
+}
 
 export default async function Home() {
   const { token } = await getAuthState()
