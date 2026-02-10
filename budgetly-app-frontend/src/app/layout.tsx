@@ -1,4 +1,5 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { Footer } from '@/components/footer'
 import { Navbar } from '@/components/navbar'
 import { QueryClientContext } from '@/providers/query-client'
 import { StoreHydration } from '@/providers/store-hydration'
@@ -45,7 +46,7 @@ export default async function RootLayout({
           <main className="container mx-auto my-5 flex flex-1 px-4 md:my-10 md:px-10">
             {children}
           </main>
-          <div className="bg-pink-500 p-4">footer</div>
+          <Footer />
         </QueryClientContext>
       </body>
     </html>
