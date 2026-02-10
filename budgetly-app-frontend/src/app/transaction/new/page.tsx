@@ -1,5 +1,5 @@
 import { getAuthState } from '@/actions/get-auth-state'
-import { NewTransaction } from '@/components/new-transaction'
+import { NewTransaction } from '@/components/transaction/new-transaction'
 import { getAccount, getCategory } from '@/http/api'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
