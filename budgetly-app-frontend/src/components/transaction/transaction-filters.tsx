@@ -12,27 +12,26 @@ import z from 'zod'
 import { Button } from '../ui/button'
 import { Calendar } from '../ui/calendar'
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '../ui/form'
 import { Input } from '../ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '../ui/select'
 
 type TransactionFiltersProps = {
   accounts: GetAccount200Item[]
   categories: GetCategory200CategoriesItem[]
-  page: number
 }
 
 const ALL_VALUE = '__all__'
@@ -50,7 +49,6 @@ type CreateNewTransactionFormData = z.infer<typeof createTransactionSchema>
 export function TransactionFilters({
   accounts,
   categories,
-  page,
 }: TransactionFiltersProps) {
   const router = useRouter()
 
@@ -67,7 +65,7 @@ export function TransactionFilters({
 
   function onSubmit(data: CreateNewTransactionFormData) {
     router.push(
-      `/transaction?page=${page}${
+      `/transaction?page=${1}${
         data.startDate ? `&startDate=${data.startDate.toISOString()}` : ''
       }${data.endDate ? `&endDate=${data.endDate.toISOString()}` : ''}${
         data.accountId ? `&accountId=${data.accountId}` : ''
@@ -86,7 +84,7 @@ export function TransactionFilters({
       search: undefined,
     })
 
-    router.push(`/transaction?page=${page}`)
+    router.push(`/transaction`)
   }
 
   return (
