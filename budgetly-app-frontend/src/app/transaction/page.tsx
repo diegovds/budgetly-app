@@ -102,15 +102,17 @@ export default async function TransactionPage({ searchParams }: Props) {
 
           <nav className="flex items-center gap-2">
             {/* Anterior */}
-            <Link href={`?page=${currentPage - 1}`}>
-              <Button
-                disabled={!hasPrev}
-                className="rounded px-3 py-1"
-                variant="outline"
-              >
+            {hasPrev ? (
+              <Link href={`?page=${currentPage - 1}`}>
+                <Button variant="outline">
+                  <ChevronLeft />
+                </Button>
+              </Link>
+            ) : (
+              <Button variant="outline" disabled>
                 <ChevronLeft />
               </Button>
-            </Link>
+            )}
 
             {/* Página 1 */}
             <Link href="?page=1">
@@ -158,15 +160,17 @@ export default async function TransactionPage({ searchParams }: Props) {
             )}
 
             {/* Próxima */}
-            <Link href={`?page=${currentPage + 1}`}>
-              <Button
-                disabled={!hasNext}
-                className="rounded px-3 py-1"
-                variant="outline"
-              >
+            {hasNext ? (
+              <Link href={`?page=${currentPage + 1}`}>
+                <Button variant="outline">
+                  <ChevronRight />
+                </Button>
+              </Link>
+            ) : (
+              <Button variant="outline" disabled>
                 <ChevronRight />
               </Button>
-            </Link>
+            )}
           </nav>
         </div>
       </div>
