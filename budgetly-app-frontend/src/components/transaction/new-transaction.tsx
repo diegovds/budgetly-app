@@ -241,7 +241,7 @@ export function NewTransaction({ accounts, categories }: NewTransactionProps) {
             </div>
 
             <div className="flex justify-end gap-4">
-              <Link href="/transactions">
+              <Link href="/transaction">
                 <Button variant="outline">Cancelar</Button>
               </Link>
               <Button type="submit" disabled={isPending || isSuccess}>
