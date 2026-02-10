@@ -22,7 +22,7 @@ type SearchParams = {
 }
 
 type Props = {
-  searchParams: SearchParams
+  searchParams: Promise<SearchParams>
 }
 
 /**
@@ -49,16 +49,18 @@ export default async function TransactionPage({ searchParams }: Props) {
     redirect('/login')
   }
 
-  const currentPage = searchParams.page ?? 1
+  const params = await searchParams
+
+  const currentPage = params.page ?? 1
 
   const { meta, transactions } = await getTransactions({
     limit: 8,
     page: currentPage,
-    startDate: searchParams.startDate,
-    endDate: searchParams.endDate,
-    accountId: searchParams.accountId,
-    categoryId: searchParams.categoryId,
-    search: searchParams.search,
+    startDate: params.startDate,
+    endDate: params.endDate,
+    accountId: params.accountId,
+    categoryId: params.categoryId,
+    search: params.search,
   })
 
   const accounts = await getAccount()
@@ -141,7 +143,7 @@ export default async function TransactionPage({ searchParams }: Props) {
           <nav className="flex items-center gap-2">
             {/* Anterior */}
             {hasPrev ? (
-              <Link href={buildQuery(searchParams, meta.page - 1)}>
+              <Link href={buildQuery(params, meta.page - 1)}>
                 <Button variant="outline">
                   <ChevronLeft />
                 </Button>
@@ -153,7 +155,7 @@ export default async function TransactionPage({ searchParams }: Props) {
             )}
 
             {/* Página 1 */}
-            <Link href={buildQuery(searchParams, 1)}>
+            <Link href={buildQuery(params, 1)}>
               <Button variant={meta.page === 1 ? 'default' : 'outline'}>
                 1
               </Button>
@@ -167,7 +169,7 @@ export default async function TransactionPage({ searchParams }: Props) {
             )
               .filter((p) => p !== 1 && p !== totalPages)
               .map((page) => (
-                <Link key={page} href={buildQuery(searchParams, page)}>
+                <Link key={page} href={buildQuery(params, page)}>
                   <Button variant={page === meta.page ? 'default' : 'outline'}>
                     {page}
                   </Button>
@@ -177,7 +179,7 @@ export default async function TransactionPage({ searchParams }: Props) {
             {endPage < totalPages - 1 && <span className="px-2">…</span>}
 
             {totalPages > 1 && (
-              <Link href={buildQuery(searchParams, totalPages)}>
+              <Link href={buildQuery(params, totalPages)}>
                 <Button
                   variant={meta.page === totalPages ? 'default' : 'outline'}
                 >
@@ -188,7 +190,7 @@ export default async function TransactionPage({ searchParams }: Props) {
 
             {/* Próxima */}
             {hasNext ? (
-              <Link href={buildQuery(searchParams, meta.page + 1)}>
+              <Link href={buildQuery(params, meta.page + 1)}>
                 <Button variant="outline">
                   <ChevronRight />
                 </Button>
