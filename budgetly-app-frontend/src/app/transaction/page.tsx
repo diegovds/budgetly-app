@@ -25,17 +25,35 @@ type Props = {
   searchParams: SearchParams
 }
 
+/**
+ * Monta a query string preservando filtros
+ */
+function buildQuery(params: SearchParams, page: number) {
+  const query = new URLSearchParams()
+
+  if (params.startDate) query.set('startDate', params.startDate)
+  if (params.endDate) query.set('endDate', params.endDate)
+  if (params.accountId) query.set('accountId', params.accountId)
+  if (params.categoryId) query.set('categoryId', params.categoryId)
+  if (params.search) query.set('search', params.search)
+
+  query.set('page', String(page))
+
+  return `?${query.toString()}`
+}
+
 export default async function TransactionPage({ searchParams }: Props) {
   const { token } = await getAuthState()
-  const _page = searchParams.page ? searchParams.page : 1
 
   if (!token) {
     redirect('/login')
   }
 
+  const currentPage = searchParams.page ?? 1
+
   const { meta, transactions } = await getTransactions({
     limit: 8,
-    page: _page,
+    page: currentPage,
     startDate: searchParams.startDate,
     endDate: searchParams.endDate,
     accountId: searchParams.accountId,
@@ -49,26 +67,24 @@ export default async function TransactionPage({ searchParams }: Props) {
   const start = (meta.page - 1) * meta.limit + 1
   const end = Math.min(meta.page * meta.limit, meta.total)
 
-  const currentPage = meta.page
   const totalPages = meta.totalPages
-
-  const hasPrev = currentPage > 1
-  const hasNext = currentPage < totalPages
+  const hasPrev = meta.page > 1
+  const hasNext = meta.page < totalPages
 
   const MAX_VISIBLE = 1
-
-  const startPage = Math.max(1, currentPage - MAX_VISIBLE)
-  const endPage = Math.min(totalPages, currentPage + MAX_VISIBLE)
+  const startPage = Math.max(1, meta.page - MAX_VISIBLE)
+  const endPage = Math.min(totalPages, meta.page + MAX_VISIBLE)
 
   return (
     <div className="w-full space-y-8">
-      <header className="lg-gap-0 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+      <header className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
         <div>
           <h1 className="mb-4 text-3xl font-bold">Gestão de Transações</h1>
           <p className="text-muted-foreground font-medium">
             Visualize e gerencie todas as suas atividades financeiras.
           </p>
         </div>
+
         <Link href="/transaction/new">
           <Button className="w-fit">
             <CirclePlus /> Adicionar Transação
@@ -76,11 +92,7 @@ export default async function TransactionPage({ searchParams }: Props) {
         </Link>
       </header>
 
-      <TransactionFilters
-        accounts={accounts}
-        categories={categories}
-        page={_page}
-      />
+      <TransactionFilters accounts={accounts} categories={categories} />
 
       <div className="bg-card space-y-4 overflow-x-auto rounded-md border">
         {/* Header */}
@@ -110,7 +122,9 @@ export default async function TransactionPage({ searchParams }: Props) {
               </p>
               <p className="text-muted-foreground">{transaction.accountName}</p>
               <p
-                className={`font-semibold ${transaction.amount >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                className={`font-semibold ${
+                  transaction.amount >= 0 ? 'text-green-500' : 'text-red-500'
+                }`}
               >
                 {formatCurrency(transaction.amount)}
               </p>
@@ -127,7 +141,7 @@ export default async function TransactionPage({ searchParams }: Props) {
           <nav className="flex items-center gap-2">
             {/* Anterior */}
             {hasPrev ? (
-              <Link href={`?page=${currentPage - 1}`}>
+              <Link href={buildQuery(searchParams, meta.page - 1)}>
                 <Button variant="outline">
                   <ChevronLeft />
                 </Button>
@@ -139,44 +153,33 @@ export default async function TransactionPage({ searchParams }: Props) {
             )}
 
             {/* Página 1 */}
-            <Link href="?page=1">
-              <Button
-                className={`rounded border px-3 py-1`}
-                variant={currentPage === 1 ? 'default' : 'outline'}
-              >
+            <Link href={buildQuery(searchParams, 1)}>
+              <Button variant={meta.page === 1 ? 'default' : 'outline'}>
                 1
               </Button>
             </Link>
 
-            {/* Reticências à esquerda */}
             {startPage > 2 && <span className="px-2">…</span>}
 
-            {/* Páginas intermediárias */}
             {Array.from(
               { length: endPage - startPage + 1 },
               (_, i) => startPage + i,
             )
-              .filter((page) => page !== 1 && page !== totalPages)
+              .filter((p) => p !== 1 && p !== totalPages)
               .map((page) => (
-                <Link key={page} href={`?page=${page}`}>
-                  <Button
-                    className={`rounded px-3 py-1`}
-                    variant={page === currentPage ? 'default' : 'outline'}
-                  >
+                <Link key={page} href={buildQuery(searchParams, page)}>
+                  <Button variant={page === meta.page ? 'default' : 'outline'}>
                     {page}
                   </Button>
                 </Link>
               ))}
 
-            {/* Reticências à direita */}
             {endPage < totalPages - 1 && <span className="px-2">…</span>}
 
-            {/* Última página */}
             {totalPages > 1 && (
-              <Link href={`?page=${totalPages}`}>
+              <Link href={buildQuery(searchParams, totalPages)}>
                 <Button
-                  className={`rounded px-3 py-1`}
-                  variant={currentPage === totalPages ? 'default' : 'outline'}
+                  variant={meta.page === totalPages ? 'default' : 'outline'}
                 >
                   {totalPages}
                 </Button>
@@ -185,7 +188,7 @@ export default async function TransactionPage({ searchParams }: Props) {
 
             {/* Próxima */}
             {hasNext ? (
-              <Link href={`?page=${currentPage + 1}`}>
+              <Link href={buildQuery(searchParams, meta.page + 1)}>
                 <Button variant="outline">
                   <ChevronRight />
                 </Button>
