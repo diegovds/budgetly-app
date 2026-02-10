@@ -828,6 +828,23 @@ export type GetAccountTypes500 = {
   message: string;
 };
 
+export type GetCategoryTypes200Item = {
+  value: string;
+  label: string;
+};
+
+export type GetCategoryTypes401 = {
+  message: string;
+};
+
+export type GetCategoryTypes404 = {
+  message: string;
+};
+
+export type GetCategoryTypes500 = {
+  message: string;
+};
+
 /**
  * Retorna uma mensagem de boas-vindas e um link para a documentação da API.
  * @summary Página inicial da API
@@ -1214,6 +1231,30 @@ export const getGetAccountTypesUrl = () => {
 export const getAccountTypes = async ( options?: RequestInit): Promise<GetAccountTypes200Item[]> => {
   
   return customFetch<GetAccountTypes200Item[]>(getGetAccountTypesUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+/**
+ * @summary Lista os tips de categoria disponíveis
+ */
+export const getGetCategoryTypesUrl = () => {
+
+
+  
+
+  return `/category/types`
+}
+
+export const getCategoryTypes = async ( options?: RequestInit): Promise<GetCategoryTypes200Item[]> => {
+  
+  return customFetch<GetCategoryTypes200Item[]>(getGetCategoryTypesUrl(),
   {      
     ...options,
     method: 'GET'
