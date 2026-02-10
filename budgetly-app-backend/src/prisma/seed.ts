@@ -24,8 +24,21 @@ function dateInMonthWithTime(
   startHour = 8,
   endHour = 18,
 ) {
+  const now = new Date()
+
+  // Se for mês atual, não permite dias futuros
+  const isCurrentMonth = year === now.getFullYear() && month === now.getMonth()
+
+  const maxDay = isCurrentMonth ? now.getDate() : day
+
+  const safeDay = Math.min(day, maxDay)
+
   const { hour, minute } = randomTime(startHour, endHour)
-  return new Date(year, month, day, hour, minute)
+
+  const date = new Date(year, month, safeDay, hour, minute)
+
+  // Garantia extra: nunca maior que agora
+  return date > now ? now : date
 }
 
 // ---------- seed ----------
