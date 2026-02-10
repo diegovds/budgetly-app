@@ -24,6 +24,7 @@ import {
 import { useAccountInsertionMutation } from '@/hooks/useAccountInsertionMutation'
 import { GetAccountTypes200Item } from '@/http/api'
 import Link from 'next/link'
+import { Card, CardContent, CardHeader } from '../ui/card'
 
 const createAccountSchema = z.object({
   name: z.string().min(1, 'Informe o nome da conta'),
@@ -51,17 +52,17 @@ export function NewAccount({ accountTypes }: NewAccountProps) {
   }
 
   return (
-    <>
-      <section className="w-full max-w-xl space-y-8">
-        {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Nova Conta</h1>
-          <p className="text-muted-foreground">
-            Crie uma nova conta para organizar suas finanças.
-          </p>
-        </div>
+    <Card className="h-fit w-full max-w-xl">
+      {/* Header */}
+      <CardHeader className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight">Nova Conta</h1>
+        <p className="text-muted-foreground">
+          Crie uma nova conta para organizar suas finanças.
+        </p>
+      </CardHeader>
 
-        {/* Form */}
+      {/* Form */}
+      <CardContent>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -114,17 +115,17 @@ export function NewAccount({ accountTypes }: NewAccountProps) {
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-4">
               <Link href="/account">
-                <Button type="button" variant="ghost">
+                <Button type="button" variant="outline">
                   Cancelar
                 </Button>
               </Link>
               <Button type="submit" disabled={isPending || isSuccess}>
-                Criar conta
+                Salvar conta
               </Button>
             </div>
           </form>
         </Form>
-      </section>
-    </>
+      </CardContent>
+    </Card>
   )
 }
