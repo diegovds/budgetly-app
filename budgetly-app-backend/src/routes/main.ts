@@ -4,7 +4,11 @@ import {
   getAccounts,
   getAccountTypes,
 } from '../controllers/accounts'
-import { createCategory, listCategories } from '../controllers/categories'
+import {
+  createCategory,
+  getCategoryTypes,
+  listCategories,
+} from '../controllers/categories'
 import { getFinancial, getFinancialSummary } from '../controllers/financial'
 import { main } from '../controllers/main'
 import {
@@ -32,4 +36,5 @@ export async function routes(app: FastifyInstance) {
   app.register(listCategories)
   app.register(listTransactionsSummary)
   app.register(getAccountTypes)
+  app.register(getCategoryTypes)
 }

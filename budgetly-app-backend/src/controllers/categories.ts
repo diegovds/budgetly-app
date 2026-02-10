@@ -1,5 +1,6 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
+import { TransactionType } from '../lib/generated/prisma/enums'
 import {
   categorySchema,
   ListCategoriesSummaryResponseSchema,
@@ -94,6 +95,49 @@ export const listCategories: FastifyPluginAsyncZod = async (app) => {
         })
 
         return reply.send(categories)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const getCategoryTypes: FastifyPluginAsyncZod = async (app) => {
+  app.get(
+    '/category/types',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Category'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Lista os tips de categoria disponíveis',
+        response: {
+          200: z.array(
+            z.object({
+              value: z.string(),
+              label: z.string(),
+            }),
+          ),
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        return Object.values(TransactionType).map((type) => ({
+          value: type,
+          label: type === 'INCOME' ? 'Receita' : 'Despesa',
+        }))
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })
