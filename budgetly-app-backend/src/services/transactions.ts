@@ -221,7 +221,10 @@ export async function listTransactions(filters: ListTransactionsFilters) {
   return {
     transactions: transactions.map((t) => ({
       ...t,
-      amount: Number(t.amount),
+      amount:
+        t.type === TransactionType.EXPENSE
+          ? -Number(t.amount)
+          : Number(t.amount),
       date: t.date.toISOString(),
       createdAt: t.createdAt.toISOString(),
       accountName: t.account.name,
