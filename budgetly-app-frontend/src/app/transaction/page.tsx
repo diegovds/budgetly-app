@@ -1,6 +1,7 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { TransactionFilters } from '@/components/transaction/transaction-filters'
 import { Button } from '@/components/ui/button'
-import { getTransactions } from '@/http/api'
+import { getAccount, getCategory, getTransactions } from '@/http/api'
 import { formatCurrency, formatDate } from '@/utils/format'
 import { ChevronLeft, ChevronRight, CirclePlus } from 'lucide-react'
 import { Metadata } from 'next'
@@ -11,13 +12,22 @@ export const metadata: Metadata = {
   title: 'Gestão de transações',
 }
 
+type SearchParams = {
+  page?: number
+  startDate?: string
+  endDate?: string
+  accountId?: string
+  categoryId?: string
+  search?: string
+}
+
 type Props = {
-  searchParams: Promise<{ page: number | undefined }>
+  searchParams: SearchParams
 }
 
 export default async function TransactionPage({ searchParams }: Props) {
-  const { page } = await searchParams
   const { token } = await getAuthState()
+  const _page = searchParams.page ? searchParams.page : 1
 
   if (!token) {
     redirect('/login')
@@ -25,8 +35,16 @@ export default async function TransactionPage({ searchParams }: Props) {
 
   const { meta, transactions } = await getTransactions({
     limit: 8,
-    page: page || 1,
+    page: _page,
+    startDate: searchParams.startDate,
+    endDate: searchParams.endDate,
+    accountId: searchParams.accountId,
+    categoryId: searchParams.categoryId,
+    search: searchParams.search,
   })
+
+  const accounts = await getAccount()
+  const { categories } = await getCategory({ limit: 50 })
 
   const start = (meta.page - 1) * meta.limit + 1
   const end = Math.min(meta.page * meta.limit, meta.total)
@@ -57,7 +75,13 @@ export default async function TransactionPage({ searchParams }: Props) {
           </Button>
         </Link>
       </header>
-      <div>filtros</div>
+
+      <TransactionFilters
+        accounts={accounts}
+        categories={categories}
+        page={_page}
+      />
+
       <div className="bg-card space-y-4 overflow-x-auto rounded-md border">
         {/* Header */}
         <div className="grid min-w-225 grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] border-b p-4 font-semibold">
