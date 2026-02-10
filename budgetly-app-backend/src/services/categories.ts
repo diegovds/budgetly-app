@@ -76,32 +76,36 @@ export async function listCategoriesSummary({
     }),
   ])
 
-  const categoriesWithTotal = await Promise.all(
-    categories.map(async (category) => {
-      const aggregate = await prisma.transaction.aggregate({
-        where: {
-          userId,
-          categoryId: category.id,
-          date: {
-            gte: startDate,
-            lte: endDate,
+  const categoriesWithTotal = (
+    await Promise.all(
+      categories.map(async (category) => {
+        const aggregate = await prisma.transaction.aggregate({
+          where: {
+            userId,
+            categoryId: category.id,
+            date: {
+              gte: startDate,
+              lte: endDate,
+            },
           },
-        },
-        _sum: {
-          amount: true,
-        },
-      })
+          _sum: {
+            amount: true,
+          },
+        })
 
-      const total = Number(aggregate._sum.amount ?? 0)
+        const rawTotal = Number(aggregate._sum.amount ?? 0)
+        const total =
+          category.type === TransactionType.EXPENSE ? -rawTotal : rawTotal
 
-      return {
-        id: category.id,
-        name: category.name,
-        type: category.type,
-        total: category.type === TransactionType.EXPENSE ? -total : total,
-      }
-    }),
-  )
+        return {
+          id: category.id,
+          name: category.name,
+          type: category.type,
+          total,
+        }
+      }),
+    )
+  ).sort((a, b) => b.total - a.total)
 
   return {
     categories: categoriesWithTotal,
