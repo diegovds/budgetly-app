@@ -9,7 +9,7 @@ type CategoryProps = {
 
 export function Category({ category }: CategoryProps) {
   return (
-    <div className="ring-muted-foreground space-y-4 rounded p-4 ring">
+    <div className="ring-muted-foreground flex flex-col justify-between space-y-4 rounded p-4 ring">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-medium">{category.name}</h3>
         <Link href="/">

@@ -20,7 +20,7 @@ export function MyTransactions({
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold">Grupos de Transações</h2>
-          <Link href="/">Ver Tudo</Link>
+          <Link href="/category">Ver Tudo</Link>
         </div>
         <div className="grid grid-cols-2 gap-8">
           {categories.map((category) => (
