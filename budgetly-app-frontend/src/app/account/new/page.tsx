@@ -1,7 +1,12 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { NewAccount } from '@/components/new-account'
 import { getAccountTypes } from '@/http/api'
+import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: 'Nova conta',
+}
 
 export default async function NewAccountPage() {
   const { token } = await getAuthState()

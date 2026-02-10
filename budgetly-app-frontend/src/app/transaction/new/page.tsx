@@ -1,7 +1,12 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { NewTransaction } from '@/components/new-transaction'
 import { getAccount, getCategory } from '@/http/api'
+import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: 'Nova transação',
+}
 
 export default async function NewTransactionPage() {
   const { token } = await getAuthState()

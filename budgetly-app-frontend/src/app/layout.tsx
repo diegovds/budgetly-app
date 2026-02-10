@@ -11,8 +11,19 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: 'Budgetly',
+  title: {
+    default: 'Budgetly',
+    template: '%s | Budgetly',
+  },
   description: '',
+  openGraph: {
+    title: {
+      default: 'Budgetly',
+      template: '%s | Budgetly',
+    },
+    description: '',
+    images: [''],
+  },
 }
 
 export default async function RootLayout({
