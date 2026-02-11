@@ -1,15 +1,14 @@
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
-import fastifySensible from '@fastify/sensible'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import fastify from 'fastify'
 import fastifyBcrypt from 'fastify-bcrypt'
 import {
-    jsonSchemaTransform,
-    serializerCompiler,
-    validatorCompiler,
-    ZodTypeProvider,
+  jsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
+  ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 import { env } from './env'
 import { routes } from './routes/main'
@@ -83,8 +82,6 @@ app.register(fastifySwagger, {
 app.register(fastifySwaggerUi, {
   routePrefix: '/docs',
 })
-
-app.register(fastifySensible)
 
 // Rotas
 app.register(routes)
