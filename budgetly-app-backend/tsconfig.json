@@ -17,6 +17,6 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "nodenext"
+     "moduleResolution": "node16"
   }
 }
