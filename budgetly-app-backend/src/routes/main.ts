@@ -35,6 +35,4 @@ export async function routes(app: FastifyInstance) {
   app.register(getAccounts)
   app.register(listCategories)
   app.register(listTransactionsSummary)
-  app.register(getAccountTypes)
-  app.register(getCategoryTypes)
 }

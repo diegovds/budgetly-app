@@ -11,6 +11,7 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod'
 import { env } from './env'
+import { routes } from './routes/main'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -83,9 +84,6 @@ app.register(fastifySwaggerUi, {
 })
 
 // Rotas
-// app.register(routes)
-app.get('/', async () => {
-  return { status: 'ok' }
-})
+app.register(routes)
 
 export { app }
