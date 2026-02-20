@@ -50,17 +50,20 @@ export async function getAccountsByUserId({
   const take = Math.min(limit, 100)
   const skip = (page - 1) * take
 
-  const accounts = await prisma.account.findMany({
-    where: {
-      userId,
-    },
-    select: {
-      id: true,
-      name: true,
-    },
-    take,
-    skip,
-  })
+  const [accounts, total] = await prisma.$transaction([
+    prisma.account.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+      take,
+      skip,
+    }),
+    prisma.transaction.count(),
+  ])
 
   const accountsWithBalance = await Promise.all(
     accounts.map(async (account) => ({
@@ -69,5 +72,13 @@ export async function getAccountsByUserId({
     })),
   )
 
-  return accountsWithBalance
+  return {
+    accounts: accountsWithBalance,
+    meta: {
+      page,
+      limit: take,
+      total,
+      totalPages: Math.ceil(total / take),
+    },
+  }
 }

@@ -6,6 +6,7 @@ import {
   accountTypeSchema,
   listAccountsSchema,
 } from '../schemas/account'
+import { paginationMetaSchema } from '../schemas/transaction'
 import { getAccountsByUserId, insertAccount } from '../services/accounts'
 import { findUserById } from '../services/users'
 
@@ -69,13 +70,17 @@ export const getAccounts: FastifyPluginAsyncZod = async (app) => {
         summary: 'Obtém todas as contas do usuário autenticado',
         querystring: listAccountsSchema,
         response: {
-          200: z.array(
-            z.object({
-              id: z.uuid(),
-              name: z.string(),
-              balance: z.number(),
-            }),
-          ),
+          200: z.object({
+            accounts: z.array(
+              z.object({
+                id: z.uuid(),
+                name: z.string(),
+                balance: z.number(),
+              }),
+            ),
+            meta: paginationMetaSchema,
+          }),
+
           401: z.object({ message: z.string() }),
           404: z.object({ message: z.string() }),
           500: z.object({ message: z.string() }),
