@@ -28,7 +28,7 @@ export default async function Home() {
   const { monthExpense, monthIncome, totalBalance } =
     await getFinancialSummary()
 
-  const accounts = await getAccount()
+  const accounts = await getAccount({ limit: 4 })
 
   const { categories } = await getCategory()
 

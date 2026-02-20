@@ -161,6 +161,19 @@ export type PostAccount500 = {
   message: string
 }
 
+export type GetAccountParams = {
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number
+}
+
 export type GetAccount200Item = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
   id: string
@@ -899,14 +912,27 @@ export const postAccount = async (
 /**
  * @summary Obtém todas as contas do usuário autenticado
  */
-export const getGetAccountUrl = () => {
-  return `/account`
+export const getGetAccountUrl = (params?: GetAccountParams) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  const stringifiedParams = normalizedParams.toString()
+
+  return stringifiedParams.length > 0
+    ? `/account?${stringifiedParams}`
+    : `/account`
 }
 
 export const getAccount = async (
+  params?: GetAccountParams,
   options?: RequestInit,
 ): Promise<GetAccount200Item[]> => {
-  return customFetch<GetAccount200Item[]>(getGetAccountUrl(), {
+  return customFetch<GetAccount200Item[]>(getGetAccountUrl(params), {
     ...options,
     method: 'GET',
   })
