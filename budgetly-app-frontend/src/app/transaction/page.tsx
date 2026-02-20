@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: 'Gestão de transações',
 }
 
-type SearchParams = {
+export type SearchParams = {
   page?: number
   startDate?: string
   endDate?: string
@@ -94,7 +94,11 @@ export default async function TransactionPage({ searchParams }: Props) {
         </Link>
       </header>
 
-      <TransactionFilters accounts={accounts} categories={categories} />
+      <TransactionFilters
+        accounts={accounts}
+        categories={categories}
+        params={params}
+      />
 
       <div className="bg-card space-y-4 overflow-x-auto rounded-md border">
         {/* Header */}

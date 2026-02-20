@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 
+import { SearchParams } from '@/app/transaction/page'
 import { Button } from '../ui/button'
 import { Calendar } from '../ui/calendar'
 import {
@@ -35,6 +36,7 @@ import {
 type TransactionFiltersProps = {
   accounts: GetAccount200AccountsItem[]
   categories: GetCategory200CategoriesItem[]
+  params: SearchParams
 }
 
 const ALL_VALUE = '__all__'
@@ -52,17 +54,18 @@ type CreateNewTransactionFormData = z.infer<typeof createTransactionSchema>
 export function TransactionFilters({
   accounts,
   categories,
+  params,
 }: TransactionFiltersProps) {
   const router = useRouter()
 
   const form = useForm<CreateNewTransactionFormData>({
     resolver: zodResolver(createTransactionSchema),
     defaultValues: {
-      startDate: undefined,
-      endDate: undefined,
-      accountId: undefined,
-      categoryId: undefined,
-      search: undefined,
+      startDate: params.startDate ? new Date(params.startDate) : undefined,
+      endDate: params.endDate ? new Date(params.endDate) : undefined,
+      accountId: params.accountId ?? undefined,
+      categoryId: params.categoryId ?? undefined,
+      search: params.search ?? undefined,
     },
   })
 
