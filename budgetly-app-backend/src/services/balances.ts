@@ -1,4 +1,4 @@
-import { TransactionType } from '../lib/generated/prisma/enums'
+import { TransactionType } from '@prisma/client'
 import { prisma } from '../lib/prisma'
 
 type FinancialOverviewSummary = {

@@ -1,5 +1,5 @@
+import { AccountType } from '@prisma/client'
 import { z } from 'zod'
-import { AccountType } from '../lib/generated/prisma/enums'
 
 export const accountTypeSchema = z.enum(AccountType)
 

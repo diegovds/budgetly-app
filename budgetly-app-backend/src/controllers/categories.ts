@@ -1,6 +1,6 @@
+import { TransactionType } from '@prisma/client'
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { TransactionType } from '../lib/generated/prisma/enums'
 import {
   categorySchema,
   ListCategoriesSummaryResponseSchema,

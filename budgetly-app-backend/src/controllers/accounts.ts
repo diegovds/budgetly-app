@@ -1,6 +1,6 @@
+import { AccountType } from '@prisma/client'
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { AccountType } from '../lib/generated/prisma/enums'
 import { accountSchema, accountTypeSchema } from '../schemas/account'
 import { getAccountsByUserId, insertAccount } from '../services/accounts'
 import { findUserById } from '../services/users'

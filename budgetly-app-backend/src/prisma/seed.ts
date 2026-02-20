@@ -1,5 +1,5 @@
+import { AccountType, TransactionType } from '@prisma/client'
 import bcrypt from 'bcrypt'
-import { AccountType, TransactionType } from '../lib/generated/prisma/enums'
 import { prisma } from '../lib/prisma'
 
 // ---------- helpers ----------
