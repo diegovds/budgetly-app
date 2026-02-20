@@ -1,5 +1,6 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { Button } from '@/components/ui/button'
+import { getAccount } from '@/http/api'
 import { CirclePlus } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
@@ -15,6 +16,8 @@ export default async function AccountPage() {
   if (!token) {
     redirect('/login')
   }
+
+  const { accounts, meta } = await getAccount({ limit: 4 })
 
   return (
     <div className="w-full space-y-8">

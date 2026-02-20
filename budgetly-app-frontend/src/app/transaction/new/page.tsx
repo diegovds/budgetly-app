@@ -15,7 +15,7 @@ export default async function NewTransactionPage() {
     redirect('/login')
   }
 
-  const accounts = await getAccount()
+  const { accounts } = await getAccount({ limit: 50 })
   const { categories } = await getCategory({ limit: 50 })
 
   return (

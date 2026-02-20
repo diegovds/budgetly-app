@@ -63,7 +63,7 @@ export default async function TransactionPage({ searchParams }: Props) {
     search: params.search,
   })
 
-  const accounts = await getAccount()
+  const { accounts } = await getAccount({ limit: 50 })
   const { categories } = await getCategory({ limit: 50 })
 
   const start = (meta.page - 1) * meta.limit + 1
