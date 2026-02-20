@@ -8,6 +8,12 @@ type InsertAccountInput = {
   userId: string
 }
 
+interface getAccountsByUserIdFilters {
+  page: number
+  limit: number
+  userId: string
+}
+
 export async function insertAccount({
   name,
   type,
@@ -36,7 +42,14 @@ export async function getAccountById(id: string, userId: string) {
   })
 }
 
-export async function getAccountsByUserId(userId: string) {
+export async function getAccountsByUserId({
+  limit = 4,
+  page = 1,
+  userId,
+}: getAccountsByUserIdFilters) {
+  const take = Math.min(limit, 100)
+  const skip = (page - 1) * take
+
   const accounts = await prisma.account.findMany({
     where: {
       userId,
@@ -45,6 +58,8 @@ export async function getAccountsByUserId(userId: string) {
       id: true,
       name: true,
     },
+    take,
+    skip,
   })
 
   const accountsWithBalance = await Promise.all(

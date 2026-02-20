@@ -10,3 +10,8 @@ export const accountSchema = z.object({
   balance: z.number().optional(),
   createdAt: z.iso.datetime(),
 })
+
+export const listAccountsSchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(4),
+})

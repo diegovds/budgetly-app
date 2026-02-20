@@ -1,7 +1,11 @@
 import { AccountType } from '@prisma/client'
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { accountSchema, accountTypeSchema } from '../schemas/account'
+import {
+  accountSchema,
+  accountTypeSchema,
+  listAccountsSchema,
+} from '../schemas/account'
 import { getAccountsByUserId, insertAccount } from '../services/accounts'
 import { findUserById } from '../services/users'
 
@@ -63,6 +67,7 @@ export const getAccounts: FastifyPluginAsyncZod = async (app) => {
         tags: ['Account'],
         security: [{ bearerAuth: [] }],
         summary: 'Obtém todas as contas do usuário autenticado',
+        querystring: listAccountsSchema,
         response: {
           200: z.array(
             z.object({
@@ -81,12 +86,13 @@ export const getAccounts: FastifyPluginAsyncZod = async (app) => {
       try {
         const userId = request.user.sub
         const user = await findUserById(userId)
+        const query = request.query
 
         if (!user) {
           return reply.status(404).send({ message: 'Usuário não encontrado.' })
         }
 
-        const accounts = await getAccountsByUserId(userId)
+        const accounts = await getAccountsByUserId({ ...query, userId })
 
         return reply.send(accounts)
       } catch (err) {
