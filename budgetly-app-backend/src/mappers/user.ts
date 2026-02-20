@@ -1,4 +1,4 @@
-import { Prisma } from '../lib/generated/prisma/client'
+import { Prisma } from '@prisma/client'
 import { getAccountBalance } from '../services/balances'
 
 type UserWithRelations = Prisma.UserGetPayload<{

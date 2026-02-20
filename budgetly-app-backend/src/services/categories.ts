@@ -1,4 +1,4 @@
-import { TransactionType } from '../lib/generated/prisma/client'
+import { TransactionType } from '@prisma/client'
 import { prisma } from '../lib/prisma'
 import { ListCategoriesSummaryResponse } from '../schemas/category'
 

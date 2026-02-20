@@ -1,4 +1,4 @@
-import { AccountType } from '../lib/generated/prisma/client'
+import { AccountType } from '@prisma/client'
 import { prisma } from '../lib/prisma'
 import { getAccountBalance } from './balances'
 

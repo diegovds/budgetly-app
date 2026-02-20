@@ -1,5 +1,5 @@
+import { Prisma, TransactionType } from '@prisma/client'
 import { BadRequestError, NotFoundError } from '../errors/http'
-import { Prisma, TransactionType } from '../lib/generated/prisma/client'
 import { prisma } from '../lib/prisma'
 import { ListTransactionsSummaryResponse } from '../schemas/transaction'
 import { getAccountById } from './accounts'

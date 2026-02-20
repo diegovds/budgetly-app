@@ -1,5 +1,5 @@
+import { TransactionType } from '@prisma/client'
 import { z } from 'zod'
-import { TransactionType } from '../lib/generated/prisma/client'
 
 const transactionTypeSchema = z.enum(TransactionType)
 
