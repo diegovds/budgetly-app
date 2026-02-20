@@ -5,1310 +5,1212 @@
  * API para o Budgetly
  * OpenAPI spec version: 0.0.1
  */
-import { customFetch } from '../../fetchMutator';
+import { customFetch } from '../../fetchMutator'
 export type Get200 = {
-  Budgetly_API: string;
-};
+  Budgetly_API: string
+}
 
 export type PostAuthBody = {
   /** @minLength 2 */
-  name?: string;
+  name?: string
   /** @pattern ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$ */
-  email: string;
+  email: string
   /** @minLength 6 */
-  password: string;
-};
+  password: string
+}
 
 export type PostAuth200 = {
-  token: string;
-};
+  token: string
+}
 
 export type PostAuth400 = {
-  message: string;
-};
+  message: string
+}
 
 export type PostAuth401 = {
-  message: string;
-};
+  message: string
+}
 
 export type PostAuth404 = {
-  message: string;
-};
+  message: string
+}
 
-export type GetUser200AccountsItemType = typeof GetUser200AccountsItemType[keyof typeof GetUser200AccountsItemType];
+export type GetUser200AccountsItemType =
+  (typeof GetUser200AccountsItemType)[keyof typeof GetUser200AccountsItemType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetUser200AccountsItemType = {
   CHECKING: 'CHECKING',
   CREDIT: 'CREDIT',
   CASH: 'CASH',
-} as const;
+} as const
 
 export type GetUser200AccountsItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  name: string;
-  type: GetUser200AccountsItemType;
-  balance?: number;
+  id: string
+  name: string
+  type: GetUser200AccountsItemType
+  balance?: number
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  createdAt: string;
-};
+  createdAt: string
+}
 
-export type GetUser200CategoriesItemType = typeof GetUser200CategoriesItemType[keyof typeof GetUser200CategoriesItemType];
+export type GetUser200CategoriesItemType =
+  (typeof GetUser200CategoriesItemType)[keyof typeof GetUser200CategoriesItemType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetUser200CategoriesItemType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type GetUser200CategoriesItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  name: string;
-  type: GetUser200CategoriesItemType;
+  id: string
+  name: string
+  type: GetUser200CategoriesItemType
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  createdAt: string;
-};
+  createdAt: string
+}
 
-export type GetUser200TransactionsItemType = typeof GetUser200TransactionsItemType[keyof typeof GetUser200TransactionsItemType];
+export type GetUser200TransactionsItemType =
+  (typeof GetUser200TransactionsItemType)[keyof typeof GetUser200TransactionsItemType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetUser200TransactionsItemType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type GetUser200TransactionsItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  amount: number;
+  id: string
+  amount: number
   /** @nullable */
-  description: string | null;
+  description: string | null
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  date: string;
-  type: GetUser200TransactionsItemType;
+  date: string
+  type: GetUser200TransactionsItemType
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  createdAt: string;
+  createdAt: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  accountId: string;
+  accountId: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  categoryId: string;
-};
+  categoryId: string
+}
 
 export type GetUser200 = {
-  name: string;
-  accounts: GetUser200AccountsItem[];
-  categories: GetUser200CategoriesItem[];
-  transactions: GetUser200TransactionsItem[];
-};
+  name: string
+  accounts: GetUser200AccountsItem[]
+  categories: GetUser200CategoriesItem[]
+  transactions: GetUser200TransactionsItem[]
+}
 
 export type GetUser401 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetUser404 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetUser500 = {
-  message: string;
-};
+  message: string
+}
 
-export type PostAccountBodyType = typeof PostAccountBodyType[keyof typeof PostAccountBodyType];
+export type PostAccountBodyType =
+  (typeof PostAccountBodyType)[keyof typeof PostAccountBodyType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostAccountBodyType = {
   CHECKING: 'CHECKING',
   CREDIT: 'CREDIT',
   CASH: 'CASH',
-} as const;
+} as const
 
 export type PostAccountBody = {
   /** @minLength 2 */
-  name: string;
-  type: PostAccountBodyType;
-};
+  name: string
+  type: PostAccountBodyType
+}
 
-export type PostAccount200Type = typeof PostAccount200Type[keyof typeof PostAccount200Type];
+export type PostAccount200Type =
+  (typeof PostAccount200Type)[keyof typeof PostAccount200Type]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostAccount200Type = {
   CHECKING: 'CHECKING',
   CREDIT: 'CREDIT',
   CASH: 'CASH',
-} as const;
+} as const
 
 export type PostAccount200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  name: string;
-  type: PostAccount200Type;
-  balance?: number;
+  id: string
+  name: string
+  type: PostAccount200Type
+  balance?: number
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  createdAt: string;
-};
+  createdAt: string
+}
 
 export type PostAccount401 = {
-  message: string;
-};
+  message: string
+}
 
 export type PostAccount404 = {
-  message: string;
-};
+  message: string
+}
 
 export type PostAccount500 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetAccountParams = {
-/**
- * @minimum 1
- * @maximum 9007199254740991
- */
-page?: number;
-/**
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
-};
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number
+}
 
 export type GetAccount200AccountsItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  name: string;
-  balance: number;
-};
+  id: string
+  name: string
+  balance: number
+}
 
 export type GetAccount200Meta = {
   /**
    * @minimum 1
    * @maximum 9007199254740991
    */
-  page: number;
+  page: number
   /**
    * @minimum 1
    * @maximum 9007199254740991
    */
-  limit: number;
+  limit: number
   /**
    * @minimum 0
    * @maximum 9007199254740991
    */
-  total: number;
+  total: number
   /**
    * @minimum 0
    * @maximum 9007199254740991
    */
-  totalPages: number;
-};
+  totalPages: number
+}
 
 export type GetAccount200 = {
-  accounts: GetAccount200AccountsItem[];
-  meta: GetAccount200Meta;
-};
+  accounts: GetAccount200AccountsItem[]
+  meta: GetAccount200Meta
+}
 
 export type GetAccount401 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetAccount404 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetAccount500 = {
-  message: string;
-};
+  message: string
+}
 
-export type PostCategoryBodyType = typeof PostCategoryBodyType[keyof typeof PostCategoryBodyType];
+export type PostCategoryBodyType =
+  (typeof PostCategoryBodyType)[keyof typeof PostCategoryBodyType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostCategoryBodyType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type PostCategoryBody = {
   /** @minLength 2 */
-  name: string;
-  type: PostCategoryBodyType;
-};
+  name: string
+  type: PostCategoryBodyType
+}
 
-export type PostCategory200Type = typeof PostCategory200Type[keyof typeof PostCategory200Type];
+export type PostCategory200Type =
+  (typeof PostCategory200Type)[keyof typeof PostCategory200Type]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostCategory200Type = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type PostCategory200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  name: string;
-  type: PostCategory200Type;
+  id: string
+  name: string
+  type: PostCategory200Type
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  createdAt: string;
-};
+  createdAt: string
+}
 
 export type PostCategory401 = {
-  message: string;
-};
+  message: string
+}
 
 export type PostCategory404 = {
-  message: string;
-};
+  message: string
+}
 
 export type PostCategory500 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetCategoryParams = {
-/**
- * @minimum 1
- * @maximum 9007199254740991
- */
-page?: number;
-/**
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
-};
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number
+}
 
-export type GetCategory200CategoriesItemType = typeof GetCategory200CategoriesItemType[keyof typeof GetCategory200CategoriesItemType];
+export type GetCategory200CategoriesItemType =
+  (typeof GetCategory200CategoriesItemType)[keyof typeof GetCategory200CategoriesItemType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetCategory200CategoriesItemType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type GetCategory200CategoriesItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  name: string;
-  total: number;
-  type: GetCategory200CategoriesItemType;
-};
+  id: string
+  name: string
+  total: number
+  type: GetCategory200CategoriesItemType
+}
 
 export type GetCategory200Meta = {
-  page: number;
-  limit: number;
-  totalCategories: number;
-  totalPages: number;
-};
+  page: number
+  limit: number
+  totalCategories: number
+  totalPages: number
+}
 
 export type GetCategory200 = {
-  categories: GetCategory200CategoriesItem[];
-  meta: GetCategory200Meta;
-};
+  categories: GetCategory200CategoriesItem[]
+  meta: GetCategory200Meta
+}
 
 export type GetCategory401 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetCategory404 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetCategory500 = {
-  message: string;
-};
+  message: string
+}
 
-export type PostTransactionBodyType = typeof PostTransactionBodyType[keyof typeof PostTransactionBodyType];
+export type PostTransactionBodyType =
+  (typeof PostTransactionBodyType)[keyof typeof PostTransactionBodyType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostTransactionBodyType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type PostTransactionBody = {
-  amount: number;
+  amount: number
   /** @nullable */
-  description: string | null;
+  description: string | null
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  date: string;
-  type: PostTransactionBodyType;
+  date: string
+  type: PostTransactionBodyType
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  accountId: string;
+  accountId: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  categoryId: string;
-};
+  categoryId: string
+}
 
-export type PostTransaction200Type = typeof PostTransaction200Type[keyof typeof PostTransaction200Type];
+export type PostTransaction200Type =
+  (typeof PostTransaction200Type)[keyof typeof PostTransaction200Type]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PostTransaction200Type = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type PostTransaction200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  amount: number;
+  id: string
+  amount: number
   /** @nullable */
-  description: string | null;
+  description: string | null
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  date: string;
-  type: PostTransaction200Type;
+  date: string
+  type: PostTransaction200Type
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  createdAt: string;
+  createdAt: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  accountId: string;
+  accountId: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  categoryId: string;
-};
+  categoryId: string
+}
 
 export type PostTransaction401 = {
-  message: string;
-};
+  message: string
+}
 
 export type PostTransaction404 = {
-  message: string;
-};
+  message: string
+}
 
 export type PostTransaction500 = {
-  message: string;
-};
+  message: string
+}
 
-export type DeleteTransactionId200Type = typeof DeleteTransactionId200Type[keyof typeof DeleteTransactionId200Type];
+export type DeleteTransactionId200Type =
+  (typeof DeleteTransactionId200Type)[keyof typeof DeleteTransactionId200Type]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeleteTransactionId200Type = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type DeleteTransactionId200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  amount: number;
+  id: string
+  amount: number
   /** @nullable */
-  description: string | null;
+  description: string | null
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  date: string;
-  type: DeleteTransactionId200Type;
+  date: string
+  type: DeleteTransactionId200Type
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  createdAt: string;
+  createdAt: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  accountId: string;
+  accountId: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  categoryId: string;
-};
+  categoryId: string
+}
 
 export type DeleteTransactionId401 = {
-  message: string;
-};
+  message: string
+}
 
 export type DeleteTransactionId404 = {
-  message: string;
-};
+  message: string
+}
 
 export type DeleteTransactionId500 = {
-  message: string;
-};
+  message: string
+}
 
 export type PatchTransactionIdBody = {
-  amount: number;
+  amount: number
   /** @nullable */
-  description: string | null;
+  description: string | null
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  date: string;
-};
+  date: string
+}
 
-export type PatchTransactionId200Type = typeof PatchTransactionId200Type[keyof typeof PatchTransactionId200Type];
+export type PatchTransactionId200Type =
+  (typeof PatchTransactionId200Type)[keyof typeof PatchTransactionId200Type]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PatchTransactionId200Type = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type PatchTransactionId200 = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  amount: number;
+  id: string
+  amount: number
   /** @nullable */
-  description: string | null;
+  description: string | null
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  date: string;
-  type: PatchTransactionId200Type;
+  date: string
+  type: PatchTransactionId200Type
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  createdAt: string;
+  createdAt: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  accountId: string;
+  accountId: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  categoryId: string;
-};
+  categoryId: string
+}
 
 export type PatchTransactionId401 = {
-  message: string;
-};
+  message: string
+}
 
 export type PatchTransactionId404 = {
-  message: string;
-};
+  message: string
+}
 
 export type PatchTransactionId500 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetTransactionsParams = {
-/**
- * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
- */
-accountId?: string;
-/**
- * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
- */
-categoryId?: string;
-type?: GetTransactionsType;
-/**
- * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
- */
-startDate?: string;
-/**
- * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
- */
-endDate?: string;
-/**
- * @minimum 0
- * @exclusiveMinimum
- */
-minAmount?: number;
-/**
- * @minimum 0
- * @exclusiveMinimum
- */
-maxAmount?: number;
-/**
- * @minLength 1
- */
-search?: string;
-/**
- * @minimum 1
- * @maximum 9007199254740991
- */
-page?: number;
-/**
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
-orderBy?: GetTransactionsOrderBy;
-order?: GetTransactionsOrder;
-};
+  /**
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  accountId?: string
+  /**
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  categoryId?: string
+  type?: GetTransactionsType
+  /**
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+   */
+  startDate?: string
+  /**
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+   */
+  endDate?: string
+  /**
+   * @minimum 0
+   * @exclusiveMinimum
+   */
+  minAmount?: number
+  /**
+   * @minimum 0
+   * @exclusiveMinimum
+   */
+  maxAmount?: number
+  /**
+   * @minLength 1
+   */
+  search?: string
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number
+  orderBy?: GetTransactionsOrderBy
+  order?: GetTransactionsOrder
+}
 
-export type GetTransactionsType = typeof GetTransactionsType[keyof typeof GetTransactionsType];
+export type GetTransactionsType =
+  (typeof GetTransactionsType)[keyof typeof GetTransactionsType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTransactionsType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
-export type GetTransactionsOrderBy = typeof GetTransactionsOrderBy[keyof typeof GetTransactionsOrderBy];
+export type GetTransactionsOrderBy =
+  (typeof GetTransactionsOrderBy)[keyof typeof GetTransactionsOrderBy]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTransactionsOrderBy = {
   date: 'date',
   amount: 'amount',
   createdAt: 'createdAt',
-} as const;
+} as const
 
-export type GetTransactionsOrder = typeof GetTransactionsOrder[keyof typeof GetTransactionsOrder];
+export type GetTransactionsOrder =
+  (typeof GetTransactionsOrder)[keyof typeof GetTransactionsOrder]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTransactionsOrder = {
   asc: 'asc',
   desc: 'desc',
-} as const;
+} as const
 
-export type GetTransactions200TransactionsItemType = typeof GetTransactions200TransactionsItemType[keyof typeof GetTransactions200TransactionsItemType];
+export type GetTransactions200TransactionsItemType =
+  (typeof GetTransactions200TransactionsItemType)[keyof typeof GetTransactions200TransactionsItemType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetTransactions200TransactionsItemType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
 export type GetTransactions200TransactionsItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  amount: number;
+  id: string
+  amount: number
   /** @nullable */
-  description: string | null;
+  description: string | null
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  date: string;
-  type: GetTransactions200TransactionsItemType;
+  date: string
+  type: GetTransactions200TransactionsItemType
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  createdAt: string;
-  accountName: string;
-  categoryName: string;
+  createdAt: string
+  accountName: string
+  categoryName: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  accountId: string;
+  accountId: string
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  categoryId: string;
-};
+  categoryId: string
+}
 
 export type GetTransactions200Meta = {
   /**
    * @minimum 1
    * @maximum 9007199254740991
    */
-  page: number;
+  page: number
   /**
    * @minimum 1
    * @maximum 9007199254740991
    */
-  limit: number;
+  limit: number
   /**
    * @minimum 0
    * @maximum 9007199254740991
    */
-  total: number;
+  total: number
   /**
    * @minimum 0
    * @maximum 9007199254740991
    */
-  totalPages: number;
-};
+  totalPages: number
+}
 
 export type GetTransactions200 = {
-  transactions: GetTransactions200TransactionsItem[];
-  meta: GetTransactions200Meta;
-};
+  transactions: GetTransactions200TransactionsItem[]
+  meta: GetTransactions200Meta
+}
 
 export type GetTransactions401 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetTransactions404 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetTransactions500 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetFinancialOverviewParams = {
-/**
- * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
- */
-accountId?: string;
-/**
- * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
- */
-categoryId?: string;
-type?: GetFinancialOverviewType;
-/**
- * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
- */
-startDate?: string;
-/**
- * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
- */
-endDate?: string;
-/**
- * @minimum 0
- * @exclusiveMinimum
- */
-minAmount?: number;
-/**
- * @minimum 0
- * @exclusiveMinimum
- */
-maxAmount?: number;
-/**
- * @minLength 1
- */
-search?: string;
-/**
- * @minimum 1
- * @maximum 9007199254740991
- */
-page?: number;
-/**
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
-orderBy?: GetFinancialOverviewOrderBy;
-order?: GetFinancialOverviewOrder;
-};
+  /**
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  accountId?: string
+  /**
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  categoryId?: string
+  type?: GetFinancialOverviewType
+  /**
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+   */
+  startDate?: string
+  /**
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+   */
+  endDate?: string
+  /**
+   * @minimum 0
+   * @exclusiveMinimum
+   */
+  minAmount?: number
+  /**
+   * @minimum 0
+   * @exclusiveMinimum
+   */
+  maxAmount?: number
+  /**
+   * @minLength 1
+   */
+  search?: string
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number
+  orderBy?: GetFinancialOverviewOrderBy
+  order?: GetFinancialOverviewOrder
+}
 
-export type GetFinancialOverviewType = typeof GetFinancialOverviewType[keyof typeof GetFinancialOverviewType];
+export type GetFinancialOverviewType =
+  (typeof GetFinancialOverviewType)[keyof typeof GetFinancialOverviewType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetFinancialOverviewType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
-export type GetFinancialOverviewOrderBy = typeof GetFinancialOverviewOrderBy[keyof typeof GetFinancialOverviewOrderBy];
+export type GetFinancialOverviewOrderBy =
+  (typeof GetFinancialOverviewOrderBy)[keyof typeof GetFinancialOverviewOrderBy]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetFinancialOverviewOrderBy = {
   date: 'date',
   amount: 'amount',
   createdAt: 'createdAt',
-} as const;
+} as const
 
-export type GetFinancialOverviewOrder = typeof GetFinancialOverviewOrder[keyof typeof GetFinancialOverviewOrder];
+export type GetFinancialOverviewOrder =
+  (typeof GetFinancialOverviewOrder)[keyof typeof GetFinancialOverviewOrder]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetFinancialOverviewOrder = {
   asc: 'asc',
   desc: 'desc',
-} as const;
+} as const
 
-export type GetFinancialOverview200AccountsItemCategoriesItemType = typeof GetFinancialOverview200AccountsItemCategoriesItemType[keyof typeof GetFinancialOverview200AccountsItemCategoriesItemType];
+export type GetFinancialOverview200AccountsItemCategoriesItemType =
+  (typeof GetFinancialOverview200AccountsItemCategoriesItemType)[keyof typeof GetFinancialOverview200AccountsItemCategoriesItemType]
 
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GetFinancialOverview200AccountsItemCategoriesItemType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
-} as const;
+} as const
 
-export type GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType = typeof GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType[keyof typeof GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType];
+export type GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType =
+  (typeof GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType)[keyof typeof GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType]
 
+export const GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType =
+  {
+    INCOME: 'INCOME',
+    EXPENSE: 'EXPENSE',
+  } as const
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType = {
-  INCOME: 'INCOME',
-  EXPENSE: 'EXPENSE',
-} as const;
-
-export type GetFinancialOverview200AccountsItemCategoriesItemTransactionsItem = {
-  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  amount: number;
-  /** @nullable */
-  description: string | null;
-  date: string;
-  type: GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType;
-  createdAt: string;
-  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  accountId: string;
-  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  categoryId: string;
-};
+export type GetFinancialOverview200AccountsItemCategoriesItemTransactionsItem =
+  {
+    /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+    id: string
+    amount: number
+    /** @nullable */
+    description: string | null
+    date: string
+    type: GetFinancialOverview200AccountsItemCategoriesItemTransactionsItemType
+    createdAt: string
+    /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+    accountId: string
+    /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+    categoryId: string
+  }
 
 export type GetFinancialOverview200AccountsItemCategoriesItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  name: string;
-  type: GetFinancialOverview200AccountsItemCategoriesItemType;
-  transactions: GetFinancialOverview200AccountsItemCategoriesItemTransactionsItem[];
-};
+  id: string
+  name: string
+  type: GetFinancialOverview200AccountsItemCategoriesItemType
+  transactions: GetFinancialOverview200AccountsItemCategoriesItemTransactionsItem[]
+}
 
 export type GetFinancialOverview200AccountsItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  name: string;
-  balance: number;
-  categories: GetFinancialOverview200AccountsItemCategoriesItem[];
-};
+  id: string
+  name: string
+  balance: number
+  categories: GetFinancialOverview200AccountsItemCategoriesItem[]
+}
 
 export type GetFinancialOverview200Meta = {
   /**
    * @maximum 9007199254740991
    * @exclusiveMinimum
    */
-  page: number;
+  page: number
   /**
    * @maximum 9007199254740991
    * @exclusiveMinimum
    */
-  limit: number;
+  limit: number
   /**
    * @minimum 0
    * @maximum 9007199254740991
    */
-  totalTransactions: number;
+  totalTransactions: number
   /**
    * @minimum 0
    * @maximum 9007199254740991
    */
-  totalPages: number;
-};
+  totalPages: number
+}
 
 export type GetFinancialOverview200 = {
-  accounts: GetFinancialOverview200AccountsItem[];
-  meta: GetFinancialOverview200Meta;
-};
+  accounts: GetFinancialOverview200AccountsItem[]
+  meta: GetFinancialOverview200Meta
+}
 
 export type GetFinancialOverview401 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetFinancialOverview404 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetFinancialOverview500 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetFinancialSummary200 = {
-  totalBalance: number;
-  monthIncome: number;
-  monthExpense: number;
-};
+  totalBalance: number
+  monthIncome: number
+  monthExpense: number
+}
 
 export type GetFinancialSummary401 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetFinancialSummary404 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetFinancialSummary500 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetTransactionsSummaryParams = {
-/**
- * @minimum 1
- * @maximum 9007199254740991
- */
-page?: number;
-/**
- * @minimum 1
- * @maximum 100
- */
-limit?: number;
-};
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number
+}
 
 export type GetTransactionsSummary200TransactionsItem = {
   /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
-  id: string;
-  name: string;
-  amount: number;
+  id: string
+  name: string
+  amount: number
   /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
-  date: string;
-};
+  date: string
+}
 
 export type GetTransactionsSummary200Meta = {
   /**
    * @minimum 1
    * @maximum 9007199254740991
    */
-  page: number;
+  page: number
   /**
    * @minimum 1
    * @maximum 9007199254740991
    */
-  limit: number;
+  limit: number
   /**
    * @minimum 0
    * @maximum 9007199254740991
    */
-  total: number;
+  total: number
   /**
    * @minimum 0
    * @maximum 9007199254740991
    */
-  totalPages: number;
-};
+  totalPages: number
+}
 
 export type GetTransactionsSummary200 = {
-  transactions: GetTransactionsSummary200TransactionsItem[];
-  meta: GetTransactionsSummary200Meta;
-};
+  transactions: GetTransactionsSummary200TransactionsItem[]
+  meta: GetTransactionsSummary200Meta
+}
 
 export type GetTransactionsSummary401 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetTransactionsSummary404 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetTransactionsSummary500 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetAccountTypes200Item = {
-  value: string;
-  label: string;
-};
+  value: string
+  label: string
+}
 
 export type GetAccountTypes401 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetAccountTypes404 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetAccountTypes500 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetCategoryTypes200Item = {
-  value: string;
-  label: string;
-};
+  value: string
+  label: string
+}
 
 export type GetCategoryTypes401 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetCategoryTypes404 = {
-  message: string;
-};
+  message: string
+}
 
 export type GetCategoryTypes500 = {
-  message: string;
-};
+  message: string
+}
 
 /**
  * Retorna uma mensagem de boas-vindas e um link para a documentação da API.
  * @summary Página inicial da API
  */
 export const getGetUrl = () => {
-
-
-  
-
   return `/`
 }
 
-export const get = async ( options?: RequestInit): Promise<Get200> => {
-  
-  return customFetch<Get200>(getGetUrl(),
-  {      
+export const get = async (options?: RequestInit): Promise<Get200> => {
+  return customFetch<Get200>(getGetUrl(), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-
-
+    method: 'GET',
+  })
+}
 
 /**
  * Se o usuário não existir, uma nova conta será criada. Se o usuário já existir, ele será autenticado.
  * @summary Cria uma nova conta ou autentica um usuário existente
  */
 export const getPostAuthUrl = () => {
-
-
-  
-
   return `/auth`
 }
 
-export const postAuth = async (postAuthBody: PostAuthBody, options?: RequestInit): Promise<PostAuth200> => {
-  
-  return customFetch<PostAuth200>(getPostAuthUrl(),
-  {      
+export const postAuth = async (
+  postAuthBody: PostAuthBody,
+  options?: RequestInit,
+): Promise<PostAuth200> => {
+  return customFetch<PostAuth200>(getPostAuthUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postAuthBody,)
-  }
-);}
-
-
+    body: JSON.stringify(postAuthBody),
+  })
+}
 
 /**
  * @summary Retorna os dados do usuário autenticado
  */
 export const getGetUserUrl = () => {
-
-
-  
-
   return `/user`
 }
 
-export const getUser = async ( options?: RequestInit): Promise<GetUser200> => {
-  
-  return customFetch<GetUser200>(getGetUserUrl(),
-  {      
+export const getUser = async (options?: RequestInit): Promise<GetUser200> => {
+  return customFetch<GetUser200>(getGetUserUrl(), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-
-
+    method: 'GET',
+  })
+}
 
 /**
  * @summary Cria uma nova conta para o usuário autenticado
  */
 export const getPostAccountUrl = () => {
-
-
-  
-
   return `/account`
 }
 
-export const postAccount = async (postAccountBody: PostAccountBody, options?: RequestInit): Promise<PostAccount200> => {
-  
-  return customFetch<PostAccount200>(getPostAccountUrl(),
-  {      
+export const postAccount = async (
+  postAccountBody: PostAccountBody,
+  options?: RequestInit,
+): Promise<PostAccount200> => {
+  return customFetch<PostAccount200>(getPostAccountUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postAccountBody,)
-  }
-);}
-
-
+    body: JSON.stringify(postAccountBody),
+  })
+}
 
 /**
  * @summary Obtém todas as contas do usuário autenticado
  */
-export const getGetAccountUrl = (params?: GetAccountParams,) => {
-  const normalizedParams = new URLSearchParams();
+export const getGetAccountUrl = (params?: GetAccountParams) => {
+  const normalizedParams = new URLSearchParams()
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
-  });
+  })
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = normalizedParams.toString()
 
-  return stringifiedParams.length > 0 ? `/account?${stringifiedParams}` : `/account`
+  return stringifiedParams.length > 0
+    ? `/account?${stringifiedParams}`
+    : `/account`
 }
 
-export const getAccount = async (params?: GetAccountParams, options?: RequestInit): Promise<GetAccount200> => {
-  
-  return customFetch<GetAccount200>(getGetAccountUrl(params),
-  {      
+export const getAccount = async (
+  params?: GetAccountParams,
+  options?: RequestInit,
+): Promise<GetAccount200> => {
+  return customFetch<GetAccount200>(getGetAccountUrl(params), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-
-
+    method: 'GET',
+  })
+}
 
 /**
  * @summary Cria uma nova categoria para o usuário autenticado.
  */
 export const getPostCategoryUrl = () => {
-
-
-  
-
   return `/category`
 }
 
-export const postCategory = async (postCategoryBody: PostCategoryBody, options?: RequestInit): Promise<PostCategory200> => {
-  
-  return customFetch<PostCategory200>(getPostCategoryUrl(),
-  {      
+export const postCategory = async (
+  postCategoryBody: PostCategoryBody,
+  options?: RequestInit,
+): Promise<PostCategory200> => {
+  return customFetch<PostCategory200>(getPostCategoryUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postCategoryBody,)
-  }
-);}
-
-
+    body: JSON.stringify(postCategoryBody),
+  })
+}
 
 /**
  * @summary Lista um resumo das categorias do usuário autenticado.
  */
-export const getGetCategoryUrl = (params?: GetCategoryParams,) => {
-  const normalizedParams = new URLSearchParams();
+export const getGetCategoryUrl = (params?: GetCategoryParams) => {
+  const normalizedParams = new URLSearchParams()
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
-  });
+  })
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = normalizedParams.toString()
 
-  return stringifiedParams.length > 0 ? `/category?${stringifiedParams}` : `/category`
+  return stringifiedParams.length > 0
+    ? `/category?${stringifiedParams}`
+    : `/category`
 }
 
-export const getCategory = async (params?: GetCategoryParams, options?: RequestInit): Promise<GetCategory200> => {
-  
-  return customFetch<GetCategory200>(getGetCategoryUrl(params),
-  {      
+export const getCategory = async (
+  params?: GetCategoryParams,
+  options?: RequestInit,
+): Promise<GetCategory200> => {
+  return customFetch<GetCategory200>(getGetCategoryUrl(params), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-
-
+    method: 'GET',
+  })
+}
 
 /**
  * @summary Cria uma nova transação para o usuário autenticado.
  */
 export const getPostTransactionUrl = () => {
-
-
-  
-
   return `/transaction`
 }
 
-export const postTransaction = async (postTransactionBody: PostTransactionBody, options?: RequestInit): Promise<PostTransaction200> => {
-  
-  return customFetch<PostTransaction200>(getPostTransactionUrl(),
-  {      
+export const postTransaction = async (
+  postTransactionBody: PostTransactionBody,
+  options?: RequestInit,
+): Promise<PostTransaction200> => {
+  return customFetch<PostTransaction200>(getPostTransactionUrl(), {
     ...options,
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postTransactionBody,)
-  }
-);}
-
-
+    body: JSON.stringify(postTransactionBody),
+  })
+}
 
 /**
  * @summary Exclui uma transação pelo ID para o usuário autenticado.
  */
-export const getDeleteTransactionIdUrl = (id: string,) => {
-
-
-  
-
+export const getDeleteTransactionIdUrl = (id: string) => {
   return `/transaction/${id}`
 }
 
-export const deleteTransactionId = async (id: string, options?: RequestInit): Promise<DeleteTransactionId200> => {
-  
-  return customFetch<DeleteTransactionId200>(getDeleteTransactionIdUrl(id),
-  {      
+export const deleteTransactionId = async (
+  id: string,
+  options?: RequestInit,
+): Promise<DeleteTransactionId200> => {
+  return customFetch<DeleteTransactionId200>(getDeleteTransactionIdUrl(id), {
     ...options,
-    method: 'DELETE'
-    
-    
-  }
-);}
-
-
+    method: 'DELETE',
+  })
+}
 
 /**
  * @summary Atualiza uma transação pelo ID para o usuário autenticado.
  */
-export const getPatchTransactionIdUrl = (id: string,) => {
-
-
-  
-
+export const getPatchTransactionIdUrl = (id: string) => {
   return `/transaction/${id}`
 }
 
-export const patchTransactionId = async (id: string,
-    patchTransactionIdBody: PatchTransactionIdBody, options?: RequestInit): Promise<PatchTransactionId200> => {
-  
-  return customFetch<PatchTransactionId200>(getPatchTransactionIdUrl(id),
-  {      
+export const patchTransactionId = async (
+  id: string,
+  patchTransactionIdBody: PatchTransactionIdBody,
+  options?: RequestInit,
+): Promise<PatchTransactionId200> => {
+  return customFetch<PatchTransactionId200>(getPatchTransactionIdUrl(id), {
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      patchTransactionIdBody,)
-  }
-);}
-
-
+    body: JSON.stringify(patchTransactionIdBody),
+  })
+}
 
 /**
  * @summary Lista as transações do usuário autenticado com filtros e paginação.
  */
-export const getGetTransactionsUrl = (params?: GetTransactionsParams,) => {
-  const normalizedParams = new URLSearchParams();
+export const getGetTransactionsUrl = (params?: GetTransactionsParams) => {
+  const normalizedParams = new URLSearchParams()
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
-  });
+  })
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = normalizedParams.toString()
 
-  return stringifiedParams.length > 0 ? `/transactions?${stringifiedParams}` : `/transactions`
+  return stringifiedParams.length > 0
+    ? `/transactions?${stringifiedParams}`
+    : `/transactions`
 }
 
-export const getTransactions = async (params?: GetTransactionsParams, options?: RequestInit): Promise<GetTransactions200> => {
-  
-  return customFetch<GetTransactions200>(getGetTransactionsUrl(params),
-  {      
+export const getTransactions = async (
+  params?: GetTransactionsParams,
+  options?: RequestInit,
+): Promise<GetTransactions200> => {
+  return customFetch<GetTransactions200>(getGetTransactionsUrl(params), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-
-
+    method: 'GET',
+  })
+}
 
 /**
  * @summary Obtém uma visão geral financeira do usuário autenticado, incluindo contas, categorias e transações.
  */
-export const getGetFinancialOverviewUrl = (params?: GetFinancialOverviewParams,) => {
-  const normalizedParams = new URLSearchParams();
+export const getGetFinancialOverviewUrl = (
+  params?: GetFinancialOverviewParams,
+) => {
+  const normalizedParams = new URLSearchParams()
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
-  });
+  })
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = normalizedParams.toString()
 
-  return stringifiedParams.length > 0 ? `/financial/overview?${stringifiedParams}` : `/financial/overview`
+  return stringifiedParams.length > 0
+    ? `/financial/overview?${stringifiedParams}`
+    : `/financial/overview`
 }
 
-export const getFinancialOverview = async (params?: GetFinancialOverviewParams, options?: RequestInit): Promise<GetFinancialOverview200> => {
-  
-  return customFetch<GetFinancialOverview200>(getGetFinancialOverviewUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-
-
+export const getFinancialOverview = async (
+  params?: GetFinancialOverviewParams,
+  options?: RequestInit,
+): Promise<GetFinancialOverview200> => {
+  return customFetch<GetFinancialOverview200>(
+    getGetFinancialOverviewUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
 
 /**
  * @summary Obtém um resumo financeiro do usuário autenticado.
  */
 export const getGetFinancialSummaryUrl = () => {
-
-
-  
-
   return `/financial/summary`
 }
 
-export const getFinancialSummary = async ( options?: RequestInit): Promise<GetFinancialSummary200> => {
-  
-  return customFetch<GetFinancialSummary200>(getGetFinancialSummaryUrl(),
-  {      
+export const getFinancialSummary = async (
+  options?: RequestInit,
+): Promise<GetFinancialSummary200> => {
+  return customFetch<GetFinancialSummary200>(getGetFinancialSummaryUrl(), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-
-
+    method: 'GET',
+  })
+}
 
 /**
  * @summary Lista um resumo das transações recentes do usuário autenticado.
  */
-export const getGetTransactionsSummaryUrl = (params?: GetTransactionsSummaryParams,) => {
-  const normalizedParams = new URLSearchParams();
+export const getGetTransactionsSummaryUrl = (
+  params?: GetTransactionsSummaryParams,
+) => {
+  const normalizedParams = new URLSearchParams()
 
   Object.entries(params || {}).forEach(([key, value]) => {
-    
     if (value !== undefined) {
       normalizedParams.append(key, value === null ? 'null' : value.toString())
     }
-  });
+  })
 
-  const stringifiedParams = normalizedParams.toString();
+  const stringifiedParams = normalizedParams.toString()
 
-  return stringifiedParams.length > 0 ? `/transactions/summary?${stringifiedParams}` : `/transactions/summary`
+  return stringifiedParams.length > 0
+    ? `/transactions/summary?${stringifiedParams}`
+    : `/transactions/summary`
 }
 
-export const getTransactionsSummary = async (params?: GetTransactionsSummaryParams, options?: RequestInit): Promise<GetTransactionsSummary200> => {
-  
-  return customFetch<GetTransactionsSummary200>(getGetTransactionsSummaryUrl(params),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-
-
+export const getTransactionsSummary = async (
+  params?: GetTransactionsSummaryParams,
+  options?: RequestInit,
+): Promise<GetTransactionsSummary200> => {
+  return customFetch<GetTransactionsSummary200>(
+    getGetTransactionsSummaryUrl(params),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
 
 /**
  * @summary Lista os tipos de conta disponíveis
  */
 export const getGetAccountTypesUrl = () => {
-
-
-  
-
   return `/account/types`
 }
 
-export const getAccountTypes = async ( options?: RequestInit): Promise<GetAccountTypes200Item[]> => {
-  
-  return customFetch<GetAccountTypes200Item[]>(getGetAccountTypesUrl(),
-  {      
+export const getAccountTypes = async (
+  options?: RequestInit,
+): Promise<GetAccountTypes200Item[]> => {
+  return customFetch<GetAccountTypes200Item[]>(getGetAccountTypesUrl(), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-
-
+    method: 'GET',
+  })
+}
 
 /**
  * @summary Lista os tips de categoria disponíveis
  */
 export const getGetCategoryTypesUrl = () => {
-
-
-  
-
   return `/category/types`
 }
 
-export const getCategoryTypes = async ( options?: RequestInit): Promise<GetCategoryTypes200Item[]> => {
-  
-  return customFetch<GetCategoryTypes200Item[]>(getGetCategoryTypesUrl(),
-  {      
+export const getCategoryTypes = async (
+  options?: RequestInit,
+): Promise<GetCategoryTypes200Item[]> => {
+  return customFetch<GetCategoryTypes200Item[]>(getGetCategoryTypesUrl(), {
     ...options,
-    method: 'GET'
-    
-    
-  }
-);}
+    method: 'GET',
+  })
+}
