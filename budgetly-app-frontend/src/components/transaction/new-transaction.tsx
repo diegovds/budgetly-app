@@ -2,7 +2,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useTransactionInsertionMutation } from '@/hooks/useTransactionInsertionMutation'
-import { GetAccount200Item, GetCategory200CategoriesItem } from '@/http/api'
+import {
+  GetAccount200AccountsItem,
+  GetCategory200CategoriesItem,
+} from '@/http/api'
 import { currencyToNumber, formatCurrencyString } from '@/utils/format'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
@@ -32,7 +35,7 @@ import {
 } from '../ui/select'
 
 type NewTransactionProps = {
-  accounts: GetAccount200Item[]
+  accounts: GetAccount200AccountsItem[]
   categories: GetCategory200CategoriesItem[]
 }
 

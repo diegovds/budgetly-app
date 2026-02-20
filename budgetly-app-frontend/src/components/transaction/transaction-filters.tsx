@@ -1,6 +1,9 @@
 'use client'
 
-import { GetAccount200Item, GetCategory200CategoriesItem } from '@/http/api'
+import {
+  GetAccount200AccountsItem,
+  GetCategory200CategoriesItem,
+} from '@/http/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -30,7 +33,7 @@ import {
 } from '../ui/select'
 
 type TransactionFiltersProps = {
-  accounts: GetAccount200Item[]
+  accounts: GetAccount200AccountsItem[]
   categories: GetCategory200CategoriesItem[]
 }
 
