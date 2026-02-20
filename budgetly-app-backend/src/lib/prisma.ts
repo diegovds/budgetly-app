@@ -1,10 +1,13 @@
 import { PrismaPg } from '@prisma/adapter-pg'
-import 'dotenv/config'
+import { attachDatabasePool } from '@vercel/functions'
+import { Pool } from 'pg'
+import { env } from '../env'
 import { PrismaClient } from './generated/prisma/client'
 
-const connectionString = `${process.env.DATABASE_URL}`
+const pool = new Pool({ connectionString: env.DATABASE_URL })
 
-const adapter = new PrismaPg({ connectionString })
-const prisma = new PrismaClient({ adapter })
+attachDatabasePool(pool)
 
-export { prisma }
+export const prisma = new PrismaClient({
+  adapter: new PrismaPg(pool),
+})
