@@ -1,9 +1,10 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { Pagination } from '@/components/pagination'
 import { TransactionFilters } from '@/components/transaction/transaction-filters'
 import { Button } from '@/components/ui/button'
 import { getAccount, getCategory, getTransactions } from '@/http/api'
 import { formatCurrency, formatDate } from '@/utils/format'
-import { ChevronLeft, ChevronRight, CirclePlus } from 'lucide-react'
+import { CirclePlus } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -23,23 +24,6 @@ export type SearchParams = {
 
 type Props = {
   searchParams: Promise<SearchParams>
-}
-
-/**
- * Monta a query string preservando filtros
- */
-function buildQuery(params: SearchParams, page: number) {
-  const query = new URLSearchParams()
-
-  if (params.startDate) query.set('startDate', params.startDate)
-  if (params.endDate) query.set('endDate', params.endDate)
-  if (params.accountId) query.set('accountId', params.accountId)
-  if (params.categoryId) query.set('categoryId', params.categoryId)
-  if (params.search) query.set('search', params.search)
-
-  query.set('page', String(page))
-
-  return `?${query.toString()}`
 }
 
 export default async function TransactionPage({ searchParams }: Props) {
@@ -65,17 +49,6 @@ export default async function TransactionPage({ searchParams }: Props) {
 
   const { accounts } = await getAccount({ limit: 50 })
   const { categories } = await getCategory({ limit: 50 })
-
-  const start = (meta.page - 1) * meta.limit + 1
-  const end = Math.min(meta.page * meta.limit, meta.total)
-
-  const totalPages = meta.totalPages
-  const hasPrev = meta.page > 1
-  const hasNext = meta.page < totalPages
-
-  const MAX_VISIBLE = 1
-  const startPage = Math.max(1, meta.page - MAX_VISIBLE)
-  const endPage = Math.min(totalPages, meta.page + MAX_VISIBLE)
 
   return (
     <div className="w-full space-y-8">
@@ -137,75 +110,7 @@ export default async function TransactionPage({ searchParams }: Props) {
             </li>
           ))}
         </ul>
-
-        {/* Footer */}
-        <div className="flex flex-col items-center justify-between gap-4 px-4 pb-4 lg:flex-row">
-          <p>
-            Mostrando {start} a {end} de {meta.total} transações
-          </p>
-
-          <nav className="flex items-center gap-2">
-            {/* Anterior */}
-            {hasPrev ? (
-              <Link href={buildQuery(params, meta.page - 1)}>
-                <Button variant="outline">
-                  <ChevronLeft />
-                </Button>
-              </Link>
-            ) : (
-              <Button variant="outline" disabled>
-                <ChevronLeft />
-              </Button>
-            )}
-
-            {/* Página 1 */}
-            <Link href={buildQuery(params, 1)}>
-              <Button variant={meta.page === 1 ? 'default' : 'outline'}>
-                1
-              </Button>
-            </Link>
-
-            {startPage > 2 && <span className="px-2">…</span>}
-
-            {Array.from(
-              { length: endPage - startPage + 1 },
-              (_, i) => startPage + i,
-            )
-              .filter((p) => p !== 1 && p !== totalPages)
-              .map((page) => (
-                <Link key={page} href={buildQuery(params, page)}>
-                  <Button variant={page === meta.page ? 'default' : 'outline'}>
-                    {page}
-                  </Button>
-                </Link>
-              ))}
-
-            {endPage < totalPages - 1 && <span className="px-2">…</span>}
-
-            {totalPages > 1 && (
-              <Link href={buildQuery(params, totalPages)}>
-                <Button
-                  variant={meta.page === totalPages ? 'default' : 'outline'}
-                >
-                  {totalPages}
-                </Button>
-              </Link>
-            )}
-
-            {/* Próxima */}
-            {hasNext ? (
-              <Link href={buildQuery(params, meta.page + 1)}>
-                <Button variant="outline">
-                  <ChevronRight />
-                </Button>
-              </Link>
-            ) : (
-              <Button variant="outline" disabled>
-                <ChevronRight />
-              </Button>
-            )}
-          </nav>
-        </div>
+        <Pagination meta={meta} params={params} />
       </div>
     </div>
   )
