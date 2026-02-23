@@ -63,7 +63,7 @@ export async function getAccountsByUserId({
       take,
       skip,
     }),
-    prisma.transaction.count(),
+    prisma.account.count(),
   ])
 
   const accountsWithBalance = await Promise.all(
