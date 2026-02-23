@@ -41,7 +41,7 @@ export default async function AccountPage() {
           <div key={account.id} className="bg-accent space-y-4 rounded p-4">
             <div className="space-y-0.5">
               <h2 className="text-xl font-semibold">{account.name}</h2>
-              <p className="text-muted-foreground text-sm">Tipo de conta</p>
+              <p className="text-muted-foreground text-sm">{account.type}</p>
             </div>
             <div className="space-y-0.5">
               <h2 className="text-muted-foreground font-semibold">

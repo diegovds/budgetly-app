@@ -75,6 +75,7 @@ export const getAccounts: FastifyPluginAsyncZod = async (app) => {
               z.object({
                 id: z.uuid(),
                 name: z.string(),
+                type: z.string(),
                 balance: z.number(),
               }),
             ),

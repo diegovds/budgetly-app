@@ -58,6 +58,7 @@ export async function getAccountsByUserId({
       select: {
         id: true,
         name: true,
+        type: true,
       },
       take,
       skip,
@@ -68,6 +69,12 @@ export async function getAccountsByUserId({
   const accountsWithBalance = await Promise.all(
     accounts.map(async (account) => ({
       ...account,
+      type:
+        account.type === 'CHECKING'
+          ? 'Conta Corrente'
+          : account.type === 'CREDIT'
+            ? 'Cartão de Crédito'
+            : 'Dinheiro',
       balance: await getAccountBalance(account.id),
     })),
   )
