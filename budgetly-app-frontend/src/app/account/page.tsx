@@ -12,14 +12,26 @@ export const metadata: Metadata = {
   title: 'Minhas contas',
 }
 
-export default async function AccountPage() {
+type SearchParams = {
+  page?: number
+}
+
+type Props = {
+  searchParams: Promise<SearchParams>
+}
+
+export default async function AccountPage({ searchParams }: Props) {
   const { token } = await getAuthState()
 
   if (!token) {
     redirect('/login')
   }
 
-  const { accounts, meta } = await getAccount({ limit: 4 })
+  const params = await searchParams
+
+  const currentPage = params.page ?? 1
+
+  const { accounts, meta } = await getAccount({ limit: 4, page: currentPage })
 
   return (
     <div className="w-full space-y-8">
