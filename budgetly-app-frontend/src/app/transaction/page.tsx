@@ -110,7 +110,7 @@ export default async function TransactionPage({ searchParams }: Props) {
             </li>
           ))}
         </ul>
-        <Pagination meta={meta} params={params} />
+        <Pagination meta={meta} params={params} name="transações" />
       </div>
     </div>
   )

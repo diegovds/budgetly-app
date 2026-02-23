@@ -1,4 +1,5 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { Pagination } from '@/components/pagination'
 import { Button } from '@/components/ui/button'
 import { getAccount } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
@@ -63,6 +64,7 @@ export default async function AccountPage() {
           </div>
         ))}
       </div>
+      <Pagination meta={meta} name="contas" />
     </div>
   )
 }

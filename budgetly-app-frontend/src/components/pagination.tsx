@@ -6,10 +6,11 @@ import { Button } from './ui/button'
 
 type PaginationProps = {
   meta: GetTransactions200Meta
-  params: SearchParams
+  params?: SearchParams
+  name: string
 }
 
-export function Pagination({ meta, params }: PaginationProps) {
+export function Pagination({ meta, name, params }: PaginationProps) {
   const start = (meta.page - 1) * meta.limit + 1
   const end = Math.min(meta.page * meta.limit, meta.total)
 
@@ -24,14 +25,14 @@ export function Pagination({ meta, params }: PaginationProps) {
   /**
    * Monta a query string preservando filtros
    */
-  function buildQuery(params: SearchParams, page: number) {
+  function buildQuery(params?: SearchParams, page?: number) {
     const query = new URLSearchParams()
 
-    if (params.startDate) query.set('startDate', params.startDate)
-    if (params.endDate) query.set('endDate', params.endDate)
-    if (params.accountId) query.set('accountId', params.accountId)
-    if (params.categoryId) query.set('categoryId', params.categoryId)
-    if (params.search) query.set('search', params.search)
+    if (params?.startDate) query.set('startDate', params?.startDate)
+    if (params?.endDate) query.set('endDate', params?.endDate)
+    if (params?.accountId) query.set('accountId', params?.accountId)
+    if (params?.categoryId) query.set('categoryId', params?.categoryId)
+    if (params?.search) query.set('search', params?.search)
 
     query.set('page', String(page))
 
@@ -41,7 +42,7 @@ export function Pagination({ meta, params }: PaginationProps) {
   return (
     <div className="flex flex-col items-center justify-between gap-4 px-4 pb-4 lg:flex-row">
       <p>
-        Mostrando {start} a {end} de {meta.total} transações
+        Mostrando {start} a {end} de {meta.total} {name}
       </p>
 
       <nav className="flex items-center gap-2">
