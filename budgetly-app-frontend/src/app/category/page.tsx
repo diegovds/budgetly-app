@@ -40,8 +40,8 @@ export default async function CategoryPage() {
               <TrendingUp className="text-green-500" />
             </div>
             <h3 className="text-xl font-semibold">Categoria de Receita</h3>
-            <CategoryList categories={incomeCategories} />
           </div>
+          <CategoryList categories={incomeCategories} />
         </div>
         <div className="bg-accent flex-1 space-y-2 rounded p-4">
           <div className="flex items-center gap-2">
@@ -49,8 +49,8 @@ export default async function CategoryPage() {
               <TrendingDown className="text-red-500" />
             </div>
             <h3 className="text-xl font-semibold">Categoria de Despesa</h3>
-            <CategoryList categories={expenseCategories} />
           </div>
+          <CategoryList categories={expenseCategories} />
         </div>
       </div>
     </div>
