@@ -1,8 +1,6 @@
 import { getAuthState } from '@/actions/get-auth-state'
-import { Button } from '@/components/ui/button'
-import { CirclePlus } from 'lucide-react'
+import { HeaderPage } from '@/components/header-page'
 import { Metadata } from 'next'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
@@ -18,20 +16,12 @@ export default async function CategoryPage() {
 
   return (
     <div className="w-full space-y-8">
-      <header className="lg-gap-0 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
-        <div>
-          <h1 className="mb-4 text-3xl font-bold">Gerenciar Categorias</h1>
-          <p className="text-muted-foreground font-medium">
-            Gerencie suas categorias de receitas e despesas para organizar
-            melhor suas finanças.
-          </p>
-        </div>
-        <Link href="/category/new">
-          <Button className="w-fit">
-            <CirclePlus /> Adicionar Categoria
-          </Button>
-        </Link>
-      </header>
+      <HeaderPage
+        buttonText="Adicionar Categoria"
+        description="Gerencie suas categorias de receitas e despesas para organizar melhor suas finanças."
+        href="/category/new"
+        title="Gerenciar Categorias"
+      />
     </div>
   )
 }
