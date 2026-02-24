@@ -34,7 +34,7 @@ export default async function CategoryPage() {
         title="Gerenciar Categorias"
       />
       <div className="flex gap-8">
-        <div className="bg-accent flex-1 space-y-2 rounded p-4">
+        <div className="bg-accent flex-1 space-y-4 rounded p-4">
           <div className="flex items-center gap-2">
             <div className="rounded-full bg-green-200 p-1">
               <TrendingUp className="text-green-500" />
@@ -43,7 +43,7 @@ export default async function CategoryPage() {
           </div>
           <CategoryList categories={incomeCategories} />
         </div>
-        <div className="bg-accent flex-1 space-y-2 rounded p-4">
+        <div className="bg-accent flex-1 space-y-4 rounded p-4">
           <div className="flex items-center gap-2">
             <div className="rounded-full bg-red-200 p-1">
               <TrendingDown className="text-red-500" />
