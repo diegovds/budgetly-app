@@ -1,4 +1,5 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { CategoryList } from '@/components/category/category-list'
 import { HeaderPage } from '@/components/header-page'
 import { getCategory } from '@/http/api'
 import { TrendingDown, TrendingUp } from 'lucide-react'
@@ -16,7 +17,13 @@ export default async function CategoryPage() {
     redirect('/login')
   }
 
-  const { categories, meta } = await getCategory({ limit: 50, page: 1 })
+  const expenseData = getCategory({ limit: 8, page: 1, type: 'EXPENSE' })
+  const incomeData = getCategory({ limit: 8, page: 1, type: 'INCOME' })
+
+  const [expenseCategories, incomeCategories] = await Promise.all([
+    expenseData,
+    incomeData,
+  ])
 
   return (
     <div className="w-full space-y-8">
@@ -33,6 +40,7 @@ export default async function CategoryPage() {
               <TrendingUp className="text-green-500" />
             </div>
             <h3 className="text-xl font-semibold">Categoria de Receita</h3>
+            <CategoryList categories={incomeCategories} />
           </div>
         </div>
         <div className="bg-accent flex-1 space-y-2 rounded p-4">
@@ -41,6 +49,7 @@ export default async function CategoryPage() {
               <TrendingDown className="text-red-500" />
             </div>
             <h3 className="text-xl font-semibold">Categoria de Despesa</h3>
+            <CategoryList categories={expenseCategories} />
           </div>
         </div>
       </div>
