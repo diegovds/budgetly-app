@@ -32,7 +32,7 @@ export default async function CategoryPage() {
             <div className="rounded-full bg-green-200 p-1">
               <TrendingUp className="text-green-500" />
             </div>
-            <h3 className="font-semibold">Categoria de Receita</h3>
+            <h3 className="text-xl font-semibold">Categoria de Receita</h3>
           </div>
         </div>
         <div className="bg-accent flex-1 space-y-2 rounded p-4">
@@ -40,7 +40,7 @@ export default async function CategoryPage() {
             <div className="rounded-full bg-red-200 p-1">
               <TrendingDown className="text-red-500" />
             </div>
-            <h3 className="font-semibold">Categoria de Despesa</h3>
+            <h3 className="text-xl font-semibold">Categoria de Despesa</h3>
           </div>
         </div>
       </div>
