@@ -37,7 +37,7 @@ export default async function TransactionPage({ searchParams }: Props) {
 
   const currentPage = params.page ?? 1
 
-  const { meta, transactions } = await getTransactions({
+  const transactionsData = getTransactions({
     limit: 8,
     page: currentPage,
     startDate: params.startDate,
@@ -47,8 +47,14 @@ export default async function TransactionPage({ searchParams }: Props) {
     search: params.search,
   })
 
-  const { accounts } = await getAccount({ limit: 50 })
-  const { categories } = await getCategory({ limit: 50 })
+  const accountsData = getAccount({ limit: 50 })
+  const categoriesData = getCategory({ limit: 50 })
+
+  const [transactions, accounts, categories] = await Promise.all([
+    transactionsData,
+    accountsData,
+    categoriesData,
+  ])
 
   return (
     <div className="w-full space-y-8">
@@ -68,8 +74,8 @@ export default async function TransactionPage({ searchParams }: Props) {
       </header>
 
       <TransactionFilters
-        accounts={accounts}
-        categories={categories}
+        accounts={accounts.accounts}
+        categories={categories.categories}
         params={params}
       />
 
@@ -85,7 +91,7 @@ export default async function TransactionPage({ searchParams }: Props) {
 
         {/* Body */}
         <ul className="min-w-225">
-          {transactions.map((transaction) => (
+          {transactions.transactions.map((transaction) => (
             <li
               key={transaction.id}
               className="grid grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] items-center border-b p-4"
@@ -110,7 +116,11 @@ export default async function TransactionPage({ searchParams }: Props) {
             </li>
           ))}
         </ul>
-        <Pagination meta={meta} params={params} name="transações" />
+        <Pagination
+          meta={transactions.meta}
+          params={params}
+          name="transações"
+        />
       </div>
     </div>
   )
