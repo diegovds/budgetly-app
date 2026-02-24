@@ -276,7 +276,16 @@ export type GetCategoryParams = {
    * @maximum 100
    */
   limit?: number
+  type?: GetCategoryType
 }
+
+export type GetCategoryType =
+  (typeof GetCategoryType)[keyof typeof GetCategoryType]
+
+export const GetCategoryType = {
+  INCOME: 'INCOME',
+  EXPENSE: 'EXPENSE',
+} as const
 
 export type GetCategory200CategoriesItemType =
   (typeof GetCategory200CategoriesItemType)[keyof typeof GetCategory200CategoriesItemType]
