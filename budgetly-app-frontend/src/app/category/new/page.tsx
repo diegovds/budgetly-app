@@ -1,5 +1,5 @@
 import { getAuthState } from '@/actions/get-auth-state'
-import { NewCategory } from '@/components/new-category'
+import { NewCategory } from '@/components/category/new-category'
 import { getCategoryTypes } from '@/http/api'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
