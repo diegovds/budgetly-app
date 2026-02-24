@@ -1,9 +1,9 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { HeaderPage } from '@/components/header-page'
 import { Pagination } from '@/components/pagination'
 import { Button } from '@/components/ui/button'
 import { getAccount } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
-import { CirclePlus } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -35,20 +35,12 @@ export default async function AccountPage({ searchParams }: Props) {
 
   return (
     <div className="w-full space-y-8">
-      <header className="lg-gap-0 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
-        <div>
-          <h1 className="mb-4 text-3xl font-bold">Gerenciar Contas</h1>
-          <p className="text-muted-foreground font-medium">
-            Gerencie suas contas bancárias, cartões de crédito e outras fontes
-            de renda.
-          </p>
-        </div>
-        <Link href="/account/new">
-          <Button className="w-fit">
-            <CirclePlus /> Adicionar Conta
-          </Button>
-        </Link>
-      </header>
+      <HeaderPage
+        buttonText="Adicionar Conta"
+        description="Gerencie suas contas bancárias, cartões de crédito e outras fontes de renda."
+        href="/account/new"
+        title="Gerenciar Contas"
+      />
       <div className="grid gap-8 lg:grid-cols-2">
         {accounts.map((account) => (
           <div key={account.id} className="bg-accent space-y-4 rounded p-4">

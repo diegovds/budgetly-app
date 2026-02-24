@@ -1,12 +1,10 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { HeaderPage } from '@/components/header-page'
 import { Pagination } from '@/components/pagination'
 import { TransactionFilters } from '@/components/transaction/transaction-filters'
-import { Button } from '@/components/ui/button'
 import { getAccount, getCategory, getTransactions } from '@/http/api'
 import { formatCurrency, formatDate } from '@/utils/format'
-import { CirclePlus } from 'lucide-react'
 import { Metadata } from 'next'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
@@ -58,20 +56,12 @@ export default async function TransactionPage({ searchParams }: Props) {
 
   return (
     <div className="w-full space-y-8">
-      <header className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
-        <div>
-          <h1 className="mb-4 text-3xl font-bold">Gestão de Transações</h1>
-          <p className="text-muted-foreground font-medium">
-            Visualize e gerencie todas as suas atividades financeiras.
-          </p>
-        </div>
-
-        <Link href="/transaction/new">
-          <Button className="w-fit">
-            <CirclePlus /> Adicionar Transação
-          </Button>
-        </Link>
-      </header>
+      <HeaderPage
+        buttonText="Adicionar Transação"
+        description="Visualize e gerencie todas as suas atividades financeiras."
+        href="/transaction/new"
+        title="Gestão de Transações"
+      />
 
       <TransactionFilters
         accounts={accounts.accounts}
