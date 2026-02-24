@@ -25,14 +25,18 @@ export default async function Home() {
     redirect('/login')
   }
 
-  const { monthExpense, monthIncome, totalBalance } =
-    await getFinancialSummary()
+  const financialSummaryData = getFinancialSummary()
+  const accountsData = getAccount({ limit: 4 })
+  const categoriesData = getCategory()
+  const transactionsData = getTransactionsSummary()
 
-  const { accounts } = await getAccount({ limit: 4 })
-
-  const { categories } = await getCategory()
-
-  const { transactions } = await getTransactionsSummary()
+  const [financialSummary, accounts, categories, transactions] =
+    await Promise.all([
+      financialSummaryData,
+      accountsData,
+      categoriesData,
+      transactionsData,
+    ])
 
   return (
     <div className="w-full space-y-8">
@@ -50,13 +54,19 @@ export default async function Home() {
         </Link>
       </header>
       <SummaryInformation
-        monthExpense={monthExpense}
-        monthIncome={monthIncome}
-        totalBalance={totalBalance}
+        monthExpense={financialSummary.monthExpense}
+        monthIncome={financialSummary.monthIncome}
+        totalBalance={financialSummary.totalBalance}
       />
       <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
-        <MyAccounts accounts={accounts} totalBalance={totalBalance} />
-        <MyTransactions categories={categories} transactions={transactions} />
+        <MyAccounts
+          accounts={accounts.accounts}
+          totalBalance={financialSummary.totalBalance}
+        />
+        <MyTransactions
+          categories={categories.categories}
+          transactions={transactions.transactions}
+        />
       </div>
     </div>
   )
