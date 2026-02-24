@@ -48,19 +48,21 @@ type ListCategoriesSummaryProps = {
   userId: string
   page: number
   limit: number
+  type?: TransactionType
 }
 
 export async function listCategoriesSummary({
   userId,
   page,
   limit,
+  type,
 }: ListCategoriesSummaryProps): Promise<ListCategoriesSummaryResponse> {
   const skip = (page - 1) * limit
   const { startDate, endDate } = getLast30DaysRange()
 
   const [categories, totalCategories] = await Promise.all([
     prisma.category.findMany({
-      where: { userId },
+      where: { userId, type },
       select: {
         id: true,
         name: true,
