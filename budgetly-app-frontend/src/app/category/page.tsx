@@ -33,22 +33,22 @@ export default async function CategoryPage() {
         href="/category/new"
         title="Gerenciar Categorias"
       />
-      <div className="flex items-start gap-8">
-        <div className="bg-accent flex-1 space-y-4 rounded p-4">
+      <div className="flex flex-col items-start gap-8 md:flex-row">
+        <div className="bg-accent w-full flex-1 space-y-4 rounded p-4">
           <div className="flex items-center gap-2">
             <div className="rounded-full bg-green-200 p-1">
-              <TrendingUp className="text-green-500" />
+              <TrendingUp className="text-green-500" size={20} />
             </div>
-            <h3 className="text-xl font-semibold">Categoria de Receita</h3>
+            <h3 className="font-semibold md:text-xl">Categoria de Receita</h3>
           </div>
           <CategoryList categories={incomeCategories} type="INCOME" />
         </div>
-        <div className="bg-accent flex-1 space-y-4 rounded p-4">
+        <div className="bg-accent w-full flex-1 space-y-4 rounded p-4">
           <div className="flex items-center gap-2">
             <div className="rounded-full bg-red-200 p-1">
-              <TrendingDown className="text-red-500" />
+              <TrendingDown className="text-red-500" size={20} />
             </div>
-            <h3 className="text-xl font-semibold">Categoria de Despesa</h3>
+            <h3 className="font-semibold md:text-xl">Categoria de Despesa</h3>
           </div>
           <CategoryList categories={expenseCategories} type="EXPENSE" />
         </div>
