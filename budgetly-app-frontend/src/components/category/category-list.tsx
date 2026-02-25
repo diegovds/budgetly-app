@@ -55,6 +55,7 @@ export function CategoryList({ categories, type }: CategoryListProps) {
 
       {hasNextPage && (
         <Button
+          variant="outline"
           className="w-fit self-center"
           onClick={() => fetchNextPage()}
           disabled={isFetchingNextPage}
