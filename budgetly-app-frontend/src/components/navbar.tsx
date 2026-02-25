@@ -2,7 +2,7 @@
 
 import { clearAuthCookie } from '@/actions/clear-auth-cookie'
 import { useAuthStore } from '@/store/auth'
-import { LogOut } from 'lucide-react'
+import { LogOut, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -63,21 +63,31 @@ export function Navbar({ token }: NavbarProps) {
           </>
         )}
       </div>
-      <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-2 md:hidden">
+      <div
+        className={`container mx-auto flex flex-col items-center justify-between px-4 py-2 md:hidden`}
+      >
         <div className="flex w-full items-center justify-between">
           <h1 className="self-start text-xl font-bold">Budgetly</h1>
-          <span>open</span>
+          <Button variant="outline" onClick={() => setMenuOpened(!menuOpened)}>
+            {menuOpened ? <X size={15} /> : <Menu size={15} />}
+          </Button>
         </div>
         {token && (
-          <div className="flex w-full flex-col items-center">
-            <div className="flex w-full flex-col items-center gap-2">
+          <div
+            className={`flex w-full flex-col items-center overflow-hidden duration-300 ${menuOpened ? 'max-h-98.25' : 'max-h-0'}`}
+          >
+            <div className="mt-4 flex w-full flex-col items-center gap-2">
               {menu.map((item) =>
                 item.href === pathname ? (
                   <Button className="w-full" key={item.href}>
                     {item.label}
                   </Button>
                 ) : (
-                  <Link key={item.href} href={item.href}>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMenuOpened(!menuOpened)}
+                  >
                     <Button className="w-full" variant="ghost">
                       {item.label}
                     </Button>
