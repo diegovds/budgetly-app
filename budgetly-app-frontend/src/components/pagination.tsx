@@ -18,10 +18,6 @@ export function Pagination({ meta, name, params }: PaginationProps) {
   const hasPrev = meta.page > 1
   const hasNext = meta.page < totalPages
 
-  const MAX_VISIBLE = 1
-  const startPage = Math.max(1, meta.page - MAX_VISIBLE)
-  const endPage = Math.min(totalPages, meta.page + MAX_VISIBLE)
-
   /**
    * Monta a query string preservando filtros
    */
@@ -57,47 +53,6 @@ export function Pagination({ meta, name, params }: PaginationProps) {
           <Button variant="outline" disabled className="text-xs md:text-sm">
             <ChevronLeft />
           </Button>
-        )}
-
-        {/* Página 1 */}
-        <Link href={buildQuery(params, 1)}>
-          <Button
-            variant={meta.page === 1 ? 'default' : 'outline'}
-            className="text-xs md:text-sm"
-          >
-            1
-          </Button>
-        </Link>
-
-        {startPage > 2 && <span className="px-2">…</span>}
-
-        {Array.from(
-          { length: endPage - startPage + 1 },
-          (_, i) => startPage + i,
-        )
-          .filter((p) => p !== 1 && p !== totalPages)
-          .map((page) => (
-            <Link key={page} href={buildQuery(params, page)}>
-              <Button
-                variant={page === meta.page ? 'default' : 'outline'}
-                className="text-xs md:text-sm"
-              >
-                {page}
-              </Button>
-            </Link>
-          ))}
-
-        {endPage < totalPages - 1 && <span className="px-2">…</span>}
-
-        {totalPages > 1 && (
-          <Link href={buildQuery(params, totalPages)}>
-            <Button
-              variant={meta.page === totalPages ? 'default' : 'outline'}
-              className="text-xs md:text-sm"
-            >
-              {totalPages}
-            </Button>
-          </Link>
         )}
 
         {/* Próxima */}
