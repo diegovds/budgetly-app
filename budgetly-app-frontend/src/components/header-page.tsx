@@ -7,12 +7,14 @@ type HeaderPageProps = {
   description: string
   href: string
   buttonText: string
+  icon?: boolean
 }
 
 export function HeaderPage({
   buttonText,
   description,
   href,
+  icon,
   title,
 }: HeaderPageProps) {
   return (
@@ -27,7 +29,7 @@ export function HeaderPage({
       </div>
       <Link href={href}>
         <Button className="w-full lg:w-fit">
-          <CirclePlus /> {buttonText}
+          {icon !== false && <CirclePlus />} {buttonText}
         </Button>
       </Link>
     </header>
