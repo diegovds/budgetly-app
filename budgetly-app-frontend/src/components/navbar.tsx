@@ -96,7 +96,7 @@ export function Navbar({ token }: NavbarProps) {
               )}
             </div>
             <Button
-              className="flex w-full items-center justify-center"
+              className="flex items-center justify-center"
               variant="ghost"
               onClick={handleLogout}
             >
