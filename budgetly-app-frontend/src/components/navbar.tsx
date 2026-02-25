@@ -98,7 +98,10 @@ export function Navbar({ token }: NavbarProps) {
             <Button
               className="flex items-center justify-center"
               variant="ghost"
-              onClick={handleLogout}
+              onClick={() => {
+                setMenuOpened(!menuOpened)
+                handleLogout()
+              }}
             >
               Sair <LogOut />
             </Button>
