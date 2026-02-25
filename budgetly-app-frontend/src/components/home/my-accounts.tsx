@@ -17,18 +17,18 @@ export function MyAccounts({ accounts, totalBalance }: MyAccountsProps) {
   return (
     <div className="bg-accent flex-1 space-y-4 rounded p-4">
       <div className="space-y-2">
-        <h2 className="text-2xl font-semibold">Minhas Contas</h2>
-        <p className="text-muted-foreground text-sm">
+        <h2 className="text-xl font-semibold md:text-2xl">Minhas Contas</h2>
+        <p className="text-muted-foreground text-xs md:text-sm">
           Total: {formatCurrency(totalBalance)}
         </p>
       </div>
-      <div className="space-y-6">
+      <div className="space-y-4">
         {accounts.map((account) => (
           <Account key={account.id} account={account} />
         ))}
       </div>
       <Link href="/account/new">
-        <Button variant="outline">
+        <Button variant="outline" className="text-xs md:text-sm">
           <CirclePlus /> Adicionar Nova Conta
         </Button>
       </Link>
