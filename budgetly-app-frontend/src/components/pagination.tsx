@@ -41,7 +41,7 @@ export function Pagination({ meta, name, params }: PaginationProps) {
 
   return (
     <div className="flex flex-col items-center justify-between gap-4 px-4 pb-4 lg:flex-row">
-      <p>
+      <p className="text-xs md:text-sm">
         Mostrando {start} a {end} de {meta.total} {name}
       </p>
 
@@ -49,19 +49,24 @@ export function Pagination({ meta, name, params }: PaginationProps) {
         {/* Anterior */}
         {hasPrev ? (
           <Link href={buildQuery(params, meta.page - 1)}>
-            <Button variant="outline">
+            <Button variant="outline" className="text-xs md:text-sm">
               <ChevronLeft />
             </Button>
           </Link>
         ) : (
-          <Button variant="outline" disabled>
+          <Button variant="outline" disabled className="text-xs md:text-sm">
             <ChevronLeft />
           </Button>
         )}
 
         {/* Página 1 */}
         <Link href={buildQuery(params, 1)}>
-          <Button variant={meta.page === 1 ? 'default' : 'outline'}>1</Button>
+          <Button
+            variant={meta.page === 1 ? 'default' : 'outline'}
+            className="text-xs md:text-sm"
+          >
+            1
+          </Button>
         </Link>
 
         {startPage > 2 && <span className="px-2">…</span>}
@@ -73,7 +78,10 @@ export function Pagination({ meta, name, params }: PaginationProps) {
           .filter((p) => p !== 1 && p !== totalPages)
           .map((page) => (
             <Link key={page} href={buildQuery(params, page)}>
-              <Button variant={page === meta.page ? 'default' : 'outline'}>
+              <Button
+                variant={page === meta.page ? 'default' : 'outline'}
+                className="text-xs md:text-sm"
+              >
                 {page}
               </Button>
             </Link>
@@ -83,7 +91,10 @@ export function Pagination({ meta, name, params }: PaginationProps) {
 
         {totalPages > 1 && (
           <Link href={buildQuery(params, totalPages)}>
-            <Button variant={meta.page === totalPages ? 'default' : 'outline'}>
+            <Button
+              variant={meta.page === totalPages ? 'default' : 'outline'}
+              className="text-xs md:text-sm"
+            >
               {totalPages}
             </Button>
           </Link>
@@ -92,12 +103,12 @@ export function Pagination({ meta, name, params }: PaginationProps) {
         {/* Próxima */}
         {hasNext ? (
           <Link href={buildQuery(params, meta.page + 1)}>
-            <Button variant="outline">
+            <Button variant="outline" className="text-xs md:text-sm">
               <ChevronRight />
             </Button>
           </Link>
         ) : (
-          <Button variant="outline" disabled>
+          <Button variant="outline" disabled className="text-xs md:text-sm">
             <ChevronRight />
           </Button>
         )}
