@@ -22,7 +22,7 @@ export function MyTransactions({
           <h2 className="text-2xl font-semibold">Grupos de Transações</h2>
           <Link href="/category">Ver Tudo</Link>
         </div>
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid gap-8 lg:grid-cols-2">
           {categories.map((category) => (
             <Category key={category.id} category={category} />
           ))}
