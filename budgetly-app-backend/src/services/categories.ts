@@ -74,7 +74,7 @@ export async function listCategoriesSummary({
     }),
 
     prisma.category.count({
-      where: { userId },
+      where: { userId, type },
     }),
   ])
 
