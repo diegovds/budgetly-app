@@ -6,6 +6,8 @@ import {
   GetCategory200CategoriesItemType,
 } from '@/http/api'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { ChevronRight } from 'lucide-react'
+import Link from 'next/link'
 import { Button } from '../ui/button'
 
 type CategoryListProps = {
@@ -45,8 +47,11 @@ export function CategoryList({ categories, type }: CategoryListProps) {
         {data.pages.map((group) =>
           group.categories.map((category) => (
             <div key={category.id}>
-              <h4 className="bg-background rounded p-4 text-center text-sm font-semibold">
+              <h4 className="bg-background flex items-center justify-between rounded p-4 text-xs font-semibold">
                 {category.name}
+                <Link href={`/transaction?categoryId=${category.id}`}>
+                  <ChevronRight size={15} />
+                </Link>
               </h4>
             </div>
           )),
