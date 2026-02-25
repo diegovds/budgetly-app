@@ -67,7 +67,7 @@ export function Navbar({ token }: NavbarProps) {
         className={`container mx-auto flex flex-col items-center justify-between px-4 py-2 md:hidden`}
       >
         <div className="flex w-full items-center justify-between">
-          <h1 className="self-start text-xl font-bold">Budgetly</h1>
+          <h1 className="text-xl font-bold">Budgetly</h1>
           <Button variant="outline" onClick={() => setMenuOpened(!menuOpened)}>
             {menuOpened ? <X size={15} /> : <Menu size={15} />}
           </Button>
