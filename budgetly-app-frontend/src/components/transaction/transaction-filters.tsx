@@ -97,15 +97,15 @@ export function TransactionFilters({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-card flex items-end justify-between gap-4 rounded-md border p-4"
+        className="bg-card flex flex-col justify-between gap-4 rounded-md border p-4 lg:flex-row"
       >
-        <div className="flex gap-4">
+        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-5">
           {/* DATA INICIAL */}
           <FormField
             control={form.control}
             name="startDate"
             render={({ field }) => (
-              <FormItem className="flex flex-col items-center">
+              <FormItem className="flex flex-col items-center justify-between">
                 <FormLabel>Data inicial</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -146,7 +146,7 @@ export function TransactionFilters({
             control={form.control}
             name="endDate"
             render={({ field }) => (
-              <FormItem className="flex flex-col items-center">
+              <FormItem className="flex flex-col items-center justify-between">
                 <FormLabel>Data final</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -187,7 +187,7 @@ export function TransactionFilters({
             control={form.control}
             name="accountId"
             render={({ field }) => (
-              <FormItem className="flex flex-col items-center">
+              <FormItem className="flex flex-col items-center justify-between">
                 <FormLabel>Conta</FormLabel>
                 <Select
                   value={field.value ?? ALL_VALUE}
@@ -219,7 +219,7 @@ export function TransactionFilters({
             control={form.control}
             name="categoryId"
             render={({ field }) => (
-              <FormItem className="flex flex-col items-center">
+              <FormItem className="flex flex-col items-center justify-between">
                 <FormLabel>Categoria</FormLabel>
                 <Select
                   value={field.value ?? ALL_VALUE}
@@ -251,8 +251,8 @@ export function TransactionFilters({
             control={form.control}
             name="search"
             render={({ field }) => (
-              <FormItem className="flex flex-col items-center">
-                <FormLabel>Buscar por transação</FormLabel>
+              <FormItem className="flex flex-col items-center justify-between">
+                <FormLabel>Descrição</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Conta da luz"
@@ -268,7 +268,7 @@ export function TransactionFilters({
           />
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 self-center md:self-end">
           <Button type="button" variant="outline" onClick={handleReset}>
             Limpar filtros
           </Button>
