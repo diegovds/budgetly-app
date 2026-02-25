@@ -69,9 +69,9 @@ export default async function TransactionPage({ searchParams }: Props) {
         params={params}
       />
 
-      <div className="bg-card space-y-4 overflow-x-auto rounded-md border">
+      <div className="bg-card divide-accent divide-y overflow-x-auto rounded-md border">
         {/* Header */}
-        <div className="grid min-w-225 grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] border-b p-4 font-semibold">
+        <div className="grid min-w-225 grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] p-4 text-sm font-semibold md:text-base">
           <p>Data</p>
           <p>Descrição</p>
           <p>Categoria</p>
@@ -80,11 +80,11 @@ export default async function TransactionPage({ searchParams }: Props) {
         </div>
 
         {/* Body */}
-        <ul className="min-w-225">
+        <ul className="divide-accent min-w-225 divide-y text-sm md:text-base">
           {transactions.transactions.map((transaction) => (
             <li
               key={transaction.id}
-              className="grid grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] items-center border-b p-4"
+              className="grid grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] items-center p-4"
             >
               <p className="text-muted-foreground">
                 {formatDate(new Date(transaction.date))}
@@ -92,7 +92,7 @@ export default async function TransactionPage({ searchParams }: Props) {
               <p className="truncate font-semibold">
                 {transaction.description}
               </p>
-              <p className="w-fit rounded-xl border p-2 text-sm">
+              <p className="w-fit rounded-xl border p-2 text-xs md:text-sm">
                 {transaction.categoryName}
               </p>
               <p className="text-muted-foreground">{transaction.accountName}</p>
@@ -106,12 +106,8 @@ export default async function TransactionPage({ searchParams }: Props) {
             </li>
           ))}
         </ul>
-        <Pagination
-          meta={transactions.meta}
-          params={params}
-          name="transações"
-        />
       </div>
+      <Pagination meta={transactions.meta} params={params} name="transações" />
     </div>
   )
 }
