@@ -41,19 +41,23 @@ export default async function AccountPage({ searchParams }: Props) {
         href="/account/new"
         title="Gerenciar Contas"
       />
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         {accounts.map((account) => (
           <div key={account.id} className="bg-accent space-y-4 rounded p-4">
             <div className="space-y-0.5">
-              <h2 className="text-xl font-semibold">{account.name}</h2>
-              <p className="text-muted-foreground text-sm">{account.type}</p>
+              <h2 className="text-lg font-semibold md:text-xl">
+                {account.name}
+              </h2>
+              <p className="text-muted-foreground text-xs md:text-sm">
+                {account.type}
+              </p>
             </div>
             <div className="space-y-0.5">
-              <h2 className="text-muted-foreground font-semibold">
+              <h2 className="text-muted-foreground text-sm font-semibold md:text-base">
                 Saldo atual
               </h2>
               <p
-                className={`text-3xl font-semibold ${
+                className={`text-2xl font-semibold md:text-3xl ${
                   account.balance >= 0 ? 'text-green-500' : 'text-red-500'
                 }`}
               >
@@ -62,7 +66,9 @@ export default async function AccountPage({ searchParams }: Props) {
             </div>
             <div className="flex justify-end">
               <Link href={`/transaction?accountId=${account.id}`}>
-                <Button variant="outline">Ver Transações</Button>
+                <Button variant="outline" className="text-xs md:text-sm">
+                  Ver Transações
+                </Button>
               </Link>
             </div>
           </div>
