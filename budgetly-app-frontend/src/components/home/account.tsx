@@ -11,9 +11,9 @@ type AccountProps = {
 export function Account({ account }: AccountProps) {
   return (
     <div className="bg-background flex items-center justify-between rounded p-4">
-      <h3 className="font-medium">{account.name}</h3>
+      <h3 className="text-sm font-medium md:text-base">{account.name}</h3>
       <p
-        className={`font-semibold ${account.balance >= 0 ? 'text-green-500' : 'text-red-500'}`}
+        className={`text-sm font-semibold md:text-base ${account.balance >= 0 ? 'text-green-500' : 'text-red-500'}`}
       >
         {formatCurrency(account.balance)}
       </p>
