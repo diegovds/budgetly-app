@@ -13,20 +13,20 @@ export function SummaryInformation({
   totalBalance,
 }: SummaryInformationProps) {
   return (
-    <div className="grid gap-4 lg:grid-cols-3 lg:gap-8">
+    <div className="grid gap-4 md:grid-cols-3 lg:gap-8">
       <BalanceInformation
         balance={totalBalance}
-        icon={<Landmark />}
+        icon={<Landmark size={20} />}
         text="Saldo Total"
       />
       <BalanceInformation
         balance={monthIncome}
-        icon={<Banknote />}
+        icon={<Banknote size={20} />}
         text="Receitas do mês"
       />
       <BalanceInformation
         balance={monthExpense}
-        icon={<ShoppingCart />}
+        icon={<ShoppingCart size={20} />}
         text="Despesas do mês"
       />
     </div>
