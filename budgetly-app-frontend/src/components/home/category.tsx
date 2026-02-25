@@ -11,15 +11,17 @@ export function Category({ category }: CategoryProps) {
   return (
     <div className="bg-background flex flex-col justify-between space-y-4 rounded p-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-medium">{category.name}</h3>
+        <h3 className="text-lg font-medium md:text-xl">{category.name}</h3>
         <Link href={`/transaction?categoryId=${category.id}`}>
           <ChevronRight size={15} />
         </Link>
       </div>
       <div className="space-y-0.5">
-        <p className="text-muted-foreground text-sm">Últimos 30 dias</p>
+        <p className="text-muted-foreground text-xs md:text-sm">
+          Últimos 30 dias
+        </p>
         <span
-          className={`text-xl font-medium ${category.total < 0 ? 'text-red-500' : 'text-green-500'}`}
+          className={`text-lg font-medium md:text-xl ${category.total < 0 ? 'text-red-500' : 'text-green-500'}`}
         >
           {formatCurrency(category.total)}
         </span>
