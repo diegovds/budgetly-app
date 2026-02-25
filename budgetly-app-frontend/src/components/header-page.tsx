@@ -18,17 +18,17 @@ export function HeaderPage({
   title,
 }: HeaderPageProps) {
   return (
-    <header className="lg-gap-0 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
+    <header className="lg-gap-0 flex flex-col justify-between gap-4 md:items-center lg:flex-row">
       <div>
-        <h1 className="mb-4 text-center text-3xl font-bold lg:text-left">
+        <h1 className="mb-4 text-center text-2xl font-bold md:text-3xl lg:text-left">
           {title}
         </h1>
-        <p className="text-muted-foreground text-center font-medium text-balance lg:text-left">
+        <p className="text-muted-foreground text-center text-sm font-medium text-balance md:text-base lg:text-left">
           {description}
         </p>
       </div>
       <Link href={href}>
-        <Button className="w-full lg:w-fit">
+        <Button className="w-full text-xs md:w-fit md:text-sm">
           {icon !== false && <CirclePlus />} {buttonText}
         </Button>
       </Link>
