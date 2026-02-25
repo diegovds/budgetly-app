@@ -18,11 +18,15 @@ export function HeaderPage({
   return (
     <header className="lg-gap-0 flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
       <div>
-        <h1 className="mb-4 text-3xl font-bold">{title}</h1>
-        <p className="text-muted-foreground font-medium">{description}</p>
+        <h1 className="mb-4 text-center text-3xl font-bold lg:text-left">
+          {title}
+        </h1>
+        <p className="text-muted-foreground text-center font-medium text-balance lg:text-left">
+          {description}
+        </p>
       </div>
       <Link href={href}>
-        <Button className="w-fit">
+        <Button className="w-full lg:w-fit">
           <CirclePlus /> {buttonText}
         </Button>
       </Link>
