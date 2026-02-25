@@ -17,8 +17,8 @@ export default async function CategoryPage() {
     redirect('/login')
   }
 
-  const expenseData = getCategory({ limit: 8, page: 1, type: 'EXPENSE' })
-  const incomeData = getCategory({ limit: 8, page: 1, type: 'INCOME' })
+  const expenseData = getCategory({ limit: 9, page: 1, type: 'EXPENSE' })
+  const incomeData = getCategory({ limit: 9, page: 1, type: 'INCOME' })
 
   const [expenseCategories, incomeCategories] = await Promise.all([
     expenseData,
@@ -33,7 +33,7 @@ export default async function CategoryPage() {
         href="/category/new"
         title="Gerenciar Categorias"
       />
-      <div className="flex gap-8">
+      <div className="flex items-start gap-8">
         <div className="bg-accent flex-1 space-y-4 rounded p-4">
           <div className="flex items-center gap-2">
             <div className="rounded-full bg-green-200 p-1">
@@ -41,7 +41,7 @@ export default async function CategoryPage() {
             </div>
             <h3 className="text-xl font-semibold">Categoria de Receita</h3>
           </div>
-          <CategoryList categories={incomeCategories} />
+          <CategoryList categories={incomeCategories} type="INCOME" />
         </div>
         <div className="bg-accent flex-1 space-y-4 rounded p-4">
           <div className="flex items-center gap-2">
@@ -50,7 +50,7 @@ export default async function CategoryPage() {
             </div>
             <h3 className="text-xl font-semibold">Categoria de Despesa</h3>
           </div>
-          <CategoryList categories={expenseCategories} />
+          <CategoryList categories={expenseCategories} type="EXPENSE" />
         </div>
       </div>
     </div>
