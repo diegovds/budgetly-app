@@ -9,7 +9,6 @@ import { useQueries } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
-import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import { Button } from '../ui/button'
@@ -253,17 +252,16 @@ export function NewTransaction() {
         </div>
 
         <div className="flex justify-end gap-4">
-          <Link href="/transaction">
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              onClick={() => {
-                toggleIsOpen()
-              }}
-            >
-              Cancelar
-            </Button>
-          </Link>
+          <Button
+            variant="outline"
+            className="text-xs md:text-sm"
+            onClick={() => {
+              toggleIsOpen()
+            }}
+          >
+            Cancelar
+          </Button>
+
           <Button
             type="submit"
             className="text-xs md:text-sm"
