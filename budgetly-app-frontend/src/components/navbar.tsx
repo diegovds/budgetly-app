@@ -68,9 +68,14 @@ export function Navbar({ token }: NavbarProps) {
       >
         <div className="flex w-full items-center justify-between">
           <h1 className="text-xl font-bold">Budgetly</h1>
-          <Button variant="outline" onClick={() => setMenuOpened(!menuOpened)}>
-            {menuOpened ? <X size={15} /> : <Menu size={15} />}
-          </Button>
+          {token && (
+            <Button
+              variant="outline"
+              onClick={() => setMenuOpened(!menuOpened)}
+            >
+              {menuOpened ? <X size={15} /> : <Menu size={15} />}
+            </Button>
+          )}
         </div>
         {token && (
           <div
@@ -79,7 +84,7 @@ export function Navbar({ token }: NavbarProps) {
             <div className="mt-4 flex w-full flex-col items-center gap-2">
               {menu.map((item) =>
                 item.href === pathname ? (
-                  <Button className="w-full" key={item.href}>
+                  <Button className="w-full text-xs" key={item.href}>
                     {item.label}
                   </Button>
                 ) : (
@@ -88,7 +93,7 @@ export function Navbar({ token }: NavbarProps) {
                     href={item.href}
                     onClick={() => setMenuOpened(!menuOpened)}
                   >
-                    <Button className="w-full" variant="ghost">
+                    <Button className="w-full text-xs" variant="ghost">
                       {item.label}
                     </Button>
                   </Link>
@@ -96,7 +101,7 @@ export function Navbar({ token }: NavbarProps) {
               )}
             </div>
             <Button
-              className="flex items-center justify-center"
+              className="flex items-center justify-center text-xs"
               variant="ghost"
               onClick={() => {
                 setMenuOpened(!menuOpened)
