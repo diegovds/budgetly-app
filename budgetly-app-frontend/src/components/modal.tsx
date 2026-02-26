@@ -3,15 +3,16 @@
 import { useModalStore } from '@/store/useModalStore.ts'
 import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { NewTransaction } from './transaction/new-transaction'
 
 type ModalProps = {
   onClose: () => void
   title?: string
-  children: React.ReactNode
+  // children: React.ReactNode
 }
 
-export function Modal({ onClose, title, children }: ModalProps) {
-  const { isOpen, toggleWhoOpened } = useModalStore()
+export function Modal({ onClose, title }: ModalProps) {
+  const { isOpen, toggleWhoOpened, whoOpened } = useModalStore()
   const [show, setShow] = useState(isOpen)
   const [exiting, setExiting] = useState(false)
 
@@ -67,7 +68,7 @@ export function Modal({ onClose, title, children }: ModalProps) {
             <X size={20} />
           </button>
         </div>
-        <div>{children}</div>
+        <div>{whoOpened === '/transaction/new' && <NewTransaction />}</div>
       </div>
     </div>
   )
