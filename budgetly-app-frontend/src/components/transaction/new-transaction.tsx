@@ -253,6 +253,7 @@ export function NewTransaction() {
 
         <div className="flex justify-end gap-4">
           <Button
+            type="button"
             variant="outline"
             className="text-xs md:text-sm"
             onClick={() => {
