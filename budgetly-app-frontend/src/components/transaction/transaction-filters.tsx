@@ -200,14 +200,23 @@ export function TransactionFilters({
                   }
                 >
                   <FormControl>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full text-xs md:text-base">
                       <SelectValue placeholder="Selecione a Conta" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value={ALL_VALUE}>Todas</SelectItem>
+                    <SelectItem
+                      className="text-xs md:text-base"
+                      value={ALL_VALUE}
+                    >
+                      Todas
+                    </SelectItem>
                     {accounts.map((account) => (
-                      <SelectItem key={account.id} value={account.id}>
+                      <SelectItem
+                        className="text-xs md:text-base"
+                        key={account.id}
+                        value={account.id}
+                      >
                         {account.name}
                       </SelectItem>
                     ))}
@@ -234,14 +243,23 @@ export function TransactionFilters({
                   }
                 >
                   <FormControl>
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger className="w-full text-xs md:text-base">
                       <SelectValue placeholder="Selecione a Categoria" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value={ALL_VALUE}>Todas</SelectItem>
+                    <SelectItem
+                      className="text-xs md:text-base"
+                      value={ALL_VALUE}
+                    >
+                      Todas
+                    </SelectItem>
                     {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
+                      <SelectItem
+                        className="text-xs md:text-base"
+                        key={category.id}
+                        value={category.id}
+                      >
                         {category.name}
                       </SelectItem>
                     ))}
