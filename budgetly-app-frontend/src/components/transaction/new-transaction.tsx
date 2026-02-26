@@ -138,7 +138,7 @@ export function NewTransaction() {
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger className="w-full text-xs md:text-base">
-                        <SelectValue placeholder="Selecione a Conta" />
+                        <SelectValue placeholder="Selecione" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -169,7 +169,7 @@ export function NewTransaction() {
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
                       <SelectTrigger className="w-full text-xs md:text-base">
-                        <SelectValue placeholder="Selecione a Categoria" />
+                        <SelectValue placeholder="Selecione" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
