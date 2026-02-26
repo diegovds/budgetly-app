@@ -51,7 +51,7 @@ const createTransactionSchema = z.object({
 type CreateNewTransactionFormData = z.infer<typeof createTransactionSchema>
 
 export function NewTransaction() {
-  const { toggleIsOpen, toggleWhoOpened } = useModalStore()
+  const { toggleIsOpen } = useModalStore()
 
   const results = useQueries({
     queries: [
@@ -95,7 +95,6 @@ export function NewTransaction() {
     })
 
     toggleIsOpen()
-    toggleWhoOpened()
   }
 
   return (
@@ -241,7 +240,6 @@ export function NewTransaction() {
               variant="outline"
               onClick={() => {
                 toggleIsOpen()
-                toggleWhoOpened()
               }}
             >
               Cancelar
