@@ -106,13 +106,15 @@ export function TransactionFilters({
             name="startDate"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel>Data inicial</FormLabel>
+                <FormLabel className="text-sm md:text-base">
+                  Data inicial
+                </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
                         variant="outline"
-                        className={`w-full justify-start text-left font-normal ${
+                        className={`w-full justify-start text-left text-xs font-normal md:text-base ${
                           !field.value && 'text-muted-foreground'
                         }`}
                       >
@@ -147,13 +149,15 @@ export function TransactionFilters({
             name="endDate"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel>Data final</FormLabel>
+                <FormLabel className="text-sm md:text-base">
+                  Data final
+                </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
                         variant="outline"
-                        className={`w-full justify-start text-left font-normal ${
+                        className={`w-full justify-start text-left text-xs font-normal md:text-base ${
                           !field.value && 'text-muted-foreground'
                         }`}
                       >
@@ -188,7 +192,7 @@ export function TransactionFilters({
             name="accountId"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel>Conta</FormLabel>
+                <FormLabel className="text-sm md:text-base">Conta</FormLabel>
                 <Select
                   value={field.value ?? ALL_VALUE}
                   onValueChange={(value) =>
@@ -220,7 +224,9 @@ export function TransactionFilters({
             name="categoryId"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel>Categoria</FormLabel>
+                <FormLabel className="text-sm md:text-base">
+                  Categoria
+                </FormLabel>
                 <Select
                   value={field.value ?? ALL_VALUE}
                   onValueChange={(value) =>
@@ -252,10 +258,13 @@ export function TransactionFilters({
             name="search"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel>Descrição</FormLabel>
+                <FormLabel className="text-sm md:text-base">
+                  Descrição
+                </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Conta da luz"
+                    className="text-xs md:text-base"
                     value={field.value ?? ''}
                     onChange={(e) =>
                       field.onChange(e.target.value || undefined)
@@ -269,11 +278,18 @@ export function TransactionFilters({
         </div>
 
         <div className="flex gap-4 self-center md:self-end">
-          <Button type="button" variant="outline" onClick={handleReset}>
+          <Button
+            type="button"
+            className="text-xs md:text-sm"
+            variant="outline"
+            onClick={handleReset}
+          >
             Limpar filtros
           </Button>
 
-          <Button type="submit">Filtrar</Button>
+          <Button type="submit" className="text-xs md:text-sm">
+            Filtrar
+          </Button>
         </div>
       </form>
     </Form>
