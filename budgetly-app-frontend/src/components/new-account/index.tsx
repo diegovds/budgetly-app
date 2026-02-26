@@ -22,9 +22,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useAccountInsertionMutation } from '@/hooks/useAccountInsertionMutation'
-import { GetAccountTypes200Item } from '@/http/api'
+import { getAccountTypes } from '@/http/api'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader } from '../ui/card'
 
 const createAccountSchema = z.object({
   name: z.string().min(1, 'Informe o nome da conta'),
@@ -33,11 +33,14 @@ const createAccountSchema = z.object({
 
 type CreateAccountFormData = z.infer<typeof createAccountSchema>
 
-type NewAccountProps = {
-  accountTypes: GetAccountTypes200Item[]
-}
+export function NewAccount() {
+  const response = useQuery({
+    queryKey: ['accountTypes'],
+    queryFn: () => getAccountTypes(),
+  })
 
-export function NewAccount({ accountTypes }: NewAccountProps) {
+  const accountTypes = response.data || []
+
   const { mutate, isPending, error, isSuccess } = useAccountInsertionMutation()
   const form = useForm<CreateAccountFormData>({
     resolver: zodResolver(createAccountSchema),
@@ -52,80 +55,84 @@ export function NewAccount({ accountTypes }: NewAccountProps) {
   }
 
   return (
-    <Card className="h-fit w-full max-w-xl">
-      {/* Header */}
-      <CardHeader className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Nova Conta</h1>
-        <p className="text-muted-foreground">
-          Crie uma nova conta para organizar suas finanças.
-        </p>
-      </CardHeader>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 rounded-xl border p-4"
+      >
+        {/* Nome */}
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm md:text-base">
+                Nome da conta
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="text-xs md:text-base"
+                  placeholder="Ex: Nubank"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      {/* Form */}
-      <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 rounded-xl border p-6 shadow-sm"
+        {/* Tipo */}
+        <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm md:text-base">
+                Tipo da conta
+              </FormLabel>
+              <Select value={field.value} onValueChange={field.onChange}>
+                <FormControl>
+                  <SelectTrigger className="text-xs md:text-base">
+                    <SelectValue placeholder="Selecione o tipo" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {accountTypes.map((accountType) => (
+                    <SelectItem
+                      className="text-xs md:text-base"
+                      key={accountType.value}
+                      value={accountType.value}
+                    >
+                      {accountType.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Actions */}
+        <div className="flex justify-end gap-3 pt-2">
+          <Link href="/account">
+            <Button
+              type="button"
+              className="text-xs md:text-sm"
+              variant="outline"
+            >
+              Cancelar
+            </Button>
+          </Link>
+          <Button
+            type="submit"
+            className="text-xs md:text-sm"
+            disabled={isPending || isSuccess}
           >
-            {/* Nome */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome da conta</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ex: Nubank" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Tipo */}
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tipo da conta</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o tipo" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {accountTypes.map((accountType) => (
-                        <SelectItem
-                          key={accountType.value}
-                          value={accountType.value}
-                        >
-                          {accountType.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Actions */}
-            <div className="flex justify-end gap-3 pt-4">
-              <Link href="/account">
-                <Button type="button" variant="outline">
-                  Cancelar
-                </Button>
-              </Link>
-              <Button type="submit" disabled={isPending || isSuccess}>
-                Salvar conta
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            Salvar conta
+          </Button>
+        </div>
+      </form>
+    </Form>
   )
 }
