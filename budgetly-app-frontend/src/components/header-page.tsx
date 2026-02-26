@@ -2,6 +2,7 @@
 
 import { useModalStore } from '@/store/useModalStore.ts'
 import { CirclePlus } from 'lucide-react'
+import Link from 'next/link'
 import { Modal } from './modal'
 import { Button } from './ui/button'
 
@@ -33,15 +34,23 @@ export function HeaderPage({
         </p>
       </div>
 
-      <Button
-        className="w-full text-xs md:w-fit md:text-sm"
-        onClick={() => {
-          setIsOpen(true)
-          setWhoOpened(href)
-        }}
-      >
-        {icon !== false && <CirclePlus />} {buttonText}
-      </Button>
+      {icon !== false ? (
+        <Button
+          className="w-full text-xs md:w-fit md:text-sm"
+          onClick={() => {
+            setIsOpen(true)
+            setWhoOpened(href)
+          }}
+        >
+          <CirclePlus /> {buttonText}
+        </Button>
+      ) : (
+        <Link href="/">
+          <Button className="w-full text-xs md:w-fit md:text-sm">
+            Voltar para a Home
+          </Button>
+        </Link>
+      )}
 
       <Modal
         onClose={() => {
