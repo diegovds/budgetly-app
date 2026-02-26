@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/select'
 import { useAccountInsertionMutation } from '@/hooks/useAccountInsertionMutation'
 import { getAccountTypes } from '@/http/api'
+import { useModalStore } from '@/store/useModalStore.ts'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
@@ -34,6 +35,8 @@ const createAccountSchema = z.object({
 type CreateAccountFormData = z.infer<typeof createAccountSchema>
 
 export function NewAccount() {
+  const { toggleIsOpen } = useModalStore()
+
   const response = useQuery({
     queryKey: ['accountTypes'],
     queryFn: () => getAccountTypes(),
@@ -120,6 +123,9 @@ export function NewAccount() {
               type="button"
               className="text-xs md:text-sm"
               variant="outline"
+              onClick={() => {
+                toggleIsOpen()
+              }}
             >
               Cancelar
             </Button>
