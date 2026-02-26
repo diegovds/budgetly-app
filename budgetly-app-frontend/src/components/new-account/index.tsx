@@ -25,7 +25,6 @@ import { useAccountInsertionMutation } from '@/hooks/useAccountInsertionMutation
 import { getAccountTypes } from '@/http/api'
 import { useModalStore } from '@/store/useModalStore.ts'
 import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
 
 const createAccountSchema = z.object({
   name: z.string().min(1, 'Informe o nome da conta'),
@@ -118,18 +117,17 @@ export function NewAccount() {
 
         {/* Actions */}
         <div className="flex justify-end gap-3 pt-2">
-          <Link href="/account">
-            <Button
-              type="button"
-              className="text-xs md:text-sm"
-              variant="outline"
-              onClick={() => {
-                toggleIsOpen()
-              }}
-            >
-              Cancelar
-            </Button>
-          </Link>
+          <Button
+            type="button"
+            className="text-xs md:text-sm"
+            variant="outline"
+            onClick={() => {
+              toggleIsOpen()
+            }}
+          >
+            Cancelar
+          </Button>
+
           <Button
             type="submit"
             className="text-xs md:text-sm"
