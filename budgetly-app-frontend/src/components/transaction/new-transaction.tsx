@@ -110,9 +110,10 @@ export function NewTransaction() {
               name="amount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Valor</FormLabel>
+                  <FormLabel className="text-sm md:text-base">Valor</FormLabel>
                   <FormControl>
                     <Input
+                      className="text-xs md:text-base"
                       type="text"
                       placeholder="R$ 1.000,00"
                       value={field.value ?? ''}
@@ -133,16 +134,20 @@ export function NewTransaction() {
               name="accountId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Conta</FormLabel>
+                  <FormLabel className="text-sm md:text-base">Conta</FormLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full text-xs md:text-base">
                         <SelectValue placeholder="Selecione a Conta" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {accounts.map((account) => (
-                        <SelectItem key={account.id} value={account.id}>
+                        <SelectItem
+                          className="text-xs md:text-base"
+                          key={account.id}
+                          value={account.id}
+                        >
                           {account.name}
                         </SelectItem>
                       ))}
@@ -158,16 +163,22 @@ export function NewTransaction() {
               name="categoryId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Categoria</FormLabel>
+                  <FormLabel className="text-sm md:text-base">
+                    Categoria
+                  </FormLabel>
                   <Select value={field.value} onValueChange={field.onChange}>
                     <FormControl>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full text-xs md:text-base">
                         <SelectValue placeholder="Selecione a Categoria" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
+                        <SelectItem
+                          className="text-xs md:text-base"
+                          key={category.id}
+                          value={category.id}
+                        >
                           {category.name}
                         </SelectItem>
                       ))}
@@ -183,13 +194,13 @@ export function NewTransaction() {
               name="date"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Data</FormLabel>
+                  <FormLabel className="text-sm md:text-base">Data</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant="outline"
-                          className={`w-full justify-start text-left font-normal ${
+                          className={`w-full justify-start text-left text-xs font-normal md:text-base ${
                             !field.value && 'text-muted-foreground'
                           }`}
                         >
@@ -223,9 +234,16 @@ export function NewTransaction() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel className="text-sm md:text-base">
+                    Descrição
+                  </FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Conta da luz" {...field} />
+                    <Input
+                      type="text"
+                      className="text-xs md:text-base"
+                      placeholder="Conta da luz"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
