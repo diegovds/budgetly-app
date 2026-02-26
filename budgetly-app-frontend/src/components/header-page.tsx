@@ -1,5 +1,8 @@
+'use client'
+
+import { useModalStore } from '@/store/useModalStore.ts'
 import { CirclePlus } from 'lucide-react'
-import Link from 'next/link'
+import { Modal } from './modal'
 import { Button } from './ui/button'
 
 type HeaderPageProps = {
@@ -17,6 +20,8 @@ export function HeaderPage({
   icon,
   title,
 }: HeaderPageProps) {
+  const { setIsOpen, setWhoOpened } = useModalStore()
+
   return (
     <header className="lg-gap-0 flex flex-col justify-between gap-4 md:items-center lg:flex-row">
       <div>
@@ -27,11 +32,29 @@ export function HeaderPage({
           {description}
         </p>
       </div>
-      <Link href={href}>
-        <Button className="w-full text-xs md:w-fit md:text-sm">
-          {icon !== false && <CirclePlus />} {buttonText}
-        </Button>
-      </Link>
+
+      <Button
+        className="w-full text-xs md:w-fit md:text-sm"
+        onClick={() => {
+          setIsOpen(true)
+          setWhoOpened(href)
+        }}
+      >
+        {icon !== false && <CirclePlus />} {buttonText}
+      </Button>
+
+      <Modal
+        onClose={() => {
+          setIsOpen(false)
+        }}
+        title={
+          href === '/transaction/new'
+            ? 'Adicionar Transação'
+            : href === '/account/new'
+              ? 'Adicionar Conta'
+              : 'Adicionar Categoria'
+        }
+      />
     </header>
   )
 }
