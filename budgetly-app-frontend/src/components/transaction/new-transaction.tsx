@@ -256,6 +256,7 @@ export function NewTransaction() {
           <Link href="/transaction">
             <Button
               variant="outline"
+              className="text-xs md:text-sm"
               onClick={() => {
                 toggleIsOpen()
               }}
@@ -263,7 +264,11 @@ export function NewTransaction() {
               Cancelar
             </Button>
           </Link>
-          <Button type="submit" disabled={isPending || isSuccess}>
+          <Button
+            type="submit"
+            className="text-xs md:text-sm"
+            disabled={isPending || isSuccess}
+          >
             Salvar Transação
           </Button>
         </div>
