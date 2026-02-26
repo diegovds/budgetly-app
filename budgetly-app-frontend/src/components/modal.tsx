@@ -3,6 +3,7 @@
 import { useModalStore } from '@/store/useModalStore.ts'
 import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { NewAccount } from './new-account'
 import { NewTransaction } from './transaction/new-transaction'
 
 type ModalProps = {
@@ -68,7 +69,10 @@ export function Modal({ onClose, title }: ModalProps) {
             <X size={20} />
           </button>
         </div>
-        <div>{whoOpened === '/transaction/new' && <NewTransaction />}</div>
+        <div>
+          {whoOpened === '/transaction/new' && <NewTransaction />}
+          {whoOpened === '/account/new' && <NewAccount />}
+        </div>
       </div>
     </div>
   )
