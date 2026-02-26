@@ -1,6 +1,9 @@
+'use client'
+
+import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency } from '@/utils/format'
 import { CirclePlus } from 'lucide-react'
-import Link from 'next/link'
+import { Modal } from '../modal'
 import { Button } from '../ui/button'
 import { Account } from './account'
 
@@ -14,6 +17,8 @@ type MyAccountsProps = {
 }
 
 export function MyAccounts({ accounts, totalBalance }: MyAccountsProps) {
+  const { setIsOpen, setWhoOpened } = useModalStore()
+
   return (
     <div className="bg-accent flex-1 space-y-4 rounded p-4">
       <div className="space-y-2">
@@ -27,11 +32,24 @@ export function MyAccounts({ accounts, totalBalance }: MyAccountsProps) {
           <Account key={account.id} account={account} />
         ))}
       </div>
-      <Link href="/account/new">
-        <Button variant="outline" className="text-xs md:text-sm">
-          <CirclePlus /> Adicionar Nova Conta
-        </Button>
-      </Link>
+
+      <Button
+        variant="outline"
+        className="text-xs md:text-sm"
+        onClick={() => {
+          setIsOpen(true)
+          setWhoOpened('/account/new')
+        }}
+      >
+        <CirclePlus /> Adicionar Nova Conta
+      </Button>
+
+      <Modal
+        onClose={() => {
+          setIsOpen(false)
+        }}
+        title="Adicionar Transação"
+      />
     </div>
   )
 }
