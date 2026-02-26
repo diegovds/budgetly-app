@@ -47,23 +47,26 @@ export function Modal({ onClose, title, children }: ModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
-        className={`bg-overlay absolute inset-0 ${
+        className={`absolute inset-0 bg-black ${
           exiting ? 'overlay-exit' : 'overlay-animate'
         }`}
         onClick={onClose}
         onAnimationEnd={handleAnimationEnd}
       />
       <div
-        className={`bg-secondary text-foreground relative z-10 mx-4 w-full max-w-lg rounded-2xl p-5 shadow-xl md:p-8 ${
+        className={`bg-accent relative z-10 mx-4 w-full max-w-lg rounded-md p-4 ${
           exiting ? 'modal-exit' : 'modal-animate'
         }`}
         onAnimationEnd={handleAnimationEnd}
       >
-        <X
-          onClick={onClose}
-          className="bg-foreground text-secondary absolute top-3 right-3 cursor-pointer rounded-full p-1 text-2xl duration-300 hover:opacity-95 md:text-3xl"
-        />
-        {title && <h2 className="text-foreground mb-4 text-xl">{title}</h2>}
+        <div className="mb-4 flex items-center justify-between">
+          {title && (
+            <h2 className="text-lg font-semibold md:text-xl">{title}</h2>
+          )}
+          <button onClick={onClose} className="bg-primary rounded-full p-0.5">
+            <X size={20} />
+          </button>
+        </div>
         <div>{children}</div>
       </div>
     </div>
