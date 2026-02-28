@@ -22,9 +22,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useCategoryInsertionMutation } from '@/hooks/useCategoryInsertionMutation'
-import { GetCategoryTypes200Item } from '@/http/api'
+import { getCategoryTypes } from '@/http/api'
+import { useModalStore } from '@/store/useModalStore.ts'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader } from '../ui/card'
 
 const createCategorySchema = z.object({
   name: z.string().min(1, 'Informe o nome da categoria'),
@@ -33,11 +34,8 @@ const createCategorySchema = z.object({
 
 type CreateCategoryFormData = z.infer<typeof createCategorySchema>
 
-type NewCategoryProps = {
-  categoryTypes: GetCategoryTypes200Item[]
-}
-
-export function NewCategory({ categoryTypes }: NewCategoryProps) {
+export function NewCategory() {
+  const { toggleIsOpen } = useModalStore()
   const { mutate, isPending, error, isSuccess } = useCategoryInsertionMutation()
   const form = useForm<CreateCategoryFormData>({
     resolver: zodResolver(createCategorySchema),
@@ -47,85 +45,99 @@ export function NewCategory({ categoryTypes }: NewCategoryProps) {
     },
   })
 
+  const response = useQuery({
+    queryKey: ['categoryTypes'],
+    queryFn: () => getCategoryTypes(),
+  })
+
+  const categoryTypes = response.data || []
+
   function onSubmit(data: CreateCategoryFormData) {
     mutate(data)
   }
 
   return (
-    <Card className="h-fit w-full max-w-xl">
-      {/* Header */}
-      <CardHeader className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Nova Categoria</h1>
-        <p className="text-muted-foreground">
-          Crie uma nova categoria para organizar suas finanças.
-        </p>
-      </CardHeader>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-6 rounded-xl border p-4"
+      >
+        {/* Nome */}
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm md:text-base">
+                Nome da categoria
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className="text-xs md:text-base"
+                  placeholder="Ex: Alimentação"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      {/* Form */}
-      <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6 rounded-xl border p-6 shadow-sm"
+        {/* Tipo */}
+        <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm md:text-base">
+                Tipo da categoria
+              </FormLabel>
+              <Select value={field.value} onValueChange={field.onChange}>
+                <FormControl>
+                  <SelectTrigger className="text-xs md:text-base">
+                    <SelectValue placeholder="Selecione o tipo" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {categoryTypes.map((categoryType) => (
+                    <SelectItem
+                      className="text-xs md:text-base"
+                      key={categoryType.value}
+                      value={categoryType.value}
+                    >
+                      {categoryType.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Actions */}
+        <div className="flex justify-end gap-3 pt-4">
+          <Link href="/category">
+            <Button
+              type="button"
+              variant="outline"
+              className="text-xs md:text-sm"
+              onClick={() => {
+                toggleIsOpen()
+              }}
+            >
+              Cancelar
+            </Button>
+          </Link>
+          <Button
+            type="submit"
+            className="text-xs md:text-sm"
+            disabled={isPending || isSuccess}
           >
-            {/* Nome */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome da categoria</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ex: Alimentação" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Tipo */}
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tipo da categoria</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o tipo" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categoryTypes.map((categoryType) => (
-                        <SelectItem
-                          key={categoryType.value}
-                          value={categoryType.value}
-                        >
-                          {categoryType.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Actions */}
-            <div className="flex justify-end gap-3 pt-4">
-              <Link href="/category">
-                <Button type="button" variant="outline">
-                  Cancelar
-                </Button>
-              </Link>
-              <Button type="submit" disabled={isPending || isSuccess}>
-                Salvar categoria
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            Salvar categoria
+          </Button>
+        </div>
+      </form>
+    </Form>
   )
 }
