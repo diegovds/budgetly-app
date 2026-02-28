@@ -1,7 +1,8 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { CategoryList } from '@/components/category/category-list'
 import { HeaderPage } from '@/components/header-page'
-import { getCategory } from '@/http/api'
+import { getCategory, getCategoryTypes } from '@/http/api'
+import { StoreCategoryTypes } from '@/providers/store-category-type'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -19,14 +20,15 @@ export default async function CategoryPage() {
 
   const expenseData = getCategory({ limit: 9, page: 1, type: 'EXPENSE' })
   const incomeData = getCategory({ limit: 9, page: 1, type: 'INCOME' })
+  const categoryTypesData = getCategoryTypes()
 
-  const [expenseCategories, incomeCategories] = await Promise.all([
-    expenseData,
-    incomeData,
-  ])
+  const [expenseCategories, incomeCategories, categoryTypes] =
+    await Promise.all([expenseData, incomeData, categoryTypesData])
 
   return (
     <div className="w-full space-y-8">
+      <StoreCategoryTypes categoryTypes={categoryTypes} />
+
       <HeaderPage
         buttonText="Adicionar Categoria"
         description="Gerencie suas categorias de receitas e despesas para organizar melhor suas finanças."

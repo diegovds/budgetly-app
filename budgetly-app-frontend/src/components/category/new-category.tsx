@@ -22,9 +22,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useCategoryInsertionMutation } from '@/hooks/useCategoryInsertionMutation'
-import { getCategoryTypes } from '@/http/api'
+import { useCategoryTypesStore } from '@/store/category-type'
 import { useModalStore } from '@/store/useModalStore.ts'
-import { useQuery } from '@tanstack/react-query'
 
 const createCategorySchema = z.object({
   name: z.string().min(1, 'Informe o nome da categoria'),
@@ -44,12 +43,7 @@ export function NewCategory() {
     },
   })
 
-  const response = useQuery({
-    queryKey: ['categoryTypes'],
-    queryFn: () => getCategoryTypes(),
-  })
-
-  const categoryTypes = response.data || []
+  const { categoryTypes } = useCategoryTypesStore()
 
   function onSubmit(data: CreateCategoryFormData) {
     mutate(data)
