@@ -48,7 +48,7 @@ export function MyAccounts({ accounts, totalBalance }: MyAccountsProps) {
         onClose={() => {
           setIsOpen(false)
         }}
-        title="Adicionar Transação"
+        title="Adicionar Conta"
       />
     </div>
   )
