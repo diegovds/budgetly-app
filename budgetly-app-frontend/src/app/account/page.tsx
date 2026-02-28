@@ -2,7 +2,8 @@ import { getAuthState } from '@/actions/get-auth-state'
 import { HeaderPage } from '@/components/header-page'
 import { Pagination } from '@/components/pagination'
 import { Button } from '@/components/ui/button'
-import { getAccount } from '@/http/api'
+import { getAccount, getAccountTypes } from '@/http/api'
+import { StoreAccountTypes } from '@/providers/store-account-type'
 import { formatCurrency } from '@/utils/format'
 import { Metadata } from 'next'
 import Link from 'next/link'
@@ -31,10 +32,18 @@ export default async function AccountPage({ searchParams }: Props) {
 
   const currentPage = params.page ?? 1
 
-  const { accounts, meta } = await getAccount({ limit: 4, page: currentPage })
+  const accountsData = getAccount({ limit: 4, page: currentPage })
+  const accountTypesData = getAccountTypes()
+
+  const [accounts, accountTypes] = await Promise.all([
+    accountsData,
+    accountTypesData,
+  ])
 
   return (
     <div className="w-full space-y-8">
+      <StoreAccountTypes accountTypes={accountTypes} />
+
       <HeaderPage
         buttonText="Adicionar Conta"
         description="Gerencie suas contas bancárias, cartões de crédito e outras fontes de renda."
@@ -42,7 +51,7 @@ export default async function AccountPage({ searchParams }: Props) {
         title="Gerenciar Contas"
       />
       <div className="grid gap-4 lg:grid-cols-2">
-        {accounts.map((account) => (
+        {accounts.accounts.map((account) => (
           <div key={account.id} className="bg-accent space-y-4 rounded p-4">
             <div className="space-y-0.5">
               <h2 className="text-lg font-semibold md:text-xl">
@@ -74,7 +83,7 @@ export default async function AccountPage({ searchParams }: Props) {
           </div>
         ))}
       </div>
-      <Pagination meta={meta} name="contas" />
+      <Pagination meta={accounts.meta} name="contas" />
     </div>
   )
 }
