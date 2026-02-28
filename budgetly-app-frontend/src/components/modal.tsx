@@ -75,9 +75,13 @@ export function Modal({ onClose }: ModalProps) {
           </button>
         </div>
         <div>
-          {whoOpened === '/transaction/new' && <NewTransaction />}
-          {whoOpened === '/account/new' && <NewAccount />}
-          {whoOpened === '/category/new' && <NewCategory />}
+          {whoOpened === '/transaction/new' ? (
+            <NewTransaction />
+          ) : whoOpened === '/account/new' ? (
+            <NewAccount />
+          ) : (
+            <NewCategory />
+          )}
         </div>
       </div>
     </div>
