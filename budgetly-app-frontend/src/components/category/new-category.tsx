@@ -53,6 +53,8 @@ export function NewCategory() {
 
   function onSubmit(data: CreateCategoryFormData) {
     mutate(data)
+
+    toggleIsOpen()
   }
 
   return (
