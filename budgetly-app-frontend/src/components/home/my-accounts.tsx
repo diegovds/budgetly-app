@@ -3,7 +3,6 @@
 import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency } from '@/utils/format'
 import { CirclePlus } from 'lucide-react'
-import { Modal } from '../modal'
 import { Button } from '../ui/button'
 import { Account } from './account'
 
@@ -41,14 +40,8 @@ export function MyAccounts({ accounts, totalBalance }: MyAccountsProps) {
           setWhoOpened('/account/new')
         }}
       >
-        <CirclePlus /> Adicionar Nova Conta
+        <CirclePlus /> Adicionar Conta
       </Button>
-
-      <Modal
-        onClose={() => {
-          setIsOpen(false)
-        }}
-      />
     </div>
   )
 }
