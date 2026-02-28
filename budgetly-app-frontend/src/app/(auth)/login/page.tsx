@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default async function LoginPage() {
   return (
-    <div className="flex w-full gap-6">
+    <div className="flex w-full">
       <Login />
     </div>
   )

@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -23,7 +22,6 @@ import { useState } from 'react'
 const loginSchema = z.object({
   email: z.string().email('E-mail inválido'),
   password: z.string().min(6, 'Mínimo de 6 caracteres'),
-  remember: z.boolean().optional(),
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
@@ -36,7 +34,6 @@ export function Login() {
     defaultValues: {
       email: '',
       password: '',
-      remember: false,
     },
   })
 
@@ -48,49 +45,46 @@ export function Login() {
   }
 
   return (
-    <>
-      {/* LEFT / DESKTOP */}
-      <div className="relative hidden flex-col justify-between bg-slate-900 text-white lg:flex lg:flex-1">
-        <div className="relative z-10 px-12 py-10 text-xl font-bold">
-          FinanceManager
-        </div>
-
-        <div className="relative z-10 max-w-xl px-12 py-20">
-          <h1 className="mb-6 text-5xl font-black">
-            Garanta seu Futuro Financeiro
-          </h1>
-          <p className="text-lg text-slate-300">
-            Gerencie seu patrimônio com confiança e controle total.
-          </p>
-        </div>
+    <div className="flex w-full flex-col gap-8 lg:flex-row">
+      <div className="flex flex-col justify-center space-y-4 lg:flex-1">
+        <h1 className="text-center text-2xl font-bold text-balance md:text-5xl lg:text-left">
+          Garanta seu Futuro Financeiro
+        </h1>
+        <p className="text-muted-foreground text-center text-sm font-medium text-balance md:text-base lg:text-left">
+          Faça login para acessar suas finanças e alcançar seus objetivos
+        </p>
       </div>
 
-      {/* RIGHT / FORM */}
-      <div className="bg-background flex flex-1 flex-col items-center justify-center">
-        <div className="w-full max-w-md space-y-8">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight">
+      <div className="bg-accent flex flex-col items-center justify-center rounded-xl p-4 lg:min-w-lg">
+        <div className="w-full max-w-md space-y-6">
+          <div className="space-y-0.5">
+            <h2 className="text-2xl font-semibold md:text-3xl">
               Acesse sua conta
             </h2>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-sm lg:text-base">
               Insira seus dados para continuar
             </p>
           </div>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-6 rounded-xl border p-4"
+            >
               {/* EMAIL */}
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>E-mail</FormLabel>
+                    <FormLabel className="text-sm md:text-base">
+                      E-mail
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           placeholder="nome@empresa.com"
-                          className="pr-10"
+                          className="pr-10 text-xs md:text-base"
                           {...field}
                         />
                         <Mail className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2" />
@@ -107,13 +101,15 @@ export function Login() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Senha</FormLabel>
+                    <FormLabel className="text-sm md:text-base">
+                      Senha
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           type={showPassword ? 'text' : 'password'}
                           placeholder="••••••••"
-                          className="pr-10"
+                          className="pr-10 text-xs md:text-base"
                           {...field}
                         />
                         <button
@@ -134,37 +130,9 @@ export function Login() {
                 )}
               />
 
-              {/* OPTIONS */}
-              <div className="flex items-center justify-between">
-                <FormField
-                  control={form.control}
-                  name="remember"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center gap-2">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className="text-sm font-normal">
-                        Manter-me conectado
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-
-                <Link
-                  href="#"
-                  className="text-primary text-sm font-semibold hover:underline"
-                >
-                  Esqueceu a senha?
-                </Link>
-              </div>
-
               <Button
                 type="submit"
-                className="h-12 w-full text-base"
+                className="w-full text-xs md:text-sm"
                 disabled={isPending || isSuccess}
               >
                 Entrar
@@ -172,18 +140,14 @@ export function Login() {
             </form>
           </Form>
 
-          <div className="text-muted-foreground text-center text-sm">
+          <div className="text-muted-foreground text-center text-xs lg:text-sm">
             Não tem uma conta?{' '}
             <Link href="/register" className="text-primary font-bold">
               Criar conta
             </Link>
           </div>
-
-          <p className="text-muted-foreground text-center text-xs">
-            © 2024 FinanceManager. Todos os direitos reservados.
-          </p>
         </div>
       </div>
-    </>
+    </div>
   )
 }
