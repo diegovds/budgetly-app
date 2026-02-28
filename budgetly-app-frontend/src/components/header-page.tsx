@@ -56,13 +56,6 @@ export function HeaderPage({
         onClose={() => {
           setIsOpen(false)
         }}
-        title={
-          href === '/transaction/new'
-            ? 'Adicionar Transação'
-            : href === '/account/new'
-              ? 'Adicionar Conta'
-              : 'Adicionar Categoria'
-        }
       />
     </header>
   )

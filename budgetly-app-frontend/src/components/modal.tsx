@@ -9,11 +9,10 @@ import { NewTransaction } from './transaction/new-transaction'
 
 type ModalProps = {
   onClose: () => void
-  title?: string
   // children: React.ReactNode
 }
 
-export function Modal({ onClose, title }: ModalProps) {
+export function Modal({ onClose }: ModalProps) {
   const { isOpen, toggleWhoOpened, whoOpened } = useModalStore()
   const [show, setShow] = useState(isOpen)
   const [exiting, setExiting] = useState(false)
@@ -63,9 +62,14 @@ export function Modal({ onClose, title }: ModalProps) {
         onAnimationEnd={handleAnimationEnd}
       >
         <div className="mb-4 flex items-center justify-between">
-          {title && (
-            <h2 className="text-lg font-semibold md:text-xl">{title}</h2>
-          )}
+          <h2 className="text-lg font-semibold md:text-xl">
+            {whoOpened === '/transaction/new'
+              ? 'Adicionar Transação'
+              : whoOpened === '/account/new'
+                ? 'Adicionar Conta'
+                : 'Adicionar Categoria'}
+          </h2>
+
           <button onClick={onClose} className="bg-primary rounded-full p-0.5">
             <X size={20} />
           </button>
