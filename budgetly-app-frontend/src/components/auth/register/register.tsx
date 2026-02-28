@@ -57,7 +57,7 @@ export function Register() {
   }
 
   return (
-    <div className="flex w-full flex-col gap-8 lg:flex-row">
+    <div className="flex w-full flex-col-reverse gap-8 lg:flex-row">
       <div className="bg-accent flex flex-col items-center justify-center rounded-xl p-4 lg:min-w-lg">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-0.5">
@@ -202,22 +202,15 @@ export function Register() {
       </div>
 
       {/* BRAND / MARKETING SIDE */}
-      <div className="from-primary relative hidden items-center justify-center overflow-hidden bg-linear-to-br via-blue-600 to-blue-800 lg:flex lg:flex-1">
-        <div className="absolute inset-0 bg-black/10" />
-        <div className="relative z-10 max-w-md rounded-2xl border border-white/10 bg-white/10 p-8 text-center text-white shadow-2xl backdrop-blur-sm">
-          <div className="mb-6 inline-flex rounded-full bg-white/20 p-4">
-            📈
-          </div>
-          <h2 className="mb-4 text-2xl font-bold">
+      <div className="from-primary flex items-center justify-center rounded-xl bg-linear-to-br via-blue-600 to-blue-800 lg:flex-1">
+        <div className="relative max-w-md rounded-xl bg-white/10 p-8 text-center text-white shadow-2xl backdrop-blur-sm">
+          <h2 className="mb-4 text-2xl font-bold text-balance md:text-4xl">
             Alcance seus objetivos financeiros
           </h2>
-          <p className="text-lg text-blue-100">
+          <p className="text-sm font-medium text-balance text-blue-100 md:text-base">
             O primeiro passo para a liberdade financeira é entender para onde
             seu dinheiro está indo.
           </p>
-          <div className="mt-6 text-sm text-blue-100">
-            🔒 Dados criptografados e seguros
-          </div>
         </div>
       </div>
     </div>
