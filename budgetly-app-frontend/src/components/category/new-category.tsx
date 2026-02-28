@@ -25,7 +25,6 @@ import { useCategoryInsertionMutation } from '@/hooks/useCategoryInsertionMutati
 import { getCategoryTypes } from '@/http/api'
 import { useModalStore } from '@/store/useModalStore.ts'
 import { useQuery } from '@tanstack/react-query'
-import Link from 'next/link'
 
 const createCategorySchema = z.object({
   name: z.string().min(1, 'Informe o nome da categoria'),
@@ -117,18 +116,17 @@ export function NewCategory() {
 
         {/* Actions */}
         <div className="flex justify-end gap-3 pt-4">
-          <Link href="/category">
-            <Button
-              type="button"
-              variant="outline"
-              className="text-xs md:text-sm"
-              onClick={() => {
-                toggleIsOpen()
-              }}
-            >
-              Cancelar
-            </Button>
-          </Link>
+          <Button
+            type="button"
+            variant="outline"
+            className="text-xs md:text-sm"
+            onClick={() => {
+              toggleIsOpen()
+            }}
+          >
+            Cancelar
+          </Button>
+
           <Button
             type="submit"
             className="text-xs md:text-sm"
