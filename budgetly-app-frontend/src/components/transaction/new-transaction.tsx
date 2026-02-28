@@ -1,11 +1,11 @@
 'use client'
 
 import { useTransactionInsertionMutation } from '@/hooks/useTransactionInsertionMutation'
-import { getAccount, getCategory } from '@/http/api'
+import { useAccountsStore } from '@/store/account'
+import { useCategoriesStore } from '@/store/categories'
 import { useModalStore } from '@/store/useModalStore.ts'
 import { currencyToNumber, formatCurrencyString } from '@/utils/format'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQueries } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
@@ -51,22 +51,8 @@ type CreateNewTransactionFormData = z.infer<typeof createTransactionSchema>
 
 export function NewTransaction() {
   const { toggleIsOpen } = useModalStore()
-
-  const results = useQueries({
-    queries: [
-      {
-        queryKey: ['accounts', 50],
-        queryFn: () => getAccount({ limit: 50 }),
-      },
-      {
-        queryKey: ['categories', 50],
-        queryFn: () => getCategory({ limit: 50 }),
-      },
-    ],
-  })
-
-  const accounts = results[0].data?.accounts ?? []
-  const categories = results[1].data?.categories ?? []
+  const { accounts } = useAccountsStore()
+  const { categories } = useCategoriesStore()
 
   const { mutate, isPending, error, isSuccess } =
     useTransactionInsertionMutation()

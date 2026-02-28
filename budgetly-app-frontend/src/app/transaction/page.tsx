@@ -3,6 +3,8 @@ import { HeaderPage } from '@/components/header-page'
 import { Pagination } from '@/components/pagination'
 import { TransactionFilters } from '@/components/transaction/transaction-filters'
 import { getAccount, getCategory, getTransactions } from '@/http/api'
+import { StoreAccounts } from '@/providers/store-account'
+import { StoreCategories } from '@/providers/store-category'
 import { formatCurrency, formatDate } from '@/utils/format'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -56,6 +58,9 @@ export default async function TransactionPage({ searchParams }: Props) {
 
   return (
     <div className="w-full space-y-8">
+      <StoreAccounts accounts={accounts.accounts} />
+      <StoreCategories categories={categories.categories} />
+
       <HeaderPage
         buttonText="Adicionar Transação"
         description="Visualize e gerencie todas as suas atividades financeiras."
