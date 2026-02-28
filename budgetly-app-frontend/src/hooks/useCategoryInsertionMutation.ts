@@ -1,14 +1,15 @@
 import { postCategory, PostCategory200, PostCategoryBody } from '@/http/api'
-import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export function useCategoryInsertionMutation() {
-  const router = useRouter()
+  const queryClient = useQueryClient()
 
   return useMutation<PostCategory200, Error, PostCategoryBody>({
     mutationFn: (data) => postCategory(data),
-    onSuccess: () => {
-      router.refresh()
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ['categories', data.type],
+      })
     },
   })
 }
