@@ -61,10 +61,10 @@ export function Register() {
       <div className="bg-accent flex flex-col items-center justify-center rounded-xl p-4 lg:min-w-lg">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-0.5">
-            <h2 className="text-center text-2xl font-semibold md:text-left md:text-3xl">
+            <h2 className="text-center text-2xl font-semibold md:text-3xl">
               Criar conta
             </h2>
-            <p className="text-muted-foreground text-center text-sm text-balance md:text-left lg:text-base">
+            <p className="text-muted-foreground text-center text-sm text-balance lg:text-base">
               Preencha seus dados para começar a controlar suas finanças.
             </p>
           </div>
