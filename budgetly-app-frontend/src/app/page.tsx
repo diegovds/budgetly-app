@@ -49,7 +49,7 @@ export default async function Home() {
         monthIncome={financialSummary.monthIncome}
         totalBalance={financialSummary.totalBalance}
       />
-      <div className="flex flex-col gap-8 lg:flex-row">
+      <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
         <MyAccounts
           accounts={accounts.accounts}
           totalBalance={financialSummary.totalBalance}
