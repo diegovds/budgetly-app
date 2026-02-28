@@ -8,7 +8,7 @@ export function useAccountInsertionMutation() {
   return useMutation<PostAccount200, Error, PostAccountBody>({
     mutationFn: (data) => postAccount(data),
     onSuccess: () => {
-      router.push('/')
+      router.refresh()
     },
   })
 }

@@ -12,7 +12,7 @@ export function useTransactionInsertionMutation() {
   return useMutation<PostTransaction200, Error, PostTransactionBody>({
     mutationFn: (data) => postTransaction(data),
     onSuccess: () => {
-      router.push('/')
+      router.refresh()
     },
   })
 }

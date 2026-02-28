@@ -8,7 +8,7 @@ export function useCategoryInsertionMutation() {
   return useMutation<PostCategory200, Error, PostCategoryBody>({
     mutationFn: (data) => postCategory(data),
     onSuccess: () => {
-      router.push('/')
+      router.refresh()
     },
   })
 }
