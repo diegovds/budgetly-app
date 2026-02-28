@@ -54,6 +54,8 @@ export function NewAccount() {
 
   function onSubmit(data: CreateAccountFormData) {
     mutate(data)
+
+    toggleIsOpen()
   }
 
   return (
