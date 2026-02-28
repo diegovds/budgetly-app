@@ -57,16 +57,17 @@ export function Register() {
   }
 
   return (
-    <>
-      {/* FORM SIDE */}
-      <section className="bg-background flex w-full flex-1 items-center justify-center">
-        <div className="w-full max-w-md space-y-8">
-          <header className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Criar conta</h1>
-            <p className="text-muted-foreground">
+    <div className="flex w-full flex-col gap-8 lg:flex-row">
+      <div className="bg-accent flex flex-col items-center justify-center rounded-xl p-4 lg:min-w-lg">
+        <div className="w-full max-w-md space-y-6">
+          <div className="space-y-0.5">
+            <h2 className="text-center text-2xl font-semibold md:text-left md:text-3xl">
+              Criar conta
+            </h2>
+            <p className="text-muted-foreground text-center text-sm text-balance md:text-left lg:text-base">
               Preencha seus dados para começar a controlar suas finanças.
             </p>
-          </header>
+          </div>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -76,12 +77,14 @@ export function Register() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nome completo</FormLabel>
+                    <FormLabel className="text-sm md:text-base">
+                      Nome completo
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           placeholder="Ex: Maria Silva"
-                          className="pr-10"
+                          className="pr-10 text-xs md:text-base"
                           {...field}
                         />
                         <User className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2" />
@@ -98,13 +101,15 @@ export function Register() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>E-mail</FormLabel>
+                    <FormLabel className="text-sm md:text-base">
+                      E-mail
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           type="email"
                           placeholder="seu@email.com"
-                          className="pr-10"
+                          className="pr-10 text-xs md:text-base"
                           {...field}
                         />
                         <Mail className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2" />
@@ -122,13 +127,15 @@ export function Register() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Senha</FormLabel>
+                      <FormLabel className="text-sm md:text-base">
+                        Senha
+                      </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
                             type={showPassword ? 'text' : 'password'}
                             placeholder="••••••••"
-                            className="pr-10"
+                            className="pr-10 text-xs md:text-base"
                             {...field}
                           />
                           <button
@@ -155,13 +162,15 @@ export function Register() {
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Confirmar senha</FormLabel>
+                      <FormLabel className="text-sm md:text-base">
+                        Confirmar senha
+                      </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
                             type="password"
                             placeholder="••••••••"
-                            className="pr-10"
+                            className="pr-10 text-xs md:text-base"
                             {...field}
                           />
                           <Lock className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2" />
@@ -175,7 +184,7 @@ export function Register() {
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full text-xs md:text-sm"
                 disabled={isPending || isSuccess}
               >
                 Criar conta
@@ -183,20 +192,17 @@ export function Register() {
             </form>
           </Form>
 
-          <p className="text-muted-foreground text-center text-sm">
+          <p className="text-muted-foreground text-center text-xs lg:text-sm">
             Já tem uma conta?{' '}
-            <Link
-              href="/login"
-              className="text-primary font-medium hover:underline"
-            >
+            <Link href="/login" className="text-primary font-bold">
               Entrar
             </Link>
           </p>
         </div>
-      </section>
+      </div>
 
       {/* BRAND / MARKETING SIDE */}
-      <section className="from-primary relative hidden items-center justify-center overflow-hidden bg-linear-to-br via-blue-600 to-blue-800 lg:flex lg:flex-1">
+      <div className="from-primary relative hidden items-center justify-center overflow-hidden bg-linear-to-br via-blue-600 to-blue-800 lg:flex lg:flex-1">
         <div className="absolute inset-0 bg-black/10" />
         <div className="relative z-10 max-w-md rounded-2xl border border-white/10 bg-white/10 p-8 text-center text-white shadow-2xl backdrop-blur-sm">
           <div className="mb-6 inline-flex rounded-full bg-white/20 p-4">
@@ -213,7 +219,7 @@ export function Register() {
             🔒 Dados criptografados e seguros
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   )
 }
