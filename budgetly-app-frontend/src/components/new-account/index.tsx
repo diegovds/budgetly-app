@@ -22,9 +22,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useAccountInsertionMutation } from '@/hooks/useAccountInsertionMutation'
-import { getAccountTypes } from '@/http/api'
+import { useAccountTypesStore } from '@/store/account-type'
 import { useModalStore } from '@/store/useModalStore.ts'
-import { useQuery } from '@tanstack/react-query'
 
 const createAccountSchema = z.object({
   name: z.string().min(1, 'Informe o nome da conta'),
@@ -35,13 +34,7 @@ type CreateAccountFormData = z.infer<typeof createAccountSchema>
 
 export function NewAccount() {
   const { toggleIsOpen } = useModalStore()
-
-  const response = useQuery({
-    queryKey: ['accountTypes'],
-    queryFn: () => getAccountTypes(),
-  })
-
-  const accountTypes = response.data || []
+  const { accountTypes } = useAccountTypesStore()
 
   const { mutate, isPending, error, isSuccess } = useAccountInsertionMutation()
   const form = useForm<CreateAccountFormData>({
