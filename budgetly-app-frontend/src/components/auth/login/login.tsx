@@ -58,10 +58,10 @@ export function Login() {
       <div className="bg-accent flex flex-col items-center justify-center rounded-xl p-4 lg:min-w-lg">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-0.5">
-            <h2 className="text-center text-2xl font-semibold md:text-left md:text-3xl">
+            <h2 className="text-center text-2xl font-semibold md:text-3xl">
               Acesse sua conta
             </h2>
-            <p className="text-muted-foreground text-center text-sm md:text-left lg:text-base">
+            <p className="text-muted-foreground text-center text-sm lg:text-base">
               Insira seus dados para continuar
             </p>
           </div>
