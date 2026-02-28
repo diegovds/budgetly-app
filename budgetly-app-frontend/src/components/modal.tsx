@@ -3,6 +3,7 @@
 import { useModalStore } from '@/store/useModalStore.ts'
 import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { NewCategory } from './category/new-category'
 import { NewAccount } from './new-account'
 import { NewTransaction } from './transaction/new-transaction'
 
@@ -72,6 +73,7 @@ export function Modal({ onClose, title }: ModalProps) {
         <div>
           {whoOpened === '/transaction/new' && <NewTransaction />}
           {whoOpened === '/account/new' && <NewAccount />}
+          {whoOpened === '/category/new' && <NewCategory />}
         </div>
       </div>
     </div>
