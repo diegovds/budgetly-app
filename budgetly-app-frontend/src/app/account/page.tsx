@@ -50,40 +50,44 @@ export default async function AccountPage({ searchParams }: Props) {
         href="/account/new"
         title="Gerenciar Contas"
       />
-      <div className="grid gap-4 lg:grid-cols-2">
-        {accounts.accounts.map((account) => (
-          <div key={account.id} className="bg-accent space-y-4 rounded p-4">
-            <div className="space-y-0.5">
-              <h2 className="text-lg font-semibold md:text-xl">
-                {account.name}
-              </h2>
-              <p className="text-muted-foreground text-xs md:text-sm">
-                {account.type}
-              </p>
-            </div>
-            <div className="space-y-0.5">
-              <h2 className="text-muted-foreground text-sm font-semibold md:text-base">
-                Saldo atual
-              </h2>
-              <p
-                className={`text-2xl font-semibold md:text-3xl ${
-                  account.balance >= 0 ? 'text-green-500' : 'text-red-500'
-                }`}
-              >
-                {formatCurrency(account.balance)}
-              </p>
-            </div>
-            <div className="flex justify-end">
-              <Link href={`/transaction?accountId=${account.id}`}>
-                <Button variant="outline" className="text-xs md:text-sm">
-                  Ver Transações
-                </Button>
-              </Link>
-            </div>
+      {accounts.accounts.length !== 0 && (
+        <>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {accounts.accounts.map((account) => (
+              <div key={account.id} className="bg-accent space-y-4 rounded p-4">
+                <div className="space-y-0.5">
+                  <h2 className="text-lg font-semibold md:text-xl">
+                    {account.name}
+                  </h2>
+                  <p className="text-muted-foreground text-xs md:text-sm">
+                    {account.type}
+                  </p>
+                </div>
+                <div className="space-y-0.5">
+                  <h2 className="text-muted-foreground text-sm font-semibold md:text-base">
+                    Saldo atual
+                  </h2>
+                  <p
+                    className={`text-2xl font-semibold md:text-3xl ${
+                      account.balance >= 0 ? 'text-green-500' : 'text-red-500'
+                    }`}
+                  >
+                    {formatCurrency(account.balance)}
+                  </p>
+                </div>
+                <div className="flex justify-end">
+                  <Link href={`/transaction?accountId=${account.id}`}>
+                    <Button variant="outline" className="text-xs md:text-sm">
+                      Ver Transações
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <Pagination meta={accounts.meta} name="contas" />
+          <Pagination meta={accounts.meta} name="contas" />
+        </>
+      )}
     </div>
   )
 }
