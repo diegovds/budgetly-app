@@ -37,9 +37,15 @@ export function MyTransactions({
           Transações Recentes
         </h2>
         <div className="grid grid-cols-1 gap-4">
-          {transactions.map((transaction) => (
-            <Transaction key={transaction.id} transaction={transaction} />
-          ))}
+          {transactions.length !== 0 ? (
+            transactions.map((transaction) => (
+              <Transaction key={transaction.id} transaction={transaction} />
+            ))
+          ) : (
+            <p className="text-muted-foreground text-xs md:text-sm">
+              Nenhuma Transação
+            </p>
+          )}
         </div>
       </div>
     </div>
