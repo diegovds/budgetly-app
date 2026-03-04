@@ -50,7 +50,7 @@ const createTransactionSchema = z.object({
 type CreateNewTransactionFormData = z.infer<typeof createTransactionSchema>
 
 export function NewTransaction() {
-  const { toggleIsOpen } = useModalStore()
+  const { toggleIsOpen, setWhoOpened } = useModalStore()
   const { accounts } = useAccountsStore()
   const { categories } = useCategoriesStore()
 
@@ -114,34 +114,47 @@ export function NewTransaction() {
             />
           </div>
           <div className="grid items-start gap-4 lg:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="accountId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm md:text-base">Conta</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <FormControl>
-                      <SelectTrigger className="w-full text-xs md:text-base">
-                        <SelectValue placeholder="Selecione" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {accounts.map((account) => (
-                        <SelectItem
-                          className="text-xs md:text-base"
-                          key={account.id}
-                          value={account.id}
-                        >
-                          {account.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {accounts.length !== 0 ? (
+              <FormField
+                control={form.control}
+                name="accountId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm md:text-base">
+                      Conta
+                    </FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger className="w-full text-xs md:text-base">
+                          <SelectValue placeholder="Selecione" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {accounts.map((account) => (
+                          <SelectItem
+                            className="text-xs md:text-base"
+                            key={account.id}
+                            value={account.id}
+                          >
+                            {account.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : (
+              <Button
+                type="button"
+                variant="outline"
+                className="self-center text-xs md:text-sm"
+                onClick={() => setWhoOpened('/account/new')}
+              >
+                Adicionar Conta
+              </Button>
+            )}
 
             <FormField
               control={form.control}
