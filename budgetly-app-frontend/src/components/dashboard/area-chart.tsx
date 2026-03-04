@@ -31,12 +31,12 @@ const chartConfig = {
 
 export function ChartArea({ chartData }: ChartAreaProps) {
   return (
-    <Card>
-      <CardHeader>
+    <Card className="p-4">
+      <CardHeader className="px-0">
         <CardTitle>Evolução do Saldo</CardTitle>
         <CardDescription>Saldo dos últimos 12 meses</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-0">
         <ChartContainer
           config={chartConfig}
           className="aspect-16/6 w-full md:aspect-16/3"
