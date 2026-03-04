@@ -17,6 +17,7 @@ export const getBalanceLastMonths: FastifyPluginAsyncZod = async (app) => {
             z.object({
               year: z.number(),
               month: z.number(),
+              monthLabel: z.string(),
               monthlyResult: z.number(),
               accumulatedBalance: z.number(),
             }),

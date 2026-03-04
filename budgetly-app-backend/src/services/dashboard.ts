@@ -1,9 +1,11 @@
-import { startOfMonth, subMonths } from 'date-fns'
+import { format, startOfMonth, subMonths } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { prisma } from '../lib/prisma'
 
 type MonthlyBalance = {
   year: number
   month: number
+  monthLabel: string
   monthlyResult: number
   accumulatedBalance: number
 }
@@ -75,6 +77,7 @@ export async function getLast12MonthsAccumulatedBalance(
     response.push({
       year,
       month,
+      monthLabel: format(date, 'MMM', { locale: ptBR }),
       monthlyResult,
       accumulatedBalance: runningBalance,
     })
