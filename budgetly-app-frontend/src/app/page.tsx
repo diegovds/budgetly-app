@@ -75,10 +75,14 @@ export default async function Home() {
           accounts={accounts.accounts}
           totalBalance={financialSummary.totalBalance}
         />
-        <MyTransactions
-          categories={categories.categories}
-          transactions={transactions.transactions}
-        />
+        {categories.categories.length === 0 ? (
+          <div className="flex-2" />
+        ) : (
+          <MyTransactions
+            categories={categories.categories}
+            transactions={transactions.transactions}
+          />
+        )}
       </div>
     </div>
   )
