@@ -16,7 +16,7 @@ export function MyTransactions({
   transactions,
 }: MyTransactionsProps) {
   return (
-    <div className="bg-accent flex-2 space-y-8 rounded p-4 pb-6">
+    <div className="bg-accent flex-2 space-y-8 rounded p-4">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold md:text-2xl">
