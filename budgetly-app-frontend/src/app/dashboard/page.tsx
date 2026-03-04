@@ -1,7 +1,11 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { ChartArea } from '@/components/dashboard/area-chart'
+import { ChartBar } from '@/components/dashboard/chart-bar'
 import { HeaderPage } from '@/components/header-page'
-import { getDashboardBalancelastmonths } from '@/http/api'
+import {
+  getDashboardBalancelastmonths,
+  getDashboardLastmonthsincomeexpense,
+} from '@/http/api'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -16,7 +20,15 @@ export default async function Dashboard() {
     redirect('/login')
   }
 
-  const balancelastmonths = await getDashboardBalancelastmonths()
+  const balanceLastMonthsData = getDashboardBalancelastmonths()
+  const dashboardLastMonthsIncomeExpenseData =
+    getDashboardLastmonthsincomeexpense()
+
+  const [balanceLastMonths, dashboardLastMonthsIncomeExpense] =
+    await Promise.all([
+      balanceLastMonthsData,
+      dashboardLastMonthsIncomeExpenseData,
+    ])
 
   return (
     <div className="w-full space-y-8">
@@ -28,7 +40,12 @@ export default async function Dashboard() {
         icon={false}
       />
 
-      <ChartArea chartData={balancelastmonths} />
+      <ChartArea chartData={balanceLastMonths} />
+
+      <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
+        <ChartBar chartData={dashboardLastMonthsIncomeExpense} />
+        <div className="flex-1" />
+      </div>
     </div>
   )
 }
