@@ -7,7 +7,7 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from '@/components/ui/card'
 import {
   ChartContainer,
@@ -15,26 +15,21 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '@/components/ui/chart'
+import { GetDashboardBalancelastmonths200Item } from '@/http/api'
+import { formatCurrency } from '@/utils/format'
 
-export const description = 'A simple area chart'
-
-const chartData = [
-  { month: 'January', desktop: 186 },
-  { month: 'February', desktop: 305 },
-  { month: 'March', desktop: 237 },
-  { month: 'April', desktop: 73 },
-  { month: 'May', desktop: 209 },
-  { month: 'June', desktop: 214 },
-]
+type ChartAreaProps = {
+  chartData: GetDashboardBalancelastmonths200Item[]
+}
 
 const chartConfig = {
-  desktop: {
-    label: 'Desktop',
+  accumulatedBalance: {
+    label: 'Saldo',
     color: 'var(--chart-1)',
   },
 } satisfies ChartConfig
 
-export function ChartArea() {
+export function ChartArea({ chartData }: ChartAreaProps) {
   return (
     <Card>
       <CardHeader>
@@ -42,7 +37,10 @@ export function ChartArea() {
         <CardDescription>Saldo dos últimos 12 meses</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-16/6 w-full md:aspect-16/3"
+        >
           <AreaChart
             accessibilityLayer
             data={chartData}
@@ -53,7 +51,7 @@ export function ChartArea() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="monthLabel"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -61,14 +59,22 @@ export function ChartArea() {
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+              content={
+                <ChartTooltipContent
+                  indicator="line"
+                  formatter={(value) => [
+                    'Saldo: ',
+                    formatCurrency(Number(value)),
+                  ]}
+                />
+              }
             />
             <Area
-              dataKey="desktop"
-              type="natural"
-              fill="var(--color-desktop)"
+              dataKey="accumulatedBalance"
+              type="monotone"
+              fill="var(--color-accumulatedBalance)"
               fillOpacity={0.4}
-              stroke="var(--color-desktop)"
+              stroke="var(--color-accumulatedBalance)"
             />
           </AreaChart>
         </ChartContainer>
