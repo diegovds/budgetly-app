@@ -52,7 +52,7 @@ export default async function AccountPage({ searchParams }: Props) {
       />
       {accounts.accounts.length !== 0 && (
         <>
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-4 lg:grid-cols-2 lg:gap-8">
             {accounts.accounts.map((account) => (
               <div key={account.id} className="bg-accent space-y-4 rounded p-4">
                 <div className="space-y-0.5">
