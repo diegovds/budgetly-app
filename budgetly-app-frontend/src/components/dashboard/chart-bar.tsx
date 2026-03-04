@@ -16,6 +16,7 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart'
 import { GetDashboardLastmonthsincomeexpense200Item } from '@/http/api'
+import { formatCurrency } from '@/utils/format'
 
 type ChartBarProps = {
   chartData: GetDashboardLastmonthsincomeexpense200Item[]
@@ -59,7 +60,24 @@ export function ChartBar({ chartData }: ChartBarProps) {
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="dashed" />}
+              content={
+                <ChartTooltipContent
+                  indicator="dashed"
+                  formatter={(value, name) => {
+                    const formatted = formatCurrency(Number(value))
+
+                    if (name === 'income') {
+                      return ['Receita: ', formatted]
+                    }
+
+                    if (name === 'expense') {
+                      return ['Despesa: ', formatted]
+                    }
+
+                    return [name, formatted]
+                  }}
+                />
+              }
             />
             <Bar dataKey="income" fill="var(--color-income)" radius={4} />
             <Bar dataKey="expense" fill="var(--color-expense)" radius={4} />
