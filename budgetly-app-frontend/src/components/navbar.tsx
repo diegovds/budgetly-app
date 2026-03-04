@@ -2,6 +2,7 @@
 
 import { clearAuthCookie } from '@/actions/clear-auth-cookie'
 import { useAuthStore } from '@/store/auth'
+import { useQueryClient } from '@tanstack/react-query'
 import { LogOut, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -18,6 +19,7 @@ type MenuItem = {
 }
 
 export function Navbar({ token }: NavbarProps) {
+  const queryClient = useQueryClient()
   const [menuOpened, setMenuOpened] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
@@ -33,6 +35,7 @@ export function Navbar({ token }: NavbarProps) {
   async function handleLogout() {
     await clearAuthCookie()
     clearToken()
+    queryClient.clear()
     router.push('/login')
   }
 
