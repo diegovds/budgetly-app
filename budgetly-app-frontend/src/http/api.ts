@@ -899,6 +899,26 @@ export type GetDashboardBalancelastmonths500 = {
   message: string
 }
 
+export type GetDashboardLastmonthsincomeexpense200Item = {
+  year: number
+  month: number
+  monthLabel: string
+  income: number
+  expense: number
+}
+
+export type GetDashboardLastmonthsincomeexpense401 = {
+  message: string
+}
+
+export type GetDashboardLastmonthsincomeexpense404 = {
+  message: string
+}
+
+export type GetDashboardLastmonthsincomeexpense500 = {
+  message: string
+}
+
 /**
  * Retorna uma mensagem de boas-vindas e um link para a documentação da API.
  * @summary Página inicial da API
@@ -1254,6 +1274,22 @@ export const getDashboardBalancelastmonths = async (
 ): Promise<GetDashboardBalancelastmonths200Item[]> => {
   return customFetch<GetDashboardBalancelastmonths200Item[]>(
     getGetDashboardBalancelastmonthsUrl(),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getGetDashboardLastmonthsincomeexpenseUrl = () => {
+  return `/dashboard/lastmonthsincomeexpense`
+}
+
+export const getDashboardLastmonthsincomeexpense = async (
+  options?: RequestInit,
+): Promise<GetDashboardLastmonthsincomeexpense200Item[]> => {
+  return customFetch<GetDashboardLastmonthsincomeexpense200Item[]>(
+    getGetDashboardLastmonthsincomeexpenseUrl(),
     {
       ...options,
       method: 'GET',
