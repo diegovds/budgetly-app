@@ -76,7 +76,7 @@ export default async function Home() {
           totalBalance={financialSummary.totalBalance}
         />
         {categories.categories.length === 0 ? (
-          <div className="flex-2" />
+          <div className="flex-2 p-4" />
         ) : (
           <MyTransactions
             categories={categories.categories}
