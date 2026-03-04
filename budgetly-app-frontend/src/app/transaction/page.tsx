@@ -2,9 +2,17 @@ import { getAuthState } from '@/actions/get-auth-state'
 import { HeaderPage } from '@/components/header-page'
 import { Pagination } from '@/components/pagination'
 import { TransactionFilters } from '@/components/transaction/transaction-filters'
-import { getAccount, getCategory, getTransactions } from '@/http/api'
+import {
+  getAccount,
+  getAccountTypes,
+  getCategory,
+  getCategoryTypes,
+  getTransactions,
+} from '@/http/api'
 import { StoreAccounts } from '@/providers/store-account'
+import { StoreAccountTypes } from '@/providers/store-account-type'
 import { StoreCategories } from '@/providers/store-category'
+import { StoreCategoryTypes } from '@/providers/store-category-type'
 import { formatCurrency, formatDate } from '@/utils/format'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -49,17 +57,24 @@ export default async function TransactionPage({ searchParams }: Props) {
 
   const accountsData = getAccount({ limit: 50 })
   const categoriesData = getCategory({ limit: 50 })
+  const categoryTypesData = getCategoryTypes()
+  const accountTypesData = getAccountTypes()
 
-  const [transactions, accounts, categories] = await Promise.all([
-    transactionsData,
-    accountsData,
-    categoriesData,
-  ])
+  const [transactions, accounts, categories, categoryTypes, accountTypes] =
+    await Promise.all([
+      transactionsData,
+      accountsData,
+      categoriesData,
+      categoryTypesData,
+      accountTypesData,
+    ])
 
   return (
     <div className="w-full space-y-8">
       <StoreAccounts accounts={accounts.accounts} />
       <StoreCategories categories={categories.categories} />
+      <StoreCategoryTypes categoryTypes={categoryTypes} />
+      <StoreAccountTypes accountTypes={accountTypes} />
 
       <HeaderPage
         buttonText="Adicionar Transação"
