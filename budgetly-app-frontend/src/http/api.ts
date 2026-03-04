@@ -882,6 +882,7 @@ export type GetCategoryTypes500 = {
 export type GetDashboardBalancelastmonths200Item = {
   year: number
   month: number
+  monthLabel: string
   monthlyResult: number
   accumulatedBalance: number
 }
