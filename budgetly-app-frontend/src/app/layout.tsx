@@ -3,7 +3,7 @@ import { Footer } from '@/components/footer'
 import { Navbar } from '@/components/navbar'
 import { QueryClientContext } from '@/providers/query-client'
 import { StoreHydration } from '@/providers/store-hydration'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
 import './globals.css'
 
@@ -26,6 +26,13 @@ export const metadata: Metadata = {
     description: '',
     images: [''],
   },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default async function RootLayout({
