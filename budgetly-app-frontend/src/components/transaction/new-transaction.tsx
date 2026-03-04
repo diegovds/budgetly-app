@@ -149,7 +149,7 @@ export function NewTransaction() {
               <Button
                 type="button"
                 variant="outline"
-                className="self-center text-xs md:text-sm"
+                className="self-end text-xs md:text-sm"
                 onClick={() => setWhoOpened('/account/new')}
               >
                 Adicionar Conta
