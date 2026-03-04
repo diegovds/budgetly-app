@@ -87,3 +87,73 @@ export async function getLast12MonthsAccumulatedBalance(
 
   return response
 }
+
+type MonthlyIncomeExpense = {
+  year: number
+  month: number
+  monthLabel: string
+  income: number
+  expense: number
+}
+
+export async function getLast6MonthsIncomeExpense(
+  userId: string,
+): Promise<MonthlyIncomeExpense[]> {
+  const now = new Date()
+  const periodStart = startOfMonth(subMonths(now, 5))
+
+  // 1️⃣ Agregação no banco
+  const result = await prisma.$queryRaw<
+    {
+      year: number
+      month: number
+      income: number | null
+      expense: number | null
+    }[]
+  >`
+    SELECT
+      EXTRACT(YEAR FROM "date")::int as year,
+      EXTRACT(MONTH FROM "date")::int as month,
+      SUM(CASE WHEN type = 'INCOME' THEN amount ELSE 0 END)::float as income,
+      SUM(CASE WHEN type = 'EXPENSE' THEN amount ELSE 0 END)::float as expense
+    FROM "Transaction"
+    WHERE "userId" = ${userId}
+      AND "date" >= ${periodStart}
+      AND "date" <= ${now}
+    GROUP BY year, month
+    ORDER BY year, month;
+  `
+
+  const monthlyMap = new Map<string, { income: number; expense: number }>()
+
+  for (const row of result) {
+    monthlyMap.set(`${row.year}-${row.month}`, {
+      income: row.income ?? 0,
+      expense: row.expense ?? 0,
+    })
+  }
+
+  // 2️⃣ Garantir 6 meses completos
+  const response: MonthlyIncomeExpense[] = []
+
+  for (let i = 5; i >= 0; i--) {
+    const date = subMonths(startOfMonth(now), i)
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const key = `${year}-${month}`
+
+    const values = monthlyMap.get(key)
+
+    response.push({
+      year,
+      month,
+      monthLabel: format(date, 'MMM', { locale: ptBR }).replace(/^./, (c) =>
+        c.toUpperCase(),
+      ),
+      income: values?.income ?? 0,
+      expense: values?.expense ?? 0,
+    })
+  }
+
+  return response
+}
