@@ -36,24 +36,32 @@ export default async function CategoryPage() {
         title="Gerenciar Categorias"
       />
       <div className="flex flex-col items-start gap-8 md:flex-row">
-        <div className="bg-accent w-full flex-1 space-y-4 rounded p-4">
-          <div className="flex items-center gap-2">
-            <div className="rounded-full bg-green-200 p-1">
-              <TrendingUp className="text-green-500" size={20} />
+        {incomeCategories.categories.length !== 0 ? (
+          <div className="bg-accent w-full flex-1 space-y-4 rounded p-4">
+            <div className="flex items-center gap-2">
+              <div className="rounded-full bg-green-200 p-1">
+                <TrendingUp className="text-green-500" size={20} />
+              </div>
+              <h3 className="font-semibold md:text-xl">Categoria de Receita</h3>
             </div>
-            <h3 className="font-semibold md:text-xl">Categoria de Receita</h3>
+            <CategoryList categories={incomeCategories} type="INCOME" />
           </div>
-          <CategoryList categories={incomeCategories} type="INCOME" />
-        </div>
-        <div className="bg-accent w-full flex-1 space-y-4 rounded p-4">
-          <div className="flex items-center gap-2">
-            <div className="rounded-full bg-red-200 p-1">
-              <TrendingDown className="text-red-500" size={20} />
+        ) : (
+          <div className="flex-1 p-4" />
+        )}
+        {expenseCategories.categories.length !== 0 ? (
+          <div className="bg-accent w-full flex-1 space-y-4 rounded p-4">
+            <div className="flex items-center gap-2">
+              <div className="rounded-full bg-red-200 p-1">
+                <TrendingDown className="text-red-500" size={20} />
+              </div>
+              <h3 className="font-semibold md:text-xl">Categoria de Despesa</h3>
             </div>
-            <h3 className="font-semibold md:text-xl">Categoria de Despesa</h3>
+            <CategoryList categories={expenseCategories} type="EXPENSE" />
           </div>
-          <CategoryList categories={expenseCategories} type="EXPENSE" />
-        </div>
+        ) : (
+          <div className="flex-1 p-4" />
+        )}
       </div>
     </div>
   )
