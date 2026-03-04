@@ -77,7 +77,9 @@ export async function getLast12MonthsAccumulatedBalance(
     response.push({
       year,
       month,
-      monthLabel: format(date, 'MMM', { locale: ptBR }),
+      monthLabel: format(date, 'MMM', { locale: ptBR }).replace(/^./, (c) =>
+        c.toUpperCase(),
+      ),
       monthlyResult,
       accumulatedBalance: runningBalance,
     })
