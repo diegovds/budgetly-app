@@ -1,6 +1,6 @@
 'use client'
 
-import { Cell, Label, Pie, PieChart } from 'recharts'
+import { Label, Pie, PieChart } from 'recharts'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -42,6 +42,18 @@ type ChartPieDonutTextProps = {
 }
 
 export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
+  const data = [
+    ...chartData.categories.map((c, i) => ({
+      ...c,
+      fill: `var(--chart-${i + 1})`,
+    })),
+    {
+      category: 'Outros',
+      percentage: chartData.othersPercentage,
+      fill: `var(--chart-5)`,
+    },
+  ]
+
   return (
     <Card className="flex flex-1 flex-col p-4">
       <CardHeader className="items-center p-0">
@@ -55,24 +67,20 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
           <PieChart>
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-              formatter={(value) => `${value}%`}
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  formatter={(value) => `${value}%`}
+                />
+              }
             />
             <Pie
-              data={[
-                ...chartData.categories,
-                { category: 'Outros', percentage: chartData.othersPercentage },
-              ]}
+              data={data}
               dataKey="percentage"
               nameKey="category"
               innerRadius={60}
               strokeWidth={5}
             >
-              {chartData.categories.map((_, index) => (
-                <Cell key={index} fill={`var(--chart-${index + 1})`} />
-              ))}
-              <Cell fill={`var(--chart-${5})`} />
-
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
