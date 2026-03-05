@@ -10,7 +10,6 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart'
 import { GetDashboardGettopexpensecategories200 } from '@/http/api'
-import { formatCurrency } from '@/utils/format'
 
 const chartConfig = {
   visitors: {
@@ -72,6 +71,7 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
               {chartData.categories.map((_, index) => (
                 <Cell key={index} fill={`var(--chart-${index + 1})`} />
               ))}
+              <Cell fill={`var(--chart-${5})`} />
 
               <Label
                 content={({ viewBox }) => {
@@ -86,16 +86,9 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-base font-medium"
                         >
-                          {formatCurrency(chartData.totalExpenses)}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          Total Despesas
+                          Despesas
                         </tspan>
                       </text>
                     )
