@@ -24,11 +24,11 @@ type ChartBarProps = {
 
 const chartConfig = {
   income: {
-    label: 'Receitas: ',
+    label: 'Receitas:',
     color: 'var(--chart-1)',
   },
   expense: {
-    label: 'Despesas: ',
+    label: 'Despesas:',
     color: 'var(--chart-2)',
   },
 } satisfies ChartConfig
