@@ -919,6 +919,30 @@ export type GetDashboardLastmonthsincomeexpense500 = {
   message: string
 }
 
+export type GetDashboardGettopexpensecategories200CategoriesItem = {
+  category: string
+  total: number
+  percentage: number
+}
+
+export type GetDashboardGettopexpensecategories200 = {
+  categories: GetDashboardGettopexpensecategories200CategoriesItem[]
+  othersPercentage: number
+  totalExpenses: number
+}
+
+export type GetDashboardGettopexpensecategories401 = {
+  message: string
+}
+
+export type GetDashboardGettopexpensecategories404 = {
+  message: string
+}
+
+export type GetDashboardGettopexpensecategories500 = {
+  message: string
+}
+
 /**
  * Retorna uma mensagem de boas-vindas e um link para a documentação da API.
  * @summary Página inicial da API
@@ -1290,6 +1314,22 @@ export const getDashboardLastmonthsincomeexpense = async (
 ): Promise<GetDashboardLastmonthsincomeexpense200Item[]> => {
   return customFetch<GetDashboardLastmonthsincomeexpense200Item[]>(
     getGetDashboardLastmonthsincomeexpenseUrl(),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getGetDashboardGettopexpensecategoriesUrl = () => {
+  return `/dashboard/gettopexpensecategories`
+}
+
+export const getDashboardGettopexpensecategories = async (
+  options?: RequestInit,
+): Promise<GetDashboardGettopexpensecategories200> => {
+  return customFetch<GetDashboardGettopexpensecategories200>(
+    getGetDashboardGettopexpensecategoriesUrl(),
     {
       ...options,
       method: 'GET',
