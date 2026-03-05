@@ -52,10 +52,11 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
   const data = [
     ...chartData.categories.map((c, i) => ({
       ...c,
+      category: `${c.category}:`,
       fill: `var(--chart-${i + 1})`,
     })),
     {
-      category: 'Outros',
+      category: 'Outros:',
       percentage: chartData.othersPercentage,
       fill: `var(--chart-5)`,
     },
