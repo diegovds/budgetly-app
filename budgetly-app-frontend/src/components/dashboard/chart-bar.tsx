@@ -47,7 +47,7 @@ export function ChartBar({ chartData }: ChartBarProps) {
       <CardContent className="px-0">
         <ChartContainer
           config={chartConfig}
-          className="aspect-16/8 w-full md:aspect-16/6"
+          className="aspect-16/8 w-full md:aspect-16/5"
         >
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
