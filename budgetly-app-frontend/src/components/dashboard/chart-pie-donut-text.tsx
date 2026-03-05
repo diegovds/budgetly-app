@@ -1,14 +1,8 @@
 'use client'
 
-import { Label, Pie, PieChart } from 'recharts'
+import { Cell, Label, Pie, PieChart } from 'recharts'
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ChartContainer,
   ChartTooltip,
@@ -16,9 +10,7 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart'
 import { GetDashboardGettopexpensecategories200 } from '@/http/api'
-import { TrendingUp } from 'lucide-react'
-
-export const description = 'A donut chart with text'
+import { formatCurrency } from '@/utils/format'
 
 const chartConfig = {
   visitors: {
@@ -65,14 +57,22 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
+              formatter={(value) => `${value}%`}
             />
             <Pie
-              data={chartData.categories}
+              data={[
+                ...chartData.categories,
+                { category: 'Outros', percentage: chartData.othersPercentage },
+              ]}
               dataKey="percentage"
               nameKey="category"
               innerRadius={60}
               strokeWidth={5}
             >
+              {chartData.categories.map((_, index) => (
+                <Cell key={index} fill={`var(--chart-${index + 1})`} />
+              ))}
+
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
@@ -88,14 +88,14 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {chartData.totalExpenses}
+                          {formatCurrency(chartData.totalExpenses)}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Despesas
+                          Total Despesas
                         </tspan>
                       </text>
                     )
@@ -106,14 +106,6 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   )
 }
