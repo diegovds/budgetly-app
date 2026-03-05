@@ -24,7 +24,7 @@ type ChartAreaProps = {
 
 const chartConfig = {
   accumulatedBalance: {
-    label: 'Saldo: ',
+    label: 'Saldo:',
     color: 'var(--chart-1)',
   },
 } satisfies ChartConfig
