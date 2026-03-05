@@ -12,6 +12,7 @@ import {
 import {
   getBalanceLastMonths,
   getLastMonthsIncomeExpense,
+  getTopExpense,
 } from '../controllers/dashboard'
 import { getFinancial, getFinancialSummary } from '../controllers/financial'
 import { main } from '../controllers/main'
@@ -43,4 +44,5 @@ export async function routes(app: FastifyInstance) {
   app.register(getCategoryTypes)
   app.register(getBalanceLastMonths)
   app.register(getLastMonthsIncomeExpense)
+  app.register(getTopExpense)
 }

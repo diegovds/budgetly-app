@@ -157,3 +157,64 @@ export async function getLast6MonthsIncomeExpense(
 
   return response
 }
+
+type CategoryExpense = {
+  category: string
+  total: number
+  percentage: number
+}
+
+type ExpensesByCategoryResponse = {
+  categories: CategoryExpense[]
+  othersPercentage: number
+  totalExpenses: number
+}
+
+export async function getTopExpenseCategories(
+  userId: string,
+): Promise<ExpensesByCategoryResponse> {
+  const result = await prisma.$queryRaw<
+    {
+      category: string
+      total: number
+    }[]
+  >`
+    SELECT 
+      c."name" as category,
+      SUM(t."amount") as total
+    FROM "Transaction" t
+    JOIN "Category" c ON c."id" = t."categoryId"
+    WHERE 
+      t."type" = 'EXPENSE'
+      AND t."userId" = ${userId}
+    GROUP BY c."name"
+    ORDER BY total DESC
+  `
+
+  const totalExpenses = result.reduce(
+    (acc, item) => acc + Number(item.total),
+    0,
+  )
+
+  const top4 = result.slice(0, 4)
+
+  const categories = top4.map((item) => ({
+    category: item.category,
+    total: Number(item.total),
+    percentage: totalExpenses
+      ? Number(((Number(item.total) / totalExpenses) * 100).toFixed(2))
+      : 0,
+  }))
+
+  const top4Total = top4.reduce((acc, item) => acc + Number(item.total), 0)
+
+  const othersPercentage = totalExpenses
+    ? Number((((totalExpenses - top4Total) / totalExpenses) * 100).toFixed(2))
+    : 0
+
+  return {
+    categories,
+    othersPercentage,
+    totalExpenses,
+  }
+}
