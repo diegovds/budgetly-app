@@ -2,7 +2,13 @@
 
 import { Label, Pie, PieChart } from 'recharts'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   ChartContainer,
   ChartTooltip,
@@ -10,6 +16,7 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart'
 import { GetDashboardGettopexpensecategories200 } from '@/http/api'
+import { formatCurrency } from '@/utils/format'
 
 const chartConfig = {
   visitors: {
@@ -58,6 +65,9 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
     <Card className="flex flex-1 flex-col p-4">
       <CardHeader className="items-center p-0">
         <CardTitle>Gastos por categoria</CardTitle>
+        <CardDescription>
+          Total de despesas: {formatCurrency(chartData.totalExpenses)}
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 p-0">
         <ChartContainer
