@@ -220,7 +220,7 @@ function ChartTooltipContent({
                     )}
                     <div
                       className={cn(
-                        "flex flex-1 justify-between leading-none",
+                        "grid grid-cols-2 flex-1  leading-none",
                         nestLabel ? "items-end" : "items-center"
                       )}
                     >
