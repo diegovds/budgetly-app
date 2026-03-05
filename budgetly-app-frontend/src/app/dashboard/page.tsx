@@ -1,9 +1,11 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { ChartArea } from '@/components/dashboard/area-chart'
 import { ChartBar } from '@/components/dashboard/chart-bar'
+import { ChartPieDonutText } from '@/components/dashboard/chart-pie-donut-text'
 import { HeaderPage } from '@/components/header-page'
 import {
   getDashboardBalancelastmonths,
+  getDashboardGettopexpensecategories,
   getDashboardLastmonthsincomeexpense,
 } from '@/http/api'
 import { Metadata } from 'next'
@@ -23,12 +25,18 @@ export default async function Dashboard() {
   const balanceLastMonthsData = getDashboardBalancelastmonths()
   const dashboardLastMonthsIncomeExpenseData =
     getDashboardLastmonthsincomeexpense()
+  const getDashboardGetTopExpenseCategoriesData =
+    getDashboardGettopexpensecategories()
 
-  const [balanceLastMonths, dashboardLastMonthsIncomeExpense] =
-    await Promise.all([
-      balanceLastMonthsData,
-      dashboardLastMonthsIncomeExpenseData,
-    ])
+  const [
+    balanceLastMonths,
+    dashboardLastMonthsIncomeExpense,
+    topExpenseCategories,
+  ] = await Promise.all([
+    balanceLastMonthsData,
+    dashboardLastMonthsIncomeExpenseData,
+    getDashboardGetTopExpenseCategoriesData,
+  ])
 
   return (
     <div className="w-full space-y-8">
@@ -42,9 +50,9 @@ export default async function Dashboard() {
 
       <ChartArea chartData={balanceLastMonths} />
 
-      <div className="flex flex-col gap-4 lg:flex-row lg:gap-8">
+      <div className="flex flex-col items-start gap-4 lg:flex-row lg:gap-8">
         <ChartBar chartData={dashboardLastMonthsIncomeExpense} />
-        <div className="flex-1" />
+        <ChartPieDonutText chartData={topExpenseCategories} />
       </div>
     </div>
   )
