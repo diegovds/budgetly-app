@@ -24,7 +24,7 @@ type ChartAreaProps = {
 
 const chartConfig = {
   accumulatedBalance: {
-    label: 'Saldo',
+    label: 'Saldo: ',
     color: 'var(--chart-1)',
   },
 } satisfies ChartConfig
@@ -62,10 +62,7 @@ export function ChartArea({ chartData }: ChartAreaProps) {
               content={
                 <ChartTooltipContent
                   indicator="line"
-                  formatter={(value) => [
-                    'Saldo: ',
-                    formatCurrency(Number(value)),
-                  ]}
+                  formatter={(value) => formatCurrency(Number(value))}
                 />
               }
             />
