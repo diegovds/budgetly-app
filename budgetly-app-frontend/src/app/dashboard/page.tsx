@@ -50,7 +50,7 @@ export default async function Dashboard() {
 
       <ChartArea chartData={balanceLastMonths} />
 
-      <div className="flex flex-col items-start gap-4 lg:flex-row lg:gap-8">
+      <div className="flex flex-col items-start gap-8 lg:flex-row">
         <ChartBar chartData={dashboardLastMonthsIncomeExpense} />
         <ChartPieDonutText chartData={topExpenseCategories} />
       </div>
