@@ -24,11 +24,11 @@ type ChartBarProps = {
 
 const chartConfig = {
   income: {
-    label: 'Receitas',
+    label: 'Receitas: ',
     color: 'var(--chart-1)',
   },
   expense: {
-    label: 'Despesas',
+    label: 'Despesas: ',
     color: 'var(--chart-2)',
   },
 } satisfies ChartConfig
@@ -62,20 +62,8 @@ export function ChartBar({ chartData }: ChartBarProps) {
               cursor={false}
               content={
                 <ChartTooltipContent
-                  indicator="dashed"
-                  formatter={(value, name) => {
-                    const formatted = formatCurrency(Number(value))
-
-                    if (name === 'income') {
-                      return ['Receita: ', formatted]
-                    }
-
-                    if (name === 'expense') {
-                      return ['Despesa: ', formatted]
-                    }
-
-                    return [name, formatted]
-                  }}
+                  indicator="line"
+                  formatter={(value) => formatCurrency(Number(value))}
                 />
               }
             />
