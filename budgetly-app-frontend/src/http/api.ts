@@ -973,6 +973,14 @@ export type GetDashboardGetlistcategories200CategoriesItem = {
   percentage: number
 }
 
+export type GetDashboardGetlistcategories200Type =
+  (typeof GetDashboardGetlistcategories200Type)[keyof typeof GetDashboardGetlistcategories200Type]
+
+export const GetDashboardGetlistcategories200Type = {
+  INCOME: 'INCOME',
+  EXPENSE: 'EXPENSE',
+} as const
+
 export type GetDashboardGetlistcategories200Meta = {
   /**
    * @minimum 1
@@ -998,6 +1006,8 @@ export type GetDashboardGetlistcategories200Meta = {
 
 export type GetDashboardGetlistcategories200 = {
   categories: GetDashboardGetlistcategories200CategoriesItem[]
+  label: string
+  type: GetDashboardGetlistcategories200Type
   meta: GetDashboardGetlistcategories200Meta
 }
 
