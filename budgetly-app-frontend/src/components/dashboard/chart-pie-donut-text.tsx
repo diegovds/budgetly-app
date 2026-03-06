@@ -57,7 +57,7 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
       fill: `var(--chart-${i + 1})`,
     })),
     {
-      category: 'Outros:',
+      category: 'Outras:',
       percentage: chartData.othersPercentage,
       fill: `var(--chart-5)`,
     },
