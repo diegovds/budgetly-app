@@ -130,7 +130,7 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
                 className={`size-3 rounded-full`}
                 style={{ backgroundColor: category.fill }}
               />
-              <p>{category.category}</p>
+              <p>{category.category.slice(0, -1)}</p>
             </div>
             <p className="text-end">{category.percentage.toFixed(2)}%</p>
           </div>
