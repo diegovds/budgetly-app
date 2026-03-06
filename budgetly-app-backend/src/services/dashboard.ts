@@ -236,6 +236,8 @@ type CategorySummary = {
 
 type ListCategoriesSummaryResponse = {
   categories: CategorySummary[]
+  label: string
+  type: TransactionType
   meta: {
     page: number
     limit: number
@@ -321,6 +323,8 @@ export async function listCategoriesSummary({
 
   return {
     categories,
+    label: type === 'INCOME' ? 'Receitas' : 'Despesas',
+    type,
     meta: {
       page,
       limit,

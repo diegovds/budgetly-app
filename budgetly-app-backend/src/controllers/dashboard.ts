@@ -175,6 +175,8 @@ export const getListCategories: FastifyPluginAsyncZod = async (app) => {
                 percentage: z.number(),
               }),
             ),
+            label: z.string(),
+            type: z.enum(TransactionType),
             meta: paginationMetaSchema,
           }),
           401: z.object({ message: z.string() }),
