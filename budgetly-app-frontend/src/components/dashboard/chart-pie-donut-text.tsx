@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
@@ -81,7 +82,7 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
               content={
                 <ChartTooltipContent
                   hideLabel
-                  formatter={(value) => `${value}%`}
+                  formatter={(value) => `${Number(value).toFixed(2)}%`}
                 />
               }
             />
@@ -118,6 +119,23 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
           </PieChart>
         </ChartContainer>
       </CardContent>
+      <CardFooter className="flex flex-col gap-4 p-0">
+        {data.map((category, index) => (
+          <div
+            key={index}
+            className="grid w-full grid-cols-2 text-xs font-semibold"
+          >
+            <div className="flex items-center gap-2 self-start">
+              <div
+                className={`size-3 rounded-full`}
+                style={{ backgroundColor: category.fill }}
+              />
+              <p>{category.category}</p>
+            </div>
+            <p className="text-end">{category.percentage.toFixed(2)}%</p>
+          </div>
+        ))}
+      </CardFooter>
     </Card>
   )
 }
