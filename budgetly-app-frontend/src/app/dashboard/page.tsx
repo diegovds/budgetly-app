@@ -1,10 +1,13 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { ChartArea } from '@/components/dashboard/area-chart'
+import { CategoryGrid } from '@/components/dashboard/category-grid'
 import { ChartBar } from '@/components/dashboard/chart-bar'
 import { ChartPieDonutText } from '@/components/dashboard/chart-pie-donut-text'
 import { HeaderPage } from '@/components/header-page'
+import { Card, CardTitle } from '@/components/ui/card'
 import {
   getDashboardBalancelastmonths,
+  getDashboardGetlistcategories,
   getDashboardGettopexpensecategories,
   getDashboardLastmonthsincomeexpense,
 } from '@/http/api'
@@ -27,15 +30,29 @@ export default async function Dashboard() {
     getDashboardLastmonthsincomeexpense()
   const getDashboardGetTopExpenseCategoriesData =
     getDashboardGettopexpensecategories()
+  const expenseCategoryData = getDashboardGetlistcategories({
+    type: 'EXPENSE',
+    page: 1,
+    limit: 5,
+  })
+  const incomecategoryData = getDashboardGetlistcategories({
+    type: 'INCOME',
+    page: 1,
+    limit: 5,
+  })
 
   const [
     balanceLastMonths,
     dashboardLastMonthsIncomeExpense,
     topExpenseCategories,
+    expenseCategory,
+    incomeCategory,
   ] = await Promise.all([
     balanceLastMonthsData,
     dashboardLastMonthsIncomeExpenseData,
     getDashboardGetTopExpenseCategoriesData,
+    expenseCategoryData,
+    incomecategoryData,
   ])
 
   return (
@@ -54,6 +71,24 @@ export default async function Dashboard() {
         <ChartBar chartData={dashboardLastMonthsIncomeExpense} />
         <ChartPieDonutText chartData={topExpenseCategories} />
       </div>
+
+      <Card className="p-4">
+        <CardTitle className="">Desempenho por Categoria</CardTitle>
+        <div className="flex flex-col items-start gap-8 lg:flex-row">
+          <CategoryGrid
+            categories={incomeCategory.categories}
+            meta={incomeCategory.meta}
+            label={incomeCategory.label}
+            type={incomeCategory.type}
+          />
+          <CategoryGrid
+            categories={expenseCategory.categories}
+            meta={expenseCategory.meta}
+            label={expenseCategory.label}
+            type={expenseCategory.type}
+          />
+        </div>
+      </Card>
     </div>
   )
 }
