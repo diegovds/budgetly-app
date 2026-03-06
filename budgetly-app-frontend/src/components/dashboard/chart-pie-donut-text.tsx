@@ -123,7 +123,7 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
         {data.map((category, index) => (
           <div
             key={index}
-            className="grid w-full grid-cols-2 text-xs font-semibold"
+            className="grid w-full grid-cols-[1fr_auto] text-xs font-semibold"
           >
             <div className="flex items-center gap-2 self-start">
               <div
@@ -132,7 +132,9 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
               />
               <p>{category.category.slice(0, -1)}</p>
             </div>
-            <p className="text-end">{category.percentage.toFixed(2)}%</p>
+            <p className="w-11 text-start tabular-nums">
+              {category.percentage.toFixed(2)}%
+            </p>
           </div>
         ))}
       </CardFooter>
