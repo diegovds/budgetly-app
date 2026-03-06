@@ -1,3 +1,4 @@
+import { TransactionType } from '@prisma/client'
 import { format, startOfMonth, subMonths } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { prisma } from '../lib/prisma'
@@ -216,5 +217,115 @@ export async function getTopExpenseCategories(
     categories,
     othersPercentage,
     totalExpenses,
+  }
+}
+
+type ListCategoriesSummaryProps = {
+  userId: string
+  type: TransactionType
+  page: number
+  limit: number
+}
+
+type CategorySummary = {
+  id: string
+  name: string
+  total: number
+  percentage: number
+}
+
+type ListCategoriesSummaryResponse = {
+  categories: CategorySummary[]
+  meta: {
+    page: number
+    limit: number
+    total: number
+    totalPages: number
+  }
+}
+
+export async function listCategoriesSummary({
+  userId,
+  type,
+  page,
+  limit,
+}: ListCategoriesSummaryProps): Promise<ListCategoriesSummaryResponse> {
+  const skip = (page - 1) * limit
+
+  const [categoriesGrouped, totalCategories, totalAmount] = await Promise.all([
+    prisma.transaction.groupBy({
+      by: ['categoryId'],
+      where: {
+        userId,
+        type,
+      },
+      _sum: {
+        amount: true,
+      },
+      orderBy: {
+        _sum: {
+          amount: 'desc',
+        },
+      },
+      skip,
+      take: limit,
+    }),
+
+    prisma.category.count({
+      where: {
+        userId,
+        type,
+      },
+    }),
+
+    prisma.transaction.aggregate({
+      where: {
+        userId,
+        type,
+      },
+      _sum: {
+        amount: true,
+      },
+    }),
+  ])
+
+  const totalTransactionsAmount = Number(totalAmount._sum.amount ?? 0)
+
+  const categoryIds = categoriesGrouped.map((c) => c.categoryId)
+
+  const categoryData = await prisma.category.findMany({
+    where: {
+      id: {
+        in: categoryIds,
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  })
+
+  const categories = categoriesGrouped.map((item) => {
+    const category = categoryData.find((c) => c.id === item.categoryId)
+    const total = Number(item._sum.amount ?? 0)
+
+    return {
+      id: item.categoryId,
+      name: category?.name ?? 'Categoria',
+      total,
+      percentage: totalTransactionsAmount
+        ? Number(((total / totalTransactionsAmount) * 100).toFixed(2))
+        : 0,
+    }
+  })
+
+  return {
+    categories,
+    meta: {
+      page,
+      limit,
+      total: totalCategories,
+      totalPages: Math.ceil(totalCategories / limit),
+    },
   }
 }

@@ -1,9 +1,12 @@
+import { TransactionType } from '@prisma/client'
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import z from 'zod'
+import { paginationMetaSchema } from '../schemas/transaction'
 import {
   getLast12MonthsAccumulatedBalance,
   getLast6MonthsIncomeExpense,
   getTopExpenseCategories,
+  listCategoriesSummary,
 } from '../services/dashboard'
 import { findUserById } from '../services/users'
 
@@ -140,6 +143,62 @@ export const getTopExpense: FastifyPluginAsyncZod = async (app) => {
         const topExpenseCategories = await getTopExpenseCategories(userId)
 
         return reply.send(topExpenseCategories)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const getListCategories: FastifyPluginAsyncZod = async (app) => {
+  app.get(
+    '/dashboard/getlistcategories',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Dashboard'],
+        security: [{ bearerAuth: [] }],
+        summary: '',
+        querystring: z.object({
+          type: z.enum(TransactionType),
+          page: z.coerce.number().int().min(1).default(1),
+          limit: z.coerce.number().int().min(1).max(100).default(5),
+        }),
+        response: {
+          200: z.object({
+            categories: z.array(
+              z.object({
+                id: z.uuid(),
+                name: z.string(),
+                total: z.number(),
+                percentage: z.number(),
+              }),
+            ),
+            meta: paginationMetaSchema,
+          }),
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+        const query = request.query
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const categories = await listCategoriesSummary({
+          userId,
+          ...query,
+        })
+
+        return reply.send(categories)
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })
