@@ -943,6 +943,76 @@ export type GetDashboardGettopexpensecategories500 = {
   message: string
 }
 
+export type GetDashboardGetlistcategoriesParams = {
+  type: GetDashboardGetlistcategoriesType
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page?: number
+  /**
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number
+}
+
+export type GetDashboardGetlistcategoriesType =
+  (typeof GetDashboardGetlistcategoriesType)[keyof typeof GetDashboardGetlistcategoriesType]
+
+export const GetDashboardGetlistcategoriesType = {
+  INCOME: 'INCOME',
+  EXPENSE: 'EXPENSE',
+} as const
+
+export type GetDashboardGetlistcategories200CategoriesItem = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string
+  name: string
+  total: number
+  percentage: number
+}
+
+export type GetDashboardGetlistcategories200Meta = {
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  page: number
+  /**
+   * @minimum 1
+   * @maximum 9007199254740991
+   */
+  limit: number
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  total: number
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  totalPages: number
+}
+
+export type GetDashboardGetlistcategories200 = {
+  categories: GetDashboardGetlistcategories200CategoriesItem[]
+  meta: GetDashboardGetlistcategories200Meta
+}
+
+export type GetDashboardGetlistcategories401 = {
+  message: string
+}
+
+export type GetDashboardGetlistcategories404 = {
+  message: string
+}
+
+export type GetDashboardGetlistcategories500 = {
+  message: string
+}
+
 /**
  * Retorna uma mensagem de boas-vindas e um link para a documentação da API.
  * @summary Página inicial da API
@@ -1330,6 +1400,37 @@ export const getDashboardGettopexpensecategories = async (
 ): Promise<GetDashboardGettopexpensecategories200> => {
   return customFetch<GetDashboardGettopexpensecategories200>(
     getGetDashboardGettopexpensecategoriesUrl(),
+    {
+      ...options,
+      method: 'GET',
+    },
+  )
+}
+
+export const getGetDashboardGetlistcategoriesUrl = (
+  params: GetDashboardGetlistcategoriesParams,
+) => {
+  const normalizedParams = new URLSearchParams()
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  })
+
+  const stringifiedParams = normalizedParams.toString()
+
+  return stringifiedParams.length > 0
+    ? `/dashboard/getlistcategories?${stringifiedParams}`
+    : `/dashboard/getlistcategories`
+}
+
+export const getDashboardGetlistcategories = async (
+  params: GetDashboardGetlistcategoriesParams,
+  options?: RequestInit,
+): Promise<GetDashboardGetlistcategories200> => {
+  return customFetch<GetDashboardGetlistcategories200>(
+    getGetDashboardGetlistcategoriesUrl(params),
     {
       ...options,
       method: 'GET',
