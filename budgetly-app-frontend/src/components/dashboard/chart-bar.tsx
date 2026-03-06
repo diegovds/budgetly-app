@@ -35,7 +35,7 @@ const chartConfig = {
 
 export function ChartBar({ chartData }: ChartBarProps) {
   return (
-    <Card className="w-full flex-2 p-4">
+    <Card className="w-full p-4">
       <CardHeader className="px-0">
         <CardTitle>Receitas vs Despesas</CardTitle>
         <CardDescription>
