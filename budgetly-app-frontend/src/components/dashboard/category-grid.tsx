@@ -1,18 +1,33 @@
 import {
     GetDashboardGetlistcategories200CategoriesItem,
     GetDashboardGetlistcategories200Meta,
+    GetDashboardGetlistcategories200Type,
 } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
-import { Card } from '../ui/card'
+import { Card, CardTitle } from '../ui/card'
 
 type CategoryGridProps = {
   categories: GetDashboardGetlistcategories200CategoriesItem[]
   meta: GetDashboardGetlistcategories200Meta
+  type: GetDashboardGetlistcategories200Type
+  label: string
 }
 
-export function CategoryGrid({ categories, meta }: CategoryGridProps) {
+export function CategoryGrid({
+  categories,
+  label,
+  meta,
+  type,
+}: CategoryGridProps) {
   return (
     <Card className="divide-accent flex-1 gap-0 divide-y overflow-x-auto p-0">
+      <CardTitle
+        className={`p-4 font-semibold ${
+          type === 'INCOME' ? 'text-green-500' : 'text-red-500'
+        }`}
+      >
+        {label}
+      </CardTitle>
       <div className="grid grid-cols-3 p-4 text-sm font-semibold md:text-base">
         <p>Categoria</p>
         <p>Valor</p>
@@ -24,7 +39,7 @@ export function CategoryGrid({ categories, meta }: CategoryGridProps) {
             <h3 className="truncate font-semibold">{category.name}</h3>
             <p
               className={`font-semibold ${
-                category.total >= 0 ? 'text-green-500' : 'text-red-500'
+                type === 'INCOME' ? 'text-green-500' : 'text-red-500'
               }`}
             >
               {formatCurrency(category.total)}
