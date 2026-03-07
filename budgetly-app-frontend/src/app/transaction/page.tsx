@@ -136,7 +136,7 @@ export default async function TransactionPage({ searchParams }: Props) {
           <Pagination
             meta={transactions.meta}
             params={params}
-            name="transações"
+            name="Transações"
           />
         </>
       )}
