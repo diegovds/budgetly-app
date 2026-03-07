@@ -1,10 +1,10 @@
 import {
-    GetDashboardGetlistcategories200CategoriesItem,
-    GetDashboardGetlistcategories200Meta,
-    GetDashboardGetlistcategories200Type,
+  GetDashboardGetlistcategories200CategoriesItem,
+  GetDashboardGetlistcategories200Meta,
+  GetDashboardGetlistcategories200Type,
 } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
-import { Card, CardTitle } from '../ui/card'
+import { Card } from '../ui/card'
 
 type CategoryGridProps = {
   categories: GetDashboardGetlistcategories200CategoriesItem[]
@@ -20,14 +20,7 @@ export function CategoryGrid({
   type,
 }: CategoryGridProps) {
   return (
-    <Card className="divide-accent flex-1 gap-0 divide-y overflow-x-auto p-0">
-      <CardTitle
-        className={`p-4 font-semibold ${
-          type === 'INCOME' ? 'text-green-500' : 'text-red-500'
-        }`}
-      >
-        {label}
-      </CardTitle>
+    <Card className="divide-accent gap-0 divide-y overflow-x-auto p-0">
       <div className="grid grid-cols-3 p-4 text-sm font-semibold md:text-base">
         <p>Categoria</p>
         <p>Valor</p>
