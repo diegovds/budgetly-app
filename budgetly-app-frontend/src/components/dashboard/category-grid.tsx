@@ -43,10 +43,10 @@ export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
         </ul>
       </Card>
       <div className="flex gap-4 self-end">
-        <Button variant="outline" disabled className="text-xs md:text-sm">
+        <Button variant="outline" className="text-xs md:text-sm">
           <ChevronLeft />
         </Button>
-        <Button variant="outline" disabled className="text-xs md:text-sm">
+        <Button variant="outline" className="text-xs md:text-sm">
           <ChevronRight />
         </Button>
       </div>
