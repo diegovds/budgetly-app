@@ -42,7 +42,7 @@ export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
           ))}
         </ul>
       </Card>
-      <div className="flex gap-4 self-end">
+      <div className="flex items-center gap-2 self-end">
         <Button variant="outline" className="text-xs md:text-sm">
           <ChevronLeft />
         </Button>
