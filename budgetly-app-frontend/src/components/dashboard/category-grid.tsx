@@ -15,7 +15,7 @@ type CategoryGridProps = {
 export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
   return (
     <Card className="divide-accent gap-0 divide-y overflow-x-auto p-0">
-      <div className="grid grid-cols-[2fr_1fr_1fr] p-4 text-sm font-semibold md:text-base">
+      <div className="grid grid-cols-[2fr_1.5fr_1fr] p-4 text-sm font-semibold md:text-base">
         <p>Categoria</p>
         <p>Valor</p>
         <p>Percentual</p>
@@ -24,7 +24,7 @@ export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
         {categories.map((category) => (
           <li
             key={category.id}
-            className="grid grid-cols-[2fr_1fr_1fr] items-center p-4"
+            className="grid grid-cols-[2fr_1.5fr_1fr] items-center p-4"
           >
             <h3 className="truncate font-semibold">{category.name}</h3>
             <p
