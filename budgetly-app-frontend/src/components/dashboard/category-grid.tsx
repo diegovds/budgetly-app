@@ -10,15 +10,9 @@ type CategoryGridProps = {
   categories: GetDashboardGetlistcategories200CategoriesItem[]
   meta: GetDashboardGetlistcategories200Meta
   type: GetDashboardGetlistcategories200Type
-  label: string
 }
 
-export function CategoryGrid({
-  categories,
-  label,
-  meta,
-  type,
-}: CategoryGridProps) {
+export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
   return (
     <Card className="divide-accent gap-0 divide-y overflow-x-auto p-0">
       <div className="grid grid-cols-3 p-4 text-sm font-semibold md:text-base">
