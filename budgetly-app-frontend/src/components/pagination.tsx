@@ -38,7 +38,7 @@ export function Pagination({ meta, name, params }: PaginationProps) {
   return (
     <div className="flex flex-col items-center justify-between gap-4 px-4 pb-4 lg:flex-row">
       <p className="text-xs md:text-sm">
-        Mostrando {start} a {end} de {meta.total} {name}
+        Mostrando de {start} a {end} em um total de {meta.total} {name}
       </p>
 
       <nav className="flex items-center gap-2">
