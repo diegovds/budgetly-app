@@ -1,10 +1,16 @@
+'use client'
+
 import {
+  getDashboardGetlistcategories,
+  GetDashboardGetlistcategories200,
   GetDashboardGetlistcategories200CategoriesItem,
   GetDashboardGetlistcategories200Meta,
   GetDashboardGetlistcategories200Type,
 } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
+import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState } from 'react'
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 
@@ -15,6 +21,27 @@ type CategoryGridProps = {
 }
 
 export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
+  const [page, setPage] = useState(meta.page)
+
+  const { data } = useQuery<GetDashboardGetlistcategories200>({
+    queryKey: ['dashboard-categories', type, page],
+    queryFn: () =>
+      getDashboardGetlistcategories({
+        type,
+        limit: 5,
+        page,
+      }),
+    initialData: {
+      categories,
+      label: '',
+      type,
+      meta,
+    },
+    placeholderData: (previousData) => previousData,
+  })
+
+  const currentMeta = data.meta
+
   return (
     <>
       <Card className="divide-accent gap-0 divide-y overflow-x-auto p-0">
@@ -24,7 +51,7 @@ export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
           <p>Percentual</p>
         </div>
         <ul className="divide-accent divide-y text-sm md:text-base">
-          {categories.map((category) => (
+          {data.categories.map((category) => (
             <li
               key={category.id}
               className="grid grid-cols-[2fr_1.5fr_1fr] items-center p-4"
@@ -42,14 +69,27 @@ export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
           ))}
         </ul>
       </Card>
-      <div className="flex items-center gap-2 self-end">
-        <Button variant="outline" className="text-xs md:text-sm">
-          <ChevronLeft />
-        </Button>
-        <Button variant="outline" className="text-xs md:text-sm">
-          <ChevronRight />
-        </Button>
-      </div>
+      {currentMeta.totalPages > 1 && (
+        <div className="flex items-center gap-2 self-end">
+          <Button
+            variant="outline"
+            className="text-xs md:text-sm"
+            disabled={currentMeta.page === 1}
+            onClick={() => setPage((p) => p - 1)}
+          >
+            <ChevronLeft />
+          </Button>
+
+          <Button
+            variant="outline"
+            className="text-xs md:text-sm"
+            disabled={currentMeta.page === currentMeta.totalPages}
+            onClick={() => setPage((p) => p + 1)}
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+      )}
     </>
   )
 }
