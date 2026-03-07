@@ -18,9 +18,15 @@ type CategoryGridProps = {
   categories: GetDashboardGetlistcategories200CategoriesItem[]
   meta: GetDashboardGetlistcategories200Meta
   type: GetDashboardGetlistcategories200Type
+  label: string
 }
 
-export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
+export function CategoryGrid({
+  categories,
+  label,
+  meta,
+  type,
+}: CategoryGridProps) {
   const [page, setPage] = useState(meta.page)
 
   const { data } = useQuery<GetDashboardGetlistcategories200>({
@@ -41,6 +47,8 @@ export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
   })
 
   const currentMeta = data.meta
+  const start = (currentMeta.page - 1) * currentMeta.limit + 1
+  const end = Math.min(currentMeta.page * currentMeta.limit, currentMeta.total)
 
   return (
     <>
@@ -69,27 +77,32 @@ export function CategoryGrid({ categories, meta, type }: CategoryGridProps) {
           ))}
         </ul>
       </Card>
-      {currentMeta.totalPages > 1 && (
-        <div className="flex items-center gap-2 self-end">
-          <Button
-            variant="outline"
-            className="text-xs md:text-sm"
-            disabled={currentMeta.page === 1}
-            onClick={() => setPage((p) => p - 1)}
-          >
-            <ChevronLeft />
-          </Button>
+      <div className="flex items-center justify-between">
+        <p className="text-xs md:text-sm">
+          Mostrando de {start} a {end} de {currentMeta.total} {label}
+        </p>
+        {currentMeta.totalPages > 1 && (
+          <div className="flex items-center gap-2 self-end">
+            <Button
+              variant="outline"
+              className="text-xs md:text-sm"
+              disabled={currentMeta.page === 1}
+              onClick={() => setPage((p) => p - 1)}
+            >
+              <ChevronLeft />
+            </Button>
 
-          <Button
-            variant="outline"
-            className="text-xs md:text-sm"
-            disabled={currentMeta.page === currentMeta.totalPages}
-            onClick={() => setPage((p) => p + 1)}
-          >
-            <ChevronRight />
-          </Button>
-        </div>
-      )}
+            <Button
+              variant="outline"
+              className="text-xs md:text-sm"
+              disabled={currentMeta.page === currentMeta.totalPages}
+              onClick={() => setPage((p) => p + 1)}
+            >
+              <ChevronRight />
+            </Button>
+          </div>
+        )}
+      </div>
     </>
   )
 }

@@ -79,6 +79,7 @@ export default async function Dashboard() {
           </CardTitle>
           <CategoryGrid
             categories={incomeCategory.categories}
+            label={incomeCategory.label}
             meta={incomeCategory.meta}
             type={incomeCategory.type}
           />
@@ -90,6 +91,7 @@ export default async function Dashboard() {
           </CardTitle>
           <CategoryGrid
             categories={expenseCategory.categories}
+            label={expenseCategory.label}
             meta={expenseCategory.meta}
             type={expenseCategory.type}
           />
