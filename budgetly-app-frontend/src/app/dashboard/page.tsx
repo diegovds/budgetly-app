@@ -72,23 +72,31 @@ export default async function Dashboard() {
         <ChartPieDonutText chartData={topExpenseCategories} />
       </div>
 
-      <Card className="p-4">
-        <CardTitle className="">Desempenho por Categoria</CardTitle>
-        <div className="flex flex-col items-start gap-8 lg:flex-row">
+      <div className="flex flex-col items-start gap-8 lg:flex-row">
+        <Card className="flex-1 p-4">
+          <CardTitle className="">
+            Desempenho das {incomeCategory.label}
+          </CardTitle>
           <CategoryGrid
             categories={incomeCategory.categories}
             meta={incomeCategory.meta}
             label={incomeCategory.label}
             type={incomeCategory.type}
           />
+        </Card>
+
+        <Card className="flex-1 p-4">
+          <CardTitle className="">
+            Desempenho das {expenseCategory.label}
+          </CardTitle>
           <CategoryGrid
             categories={expenseCategory.categories}
             meta={expenseCategory.meta}
             label={expenseCategory.label}
             type={expenseCategory.type}
           />
-        </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   )
 }
