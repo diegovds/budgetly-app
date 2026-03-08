@@ -12,13 +12,12 @@ import { useState } from 'react'
 import { Button } from '../ui/button'
 
 type CategoryListProps = {
-  categories: GetCategory200
   type: GetCategory200CategoriesItemType
   label: string
 }
 
-export function CategoryList({ categories, label, type }: CategoryListProps) {
-  const [page, setPage] = useState(categories.meta.page)
+export function CategoryList({ label, type }: CategoryListProps) {
+  const [page, setPage] = useState(1)
 
   const { data } = useQuery<GetCategory200>({
     queryKey: ['categories', type, page],
@@ -28,12 +27,10 @@ export function CategoryList({ categories, label, type }: CategoryListProps) {
         limit: 9,
         page,
       }),
-    initialData: {
-      categories: categories.categories,
-      meta: categories.meta,
-    },
-    placeholderData: (previousData) => previousData,
+    placeholderData: (prev) => prev,
   })
+
+  if (!data) return null
 
   const currentMeta = data.meta
   const start = (currentMeta.page - 1) * currentMeta.limit + 1
