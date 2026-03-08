@@ -5,69 +5,85 @@ import {
   GetCategory200,
   GetCategory200CategoriesItemType,
 } from '@/http/api'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { ChevronRight } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 import { Button } from '../ui/button'
 
 type CategoryListProps = {
   categories: GetCategory200
   type: GetCategory200CategoriesItemType
+  label: string
 }
 
-export function CategoryList({ categories, type }: CategoryListProps) {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery<GetCategory200>({
-      queryKey: ['categories', type],
-      initialPageParam: 1,
-      queryFn: ({ pageParam }) =>
-        getCategory({
-          type,
-          limit: 9,
-          page: pageParam as number,
-        }),
-      getNextPageParam: (lastPage) => {
-        const { page, totalPages } = lastPage.meta
+export function CategoryList({ categories, label, type }: CategoryListProps) {
+  const [page, setPage] = useState(categories.meta.page)
 
-        if (page < totalPages) {
-          return page + 1
-        }
+  const { data } = useQuery<GetCategory200>({
+    queryKey: ['categories', type, page],
+    queryFn: () =>
+      getCategory({
+        type,
+        limit: 9,
+        page,
+      }),
+    initialData: {
+      categories: categories.categories,
+      meta: categories.meta,
+    },
+    placeholderData: (previousData) => previousData,
+  })
 
-        return undefined
-      },
-      initialData: {
-        pages: [categories],
-        pageParams: [1],
-      },
-    })
+  const currentMeta = data.meta
+  const start = (currentMeta.page - 1) * currentMeta.limit + 1
+  const end = Math.min(
+    currentMeta.page * currentMeta.limit,
+    currentMeta.totalCategories,
+  )
 
   return (
     <div className="flex flex-col gap-6">
       <div className="grid gap-4 lg:grid-cols-3">
-        {data.pages.map((group) =>
-          group.categories.map((category) => (
-            <div key={category.id}>
-              <h4 className="bg-background flex items-center justify-between rounded p-4 text-xs font-semibold">
-                {category.name}
-                <Link href={`/transaction?categoryId=${category.id}`}>
-                  <ChevronRight size={15} />
-                </Link>
-              </h4>
-            </div>
-          )),
-        )}
+        {data.categories.map((category) => (
+          <div key={category.id}>
+            <h4 className="bg-background flex items-center justify-between rounded p-4 text-xs font-semibold">
+              {category.name}
+              <Link href={`/transaction?categoryId=${category.id}`}>
+                <ChevronRight size={15} />
+              </Link>
+            </h4>
+          </div>
+        ))}
       </div>
 
-      {hasNextPage && (
-        <Button
-          variant="outline"
-          className="w-fit self-center text-xs md:text-sm"
-          onClick={() => fetchNextPage()}
-          disabled={isFetchingNextPage}
-        >
-          {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}
-        </Button>
-      )}
+      <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
+        <p className="text-xs md:text-sm">
+          Mostrando {start} a {end} de um total de {currentMeta.totalCategories}{' '}
+          {label}
+        </p>
+        {currentMeta.totalPages > 1 && (
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="text-xs md:text-sm"
+              disabled={currentMeta.page === 1}
+              onClick={() => setPage((p) => p - 1)}
+            >
+              <ChevronLeft />
+            </Button>
+
+            <Button
+              variant="outline"
+              className="text-xs md:text-sm"
+              disabled={currentMeta.page === currentMeta.totalPages}
+              onClick={() => setPage((p) => p + 1)}
+            >
+              <ChevronRight />
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

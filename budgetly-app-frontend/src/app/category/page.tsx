@@ -44,7 +44,11 @@ export default async function CategoryPage() {
               </div>
               <h3 className="font-semibold md:text-xl">Categoria de Receita</h3>
             </div>
-            <CategoryList categories={incomeCategories} type="INCOME" />
+            <CategoryList
+              categories={incomeCategories}
+              label="Receitas"
+              type="INCOME"
+            />
           </div>
         ) : (
           <div className="flex-1 p-4" />
@@ -57,7 +61,11 @@ export default async function CategoryPage() {
               </div>
               <h3 className="font-semibold md:text-xl">Categoria de Despesa</h3>
             </div>
-            <CategoryList categories={expenseCategories} type="EXPENSE" />
+            <CategoryList
+              categories={expenseCategories}
+              label="Despesas"
+              type="EXPENSE"
+            />
           </div>
         ) : (
           <div className="flex-1 p-4" />
