@@ -82,15 +82,8 @@ export function TransactionFilters({
   }
 
   function handleReset() {
-    form.reset({
-      startDate: undefined,
-      endDate: undefined,
-      accountId: undefined,
-      categoryId: undefined,
-      search: undefined,
-    })
-
-    router.push(`/transaction`)
+    form.reset()
+    router.push('/transaction')
   }
 
   return (
@@ -285,7 +278,9 @@ export function TransactionFilters({
                     className="text-xs md:text-base"
                     value={field.value ?? ''}
                     onChange={(e) =>
-                      field.onChange(e.target.value || undefined)
+                      field.onChange(
+                        e.target.value === '' ? undefined : e.target.value,
+                      )
                     }
                   />
                 </FormControl>
