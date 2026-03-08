@@ -1,13 +1,45 @@
-import {
-    GetTransactions200
-} from '@/http/api'
+'use client'
+
+import { SearchParams } from '@/app/transaction/page'
+import { getTransactions, GetTransactions200 } from '@/http/api'
 import { formatCurrency, formatDate } from '@/utils/format'
+import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 
 type TransactionGridProps = {
   transactions: GetTransactions200
+  searchParams: SearchParams
 }
 
-export function TransactionGrid({ transactions }: TransactionGridProps) {
+export function TransactionGrid({
+  searchParams,
+  transactions,
+}: TransactionGridProps) {
+  const [page, setPage] = useState(transactions.meta.page)
+
+  const { data } = useQuery<GetTransactions200>({
+    queryKey: ['transactions', searchParams, transactions, page],
+    queryFn: () =>
+      getTransactions({
+        limit: transactions.meta.limit,
+        page,
+        startDate: searchParams.startDate,
+        endDate: searchParams.endDate,
+        accountId: searchParams.accountId,
+        categoryId: searchParams.categoryId,
+        search: searchParams.search,
+      }),
+    initialData: {
+      transactions: transactions.transactions,
+      meta: transactions.meta,
+    },
+    placeholderData: (previousData) => previousData,
+  })
+
+  const currentMeta = data.meta
+  const start = (currentMeta.page - 1) * currentMeta.limit + 1
+  const end = Math.min(currentMeta.page * currentMeta.limit, currentMeta.total)
+
   return (
     <div className="bg-card divide-accent divide-y overflow-x-auto rounded-md border">
       {/* Header */}
@@ -21,7 +53,7 @@ export function TransactionGrid({ transactions }: TransactionGridProps) {
 
       {/* Body */}
       <ul className="divide-accent min-w-225 divide-y text-sm md:text-base">
-        {transactions.transactions.map((transaction) => (
+        {data.transactions.map((transaction) => (
           <li
             key={transaction.id}
             className="grid grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] items-center p-4"
