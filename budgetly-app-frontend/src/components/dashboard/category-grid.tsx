@@ -3,8 +3,6 @@
 import {
   getDashboardGetlistcategories,
   GetDashboardGetlistcategories200,
-  GetDashboardGetlistcategories200CategoriesItem,
-  GetDashboardGetlistcategories200Meta,
   GetDashboardGetlistcategories200Type,
 } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
@@ -15,19 +13,11 @@ import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 
 type CategoryGridProps = {
-  categories: GetDashboardGetlistcategories200CategoriesItem[]
-  meta: GetDashboardGetlistcategories200Meta
   type: GetDashboardGetlistcategories200Type
-  label: string
 }
 
-export function CategoryGrid({
-  categories,
-  label,
-  meta,
-  type,
-}: CategoryGridProps) {
-  const [page, setPage] = useState(meta.page)
+export function CategoryGrid({ type }: CategoryGridProps) {
+  const [page, setPage] = useState(1)
 
   const { data } = useQuery<GetDashboardGetlistcategories200>({
     queryKey: ['dashboard-categories', type, page],
@@ -37,14 +27,10 @@ export function CategoryGrid({
         limit: 5,
         page,
       }),
-    initialData: {
-      categories,
-      label: '',
-      type,
-      meta,
-    },
-    placeholderData: (previousData) => previousData,
+    placeholderData: (prev) => prev,
   })
+
+  if (!data) return null
 
   const currentMeta = data.meta
   const start = (currentMeta.page - 1) * currentMeta.limit + 1
@@ -79,7 +65,8 @@ export function CategoryGrid({
       </Card>
       <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
         <p className="text-xs md:text-sm">
-          Mostrando {start} a {end} de um total de {currentMeta.total} {label}
+          Mostrando {start} a {end} de um total de {currentMeta.total}{' '}
+          {data.label}
         </p>
         {currentMeta.totalPages > 1 && (
           <div className="flex items-center gap-2">
