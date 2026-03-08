@@ -1,6 +1,5 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { HeaderPage } from '@/components/header-page'
-import { Pagination } from '@/components/pagination'
 import { TransactionFilters } from '@/components/transaction/transaction-filters'
 import { TransactionGrid } from '@/components/transaction/transaction-grid'
 import {
@@ -14,6 +13,11 @@ import { StoreAccounts } from '@/providers/store-account'
 import { StoreAccountTypes } from '@/providers/store-account-type'
 import { StoreCategories } from '@/providers/store-category'
 import { StoreCategoryTypes } from '@/providers/store-category-type'
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -42,17 +46,30 @@ export default async function TransactionPage({ searchParams }: Props) {
   }
 
   const params = await searchParams
+  const page = Number(params.page ?? 1)
 
-  const currentPage = params.page ?? 1
+  const queryClient = new QueryClient()
 
-  const transactionsData = getTransactions({
-    limit: 8,
-    page: currentPage,
-    startDate: params.startDate,
-    endDate: params.endDate,
-    accountId: params.accountId,
-    categoryId: params.categoryId,
-    search: params.search,
+  await queryClient.prefetchQuery({
+    queryKey: [
+      'transactions',
+      page,
+      params.startDate,
+      params.endDate,
+      params.accountId,
+      params.categoryId,
+      params.search,
+    ],
+    queryFn: () =>
+      getTransactions({
+        limit: 8,
+        page,
+        startDate: params.startDate,
+        endDate: params.endDate,
+        accountId: params.accountId,
+        categoryId: params.categoryId,
+        search: params.search,
+      }),
   })
 
   const accountsData = getAccount({ limit: 50 })
@@ -60,46 +77,33 @@ export default async function TransactionPage({ searchParams }: Props) {
   const categoryTypesData = getCategoryTypes()
   const accountTypesData = getAccountTypes()
 
-  const [transactions, accounts, categories, categoryTypes, accountTypes] =
-    await Promise.all([
-      transactionsData,
-      accountsData,
-      categoriesData,
-      categoryTypesData,
-      accountTypesData,
-    ])
+  const [accounts, categories, categoryTypes, accountTypes] = await Promise.all(
+    [accountsData, categoriesData, categoryTypesData, accountTypesData],
+  )
 
   return (
-    <div className="w-full space-y-8">
-      <StoreAccounts accounts={accounts.accounts} />
-      <StoreCategories categories={categories.categories} />
-      <StoreCategoryTypes categoryTypes={categoryTypes} />
-      <StoreAccountTypes accountTypes={accountTypes} />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className="w-full space-y-8">
+        <StoreAccounts accounts={accounts.accounts} />
+        <StoreCategories categories={categories.categories} />
+        <StoreCategoryTypes categoryTypes={categoryTypes} />
+        <StoreAccountTypes accountTypes={accountTypes} />
 
-      <HeaderPage
-        buttonText="Adicionar Transação"
-        description="Visualize e gerencie todas as suas atividades financeiras."
-        href="/transaction/new"
-        title="Gestão de Transações"
-      />
+        <HeaderPage
+          buttonText="Adicionar Transação"
+          description="Visualize e gerencie todas as suas atividades financeiras."
+          href="/transaction/new"
+          title="Gestão de Transações"
+        />
 
-      {transactions.transactions.length !== 0 && (
-        <>
-          <TransactionFilters
-            accounts={accounts.accounts}
-            categories={categories.categories}
-            params={params}
-          />
+        <TransactionFilters
+          accounts={accounts.accounts}
+          categories={categories.categories}
+          params={params}
+        />
 
-          <TransactionGrid searchParams={params} transactions={transactions} />
-
-          <Pagination
-            meta={transactions.meta}
-            params={params}
-            name="Transações"
-          />
-        </>
-      )}
-    </div>
+        <TransactionGrid searchParams={params} />
+      </div>
+    </HydrationBoundary>
   )
 }
