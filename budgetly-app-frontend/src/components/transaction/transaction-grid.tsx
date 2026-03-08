@@ -5,7 +5,7 @@ import { getTransactions, GetTransactions200 } from '@/http/api'
 import { formatCurrency, formatDate } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 
 type TransactionGridProps = {
@@ -14,6 +14,16 @@ type TransactionGridProps = {
 
 export function TransactionGrid({ searchParams }: TransactionGridProps) {
   const [page, setPage] = useState(Number(searchParams.page ?? 1))
+
+  useEffect(() => {
+    setPage(1)
+  }, [
+    searchParams.startDate,
+    searchParams.endDate,
+    searchParams.accountId,
+    searchParams.categoryId,
+    searchParams.search,
+  ])
 
   const { data } = useQuery<GetTransactions200>({
     queryKey: [
