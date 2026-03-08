@@ -91,7 +91,7 @@ export default async function TransactionPage({ searchParams }: Props) {
             params={params}
           />
 
-          <TransactionGrid transactions={transactions} />
+          <TransactionGrid searchParams={params} transactions={transactions} />
 
           <Pagination
             meta={transactions.meta}
