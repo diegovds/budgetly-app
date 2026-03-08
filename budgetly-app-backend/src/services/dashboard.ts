@@ -254,75 +254,63 @@ export async function listCategoriesSummary({
 }: ListCategoriesSummaryProps): Promise<ListCategoriesSummaryResponse> {
   const skip = (page - 1) * limit
 
-  const [categoriesGrouped, totalCategories, totalAmount] = await Promise.all([
-    prisma.transaction.groupBy({
-      by: ['categoryId'],
-      where: {
-        userId,
-        type,
-      },
-      _sum: {
-        amount: true,
-      },
-      orderBy: {
-        _sum: {
-          amount: 'desc',
-        },
-      },
-      skip,
-      take: limit,
-    }),
+  const categories = await prisma.$queryRaw<
+    {
+      id: string
+      name: string
+      total: number
+    }[]
+  >`
+    SELECT
+      c.id,
+      c.name,
+      COALESCE(SUM(t.amount), 0) as total
+    FROM "Category" c
+    LEFT JOIN "Transaction" t
+      ON t."categoryId" = c.id
+      AND t."userId" = ${userId}
+      AND t."type" = ${type}
+    WHERE
+      c."userId" = ${userId}
+      AND c."type" = ${type}
+    GROUP BY c.id
+    ORDER BY total DESC
+    OFFSET ${skip}
+    LIMIT ${limit}
+  `
 
-    prisma.category.count({
-      where: {
-        userId,
-        type,
-      },
-    }),
+  const totalCategories = await prisma.category.count({
+    where: {
+      userId,
+      type,
+    },
+  })
 
-    prisma.transaction.aggregate({
-      where: {
-        userId,
-        type,
-      },
-      _sum: {
-        amount: true,
-      },
-    }),
-  ])
+  const totalAmount = await prisma.transaction.aggregate({
+    where: {
+      userId,
+      type,
+    },
+    _sum: {
+      amount: true,
+    },
+  })
 
   const totalTransactionsAmount = Number(totalAmount._sum.amount ?? 0)
 
-  const categoryIds = categoriesGrouped.map((c) => c.categoryId)
-
-  const categoryData = await prisma.category.findMany({
-    where: {
-      id: {
-        in: categoryIds,
-      },
-    },
-    select: {
-      id: true,
-      name: true,
-    },
-  })
-
-  const categories = categoriesGrouped.map((item) => {
-    const category = categoryData.find((c) => c.id === item.categoryId)
-    const total = Number(item._sum.amount ?? 0)
-
-    return {
-      id: item.categoryId,
-      name: category?.name ?? 'Categoria',
-      total,
-      percentage: totalTransactionsAmount
-        ? Number(((total / totalTransactionsAmount) * 100).toFixed(2))
-        : 0,
-    }
-  })
+  const formatted = categories.map((category) => ({
+    id: category.id,
+    name: category.name,
+    total: Number(category.total),
+    percentage: totalTransactionsAmount
+      ? Number(
+          ((Number(category.total) / totalTransactionsAmount) * 100).toFixed(2),
+        )
+      : 0,
+  }))
 
   return {
-    categories,
+    categories: formatted,
     label: type === 'INCOME' ? 'Receitas' : 'Despesas',
     type,
     meta: {
