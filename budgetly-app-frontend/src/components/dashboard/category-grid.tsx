@@ -79,8 +79,7 @@ export function CategoryGrid({
       </Card>
       <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
         <p className="text-xs md:text-sm">
-          Mostrando de {start} a {end} em um total de {currentMeta.total}{' '}
-          {label}
+          Mostrando {start} a {end} de um total de {currentMeta.total} {label}
         </p>
         {currentMeta.totalPages > 1 && (
           <div className="flex items-center gap-2">
