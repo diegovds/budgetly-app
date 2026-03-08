@@ -1,5 +1,6 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { HeaderPage } from '@/components/header-page'
+import { Pagination } from '@/components/pagination'
 import { TransactionFilters } from '@/components/transaction/transaction-filters'
 import { TransactionGrid } from '@/components/transaction/transaction-grid'
 import {
@@ -91,6 +92,12 @@ export default async function TransactionPage({ searchParams }: Props) {
           />
 
           <TransactionGrid transactions={transactions} />
+
+          <Pagination
+            meta={transactions.meta}
+            params={params}
+            name="Transações"
+          />
         </>
       )}
     </div>
