@@ -72,8 +72,8 @@ export default async function Dashboard() {
         <ChartPieDonutText chartData={topExpenseCategories} />
       </div>
 
-      <div className="flex flex-col items-start gap-8 lg:flex-row">
-        <Card className="flex-1 p-4">
+      <div className="grid w-full items-start gap-8 lg:grid-cols-2">
+        <Card className="overflow-x-auto p-4">
           <CardTitle className="">
             Desempenho das {incomeCategory.label}
           </CardTitle>
@@ -85,7 +85,7 @@ export default async function Dashboard() {
           />
         </Card>
 
-        <Card className="flex-1 p-4">
+        <Card className="overflow-x-auto p-4">
           <CardTitle className="">
             Desempenho das {expenseCategory.label}
           </CardTitle>
