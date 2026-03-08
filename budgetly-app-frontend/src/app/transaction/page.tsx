@@ -1,7 +1,7 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { HeaderPage } from '@/components/header-page'
-import { Pagination } from '@/components/pagination'
 import { TransactionFilters } from '@/components/transaction/transaction-filters'
+import { TransactionGrid } from '@/components/transaction/transaction-grid'
 import {
   getAccount,
   getAccountTypes,
@@ -13,7 +13,6 @@ import { StoreAccounts } from '@/providers/store-account'
 import { StoreAccountTypes } from '@/providers/store-account-type'
 import { StoreCategories } from '@/providers/store-category'
 import { StoreCategoryTypes } from '@/providers/store-category-type'
-import { formatCurrency, formatDate } from '@/utils/format'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -91,53 +90,7 @@ export default async function TransactionPage({ searchParams }: Props) {
             params={params}
           />
 
-          <div className="bg-card divide-accent divide-y overflow-x-auto rounded-md border">
-            {/* Header */}
-            <div className="grid min-w-225 grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] p-4 text-sm font-semibold md:text-base">
-              <p>Data</p>
-              <p>Descrição</p>
-              <p>Categoria</p>
-              <p>Conta</p>
-              <p>Valor</p>
-            </div>
-
-            {/* Body */}
-            <ul className="divide-accent min-w-225 divide-y text-sm md:text-base">
-              {transactions.transactions.map((transaction) => (
-                <li
-                  key={transaction.id}
-                  className="grid grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] items-center p-4"
-                >
-                  <p className="text-muted-foreground">
-                    {formatDate(new Date(transaction.date))}
-                  </p>
-                  <p className="truncate font-semibold">
-                    {transaction.description}
-                  </p>
-                  <p className="w-fit rounded-xl border p-2 text-xs md:text-sm">
-                    {transaction.categoryName}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {transaction.accountName}
-                  </p>
-                  <p
-                    className={`font-semibold ${
-                      transaction.amount >= 0
-                        ? 'text-green-500'
-                        : 'text-red-500'
-                    }`}
-                  >
-                    {formatCurrency(transaction.amount)}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <Pagination
-            meta={transactions.meta}
-            params={params}
-            name="Transações"
-          />
+          <TransactionGrid transactions={transactions} />
         </>
       )}
     </div>
