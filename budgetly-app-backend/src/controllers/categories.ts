@@ -71,6 +71,8 @@ export const listCategories: FastifyPluginAsyncZod = async (app) => {
           page: z.coerce.number().int().min(1).default(1),
           limit: z.coerce.number().int().min(1).max(100).default(6),
           type: z.enum(TransactionType).optional(),
+          orderBy: z.enum(['name', 'total']).optional().default('name'),
+          order: z.enum(['asc', 'desc']).optional().default('asc'),
         }),
         response: {
           200: ListCategoriesSummaryResponseSchema,

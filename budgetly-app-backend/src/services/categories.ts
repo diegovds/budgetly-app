@@ -49,6 +49,8 @@ type ListCategoriesSummaryProps = {
   page: number
   limit: number
   type?: TransactionType
+  orderBy?: 'name' | 'total'
+  order?: 'asc' | 'desc'
 }
 
 export async function listCategoriesSummary({
@@ -56,6 +58,8 @@ export async function listCategoriesSummary({
   page,
   limit,
   type,
+  orderBy,
+  order,
 }: ListCategoriesSummaryProps): Promise<ListCategoriesSummaryResponse> {
   const skip = (page - 1) * limit
   const { startDate, endDate } = getLast30DaysRange()
@@ -68,7 +72,7 @@ export async function listCategoriesSummary({
         name: true,
         type: true,
       },
-      orderBy: { name: 'asc' },
+      orderBy: { name: order },
       skip,
       take: limit,
     }),
@@ -78,36 +82,40 @@ export async function listCategoriesSummary({
     }),
   ])
 
-  const categoriesWithTotal = (
-    await Promise.all(
-      categories.map(async (category) => {
-        const aggregate = await prisma.transaction.aggregate({
-          where: {
-            userId,
-            categoryId: category.id,
-            date: {
-              gte: startDate,
-              lte: endDate,
-            },
+  const categoriesWithTotal = await Promise.all(
+    categories.map(async (category) => {
+      const aggregate = await prisma.transaction.aggregate({
+        where: {
+          userId,
+          categoryId: category.id,
+          date: {
+            gte: startDate,
+            lte: endDate,
           },
-          _sum: {
-            amount: true,
-          },
-        })
+        },
+        _sum: {
+          amount: true,
+        },
+      })
 
-        const rawTotal = Number(aggregate._sum.amount ?? 0)
-        const total =
-          category.type === TransactionType.EXPENSE ? -rawTotal : rawTotal
+      const rawTotal = Number(aggregate._sum.amount ?? 0)
+      const total =
+        category.type === TransactionType.EXPENSE ? -rawTotal : rawTotal
 
-        return {
-          id: category.id,
-          name: category.name,
-          type: category.type,
-          total,
-        }
-      }),
+      return {
+        id: category.id,
+        name: category.name,
+        type: category.type,
+        total,
+      }
+    }),
+  )
+
+  if (orderBy === 'total') {
+    categoriesWithTotal.sort((a, b) =>
+      order === 'asc' ? a.total - b.total : b.total - a.total,
     )
-  ).sort((a, b) => b.total - a.total)
+  }
 
   return {
     categories: categoriesWithTotal,
