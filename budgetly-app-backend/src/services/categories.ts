@@ -112,9 +112,7 @@ export async function listCategoriesSummary({
   )
 
   if (orderBy === 'total') {
-    categoriesWithTotal.sort((a, b) =>
-      order === 'asc' ? a.total - b.total : b.total - a.total,
-    )
+    categoriesWithTotal.sort((a, b) => b.total - a.total)
   }
 
   return {
