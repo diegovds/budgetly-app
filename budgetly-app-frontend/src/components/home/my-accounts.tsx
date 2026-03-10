@@ -25,7 +25,7 @@ export function MyAccounts({ accounts, totalBalance }: MyAccountsProps) {
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold md:text-2xl">Minhas Contas</h2>
           <Link href="/account" className="text-xs md:text-sm">
-            Ver Todas
+            Ver Tudo
           </Link>
         </div>
         <p className="text-muted-foreground text-xs md:text-sm">
