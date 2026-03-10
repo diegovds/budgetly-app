@@ -6,13 +6,22 @@ export async function middleware(req: NextRequest) {
   const { token } = await getAuthState()
   const { pathname } = req.nextUrl
 
-  // rotas públicas
-  if (token && (pathname === '/login' || pathname === '/register')) {
+  const publicRoutes = ['/login', '/register']
+  const privateRoutes = [
+    '/',
+    '/transaction',
+    '/account',
+    '/category',
+    '/dashboard',
+  ]
+
+  // usuário logado tentando acessar rota pública
+  if (token && publicRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL('/', req.url))
   }
 
-  // rota privada raiz
-  if (!token && pathname === '/') {
+  // usuário não logado tentando acessar rota privada
+  if (!token && privateRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
@@ -20,5 +29,13 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/login', '/register'],
+  matcher: [
+    '/',
+    '/login',
+    '/register',
+    '/transaction',
+    '/account',
+    '/category',
+    '/dashboard',
+  ],
 }
