@@ -60,6 +60,7 @@ export async function getAccountsByUserId({
         name: true,
         type: true,
       },
+      orderBy: { name: 'asc' },
       take,
       skip,
     }),
