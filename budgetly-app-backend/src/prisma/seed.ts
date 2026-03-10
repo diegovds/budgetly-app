@@ -58,7 +58,7 @@ async function main() {
   // 🏦 Contas
   const checking = await prisma.account.create({
     data: {
-      name: 'Conta Corrente',
+      name: 'Orion Financial',
       type: AccountType.CHECKING,
       userId: user.id,
     },
@@ -66,7 +66,7 @@ async function main() {
 
   const credit = await prisma.account.create({
     data: {
-      name: 'Cartão de Crédito',
+      name: 'Nebula Credit',
       type: AccountType.CREDIT,
       userId: user.id,
     },
@@ -74,8 +74,24 @@ async function main() {
 
   const cash = await prisma.account.create({
     data: {
-      name: 'Dinheiro',
+      name: 'Vertex Bank',
       type: AccountType.CASH,
+      userId: user.id,
+    },
+  })
+
+  const saving = await prisma.account.create({
+    data: {
+      name: 'Atlas Bank',
+      type: AccountType.SAVING,
+      userId: user.id,
+    },
+  })
+
+  await prisma.account.create({
+    data: {
+      name: 'Lumix Bank',
+      type: AccountType.CHECKING,
       userId: user.id,
     },
   })
@@ -85,10 +101,21 @@ async function main() {
     data: [
       { name: 'Salário', type: TransactionType.INCOME, userId: user.id },
       { name: 'Freelance', type: TransactionType.INCOME, userId: user.id },
+      { name: 'Vendas', type: TransactionType.INCOME, userId: user.id },
 
       { name: 'Aluguel', type: TransactionType.EXPENSE, userId: user.id },
       {
         name: 'Energia Elétrica',
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+      },
+      {
+        name: 'Água',
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+      },
+      {
+        name: 'Telefone',
         type: TransactionType.EXPENSE,
         userId: user.id,
       },
@@ -139,6 +166,18 @@ async function main() {
       categoryId: byName('Freelance').id,
     })
 
+    for (let i = 0; i < 20; i++) {
+      transactions.push({
+        amount: randomBetween(20, 100),
+        description: 'Venda de Produto',
+        date: dateInMonthWithTime(year, month, 7, 14, 18),
+        type: TransactionType.INCOME,
+        userId: user.id,
+        accountId: saving.id,
+        categoryId: byName('Vendas').id,
+      })
+    }
+
     // 🏠 Contas fixas
     transactions.push(
       {
@@ -158,6 +197,24 @@ async function main() {
         userId: user.id,
         accountId: checking.id,
         categoryId: byName('Energia Elétrica').id,
+      },
+      {
+        amount: randomBetween(100, 120),
+        description: 'Conta de água',
+        date: dateInMonthWithTime(year, month, 10, 10, 15),
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+        accountId: checking.id,
+        categoryId: byName('Água').id,
+      },
+      {
+        amount: randomBetween(80, 100),
+        description: 'Conta de telefone',
+        date: dateInMonthWithTime(year, month, 10, 10, 15),
+        type: TransactionType.EXPENSE,
+        userId: user.id,
+        accountId: checking.id,
+        categoryId: byName('Telefone').id,
       },
       {
         amount: 110,
@@ -187,7 +244,7 @@ async function main() {
         date: dateInMonthWithTime(year, month, 18, 16, 19),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: checking.id,
+        accountId: saving.id,
         categoryId: byName('Transporte').id,
       },
     )
