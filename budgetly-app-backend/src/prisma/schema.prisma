@@ -36,6 +36,7 @@ model Account {
 
 enum AccountType {
   CHECKING
+  SAVING
   CREDIT
   CASH
 }

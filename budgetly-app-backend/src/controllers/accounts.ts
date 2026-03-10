@@ -147,7 +147,9 @@ export const getAccountTypes: FastifyPluginAsyncZod = async (app) => {
               ? 'Conta Corrente'
               : type === 'CREDIT'
                 ? 'Cartão de Crédito'
-                : 'Dinheiro',
+                : type === 'SAVING'
+                  ? 'Conta Poupança'
+                  : 'Dinheiro',
         }))
       } catch (err) {
         console.error(err)

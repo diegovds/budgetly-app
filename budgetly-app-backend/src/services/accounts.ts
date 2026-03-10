@@ -74,7 +74,9 @@ export async function getAccountsByUserId({
           ? 'Conta Corrente'
           : account.type === 'CREDIT'
             ? 'Cartão de Crédito'
-            : 'Dinheiro',
+            : account.type === 'SAVING'
+              ? 'Conta Poupança'
+              : 'Dinheiro',
       balance: await getAccountBalance(account.id),
     })),
   )
