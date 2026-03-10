@@ -40,6 +40,7 @@ export type GetUser200AccountsItemType =
 
 export const GetUser200AccountsItemType = {
   CHECKING: 'CHECKING',
+  SAVING: 'SAVING',
   CREDIT: 'CREDIT',
   CASH: 'CASH',
 } as const
@@ -120,6 +121,7 @@ export type PostAccountBodyType =
 
 export const PostAccountBodyType = {
   CHECKING: 'CHECKING',
+  SAVING: 'SAVING',
   CREDIT: 'CREDIT',
   CASH: 'CASH',
 } as const
@@ -135,6 +137,7 @@ export type PostAccount200Type =
 
 export const PostAccount200Type = {
   CHECKING: 'CHECKING',
+  SAVING: 'SAVING',
   CREDIT: 'CREDIT',
   CASH: 'CASH',
 } as const
@@ -277,6 +280,8 @@ export type GetCategoryParams = {
    */
   limit?: number
   type?: GetCategoryType
+  orderBy?: GetCategoryOrderBy
+  order?: GetCategoryOrder
 }
 
 export type GetCategoryType =
@@ -285,6 +290,22 @@ export type GetCategoryType =
 export const GetCategoryType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE',
+} as const
+
+export type GetCategoryOrderBy =
+  (typeof GetCategoryOrderBy)[keyof typeof GetCategoryOrderBy]
+
+export const GetCategoryOrderBy = {
+  name: 'name',
+  total: 'total',
+} as const
+
+export type GetCategoryOrder =
+  (typeof GetCategoryOrder)[keyof typeof GetCategoryOrder]
+
+export const GetCategoryOrder = {
+  asc: 'asc',
+  desc: 'desc',
 } as const
 
 export type GetCategory200CategoriesItemType =
