@@ -29,7 +29,7 @@ export default async function Home() {
 
   const financialSummaryData = getFinancialSummary()
   const accountsData = getAccount({ limit: 4 })
-  const categoriesData = getCategory()
+  const categoriesData = getCategory({ orderBy: 'total' })
   const transactionsData = getTransactionsSummary()
   const accountsTrData = getAccount({ limit: 50 })
   const categoriesTrData = getCategory({ limit: 50 })
