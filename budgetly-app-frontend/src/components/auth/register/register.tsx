@@ -201,7 +201,7 @@ export function Register() {
         </div>
       </div>
 
-      <div className="from-accent via-primary to-background flex items-center justify-center rounded bg-linear-to-br lg:flex-1">
+      <div className="from-primary/60 via-primary to-primary/60 flex items-center justify-center rounded bg-linear-to-br lg:flex-1">
         <div className="relative max-w-md rounded bg-white/10 p-8 text-center text-white shadow-2xl backdrop-blur-sm">
           <h2 className="mb-4 text-2xl font-bold text-balance md:text-4xl">
             Alcance seus objetivos financeiros
