@@ -56,7 +56,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
 
   return (
     <div className="space-y-8">
-      <div className="bg-card divide-accent divide-y overflow-x-auto rounded-md border">
+      <div className="bg-card divide-accent divide-y overflow-x-auto rounded border">
         {/* Header */}
         <div className="grid min-w-225 grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] p-4 text-sm font-semibold md:text-base">
           <p>Data</p>
