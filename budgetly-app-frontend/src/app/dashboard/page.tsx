@@ -87,12 +87,12 @@ export default async function Dashboard() {
         </div>
 
         <div className="grid w-full items-start gap-8 lg:grid-cols-2">
-          <Card className="overflow-x-auto p-4">
+          <Card className="overflow-x-auto rounded p-4">
             <CardTitle className="">Desempenho das Receitas</CardTitle>
             <CategoryGrid type="INCOME" />
           </Card>
 
-          <Card className="overflow-x-auto p-4">
+          <Card className="overflow-x-auto rounded p-4">
             <CardTitle className="">Desempenho das Despesas</CardTitle>
             <CategoryGrid type="EXPENSE" />
           </Card>
