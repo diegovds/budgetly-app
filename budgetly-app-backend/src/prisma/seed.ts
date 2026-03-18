@@ -1,5 +1,6 @@
 import { AccountType, TransactionType } from '@prisma/client'
 import bcrypt from 'bcrypt'
+import removeAccents from 'remove-accents'
 import { prisma } from '../lib/prisma'
 
 // ---------- helpers ----------
@@ -301,8 +302,13 @@ async function main() {
     }
   }
 
+  const transactionsWithNormalized = transactions.map((t) => ({
+    ...t,
+    descriptionNormalized: t.description ? removeAccents(t.description) : null,
+  }))
+
   await prisma.transaction.createMany({
-    data: transactions,
+    data: transactionsWithNormalized,
   })
 
   console.log('✅ Seed concluído com sucesso')
