@@ -86,7 +86,7 @@ export function NewTransaction() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 rounded-xl border p-4"
+        className="space-y-6 rounded border p-4"
       >
         <div className="space-y-4">
           <div>
