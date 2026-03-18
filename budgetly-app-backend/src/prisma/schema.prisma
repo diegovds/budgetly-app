@@ -54,11 +54,12 @@ model Category {
 }
 
 model Transaction {
-  id          String          @id @default(uuid())
-  amount      Decimal         @db.Decimal(10, 2)
-  description String?
-  date        DateTime
-  type        TransactionType
+  id                    String          @id @default(uuid())
+  amount                Decimal         @db.Decimal(10, 2)
+  description           String?
+  descriptionNormalized String?
+  date                  DateTime
+  type                  TransactionType
 
   userId     String
   accountId  String
