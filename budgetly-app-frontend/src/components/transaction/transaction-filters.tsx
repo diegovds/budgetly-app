@@ -90,7 +90,7 @@ export function TransactionFilters({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-card flex flex-col justify-between gap-4 rounded-md border p-4 lg:flex-row"
+        className="bg-card flex flex-col justify-between gap-4 rounded border p-4 lg:flex-row"
       >
         <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-5">
           {/* DATA INICIAL */}
@@ -122,7 +122,7 @@ export function TransactionFilters({
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent className="w-auto rounded p-0">
                     <Calendar
                       mode="single"
                       selected={field.value}
@@ -165,7 +165,7 @@ export function TransactionFilters({
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent className="w-auto rounded p-0">
                     <Calendar
                       mode="single"
                       selected={field.value}
