@@ -56,7 +56,7 @@ export function Modal({ onClose }: ModalProps) {
         onAnimationEnd={handleAnimationEnd}
       />
       <div
-        className={`bg-accent relative z-10 mx-4 w-full max-w-lg rounded-md p-4 ${
+        className={`bg-accent relative z-10 mx-4 w-full max-w-lg rounded p-4 ${
           exiting ? 'modal-exit' : 'modal-animate'
         }`}
         onAnimationEnd={handleAnimationEnd}
