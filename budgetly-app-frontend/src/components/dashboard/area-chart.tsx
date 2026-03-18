@@ -31,7 +31,7 @@ const chartConfig = {
 
 export function ChartArea({ chartData }: ChartAreaProps) {
   return (
-    <Card className="p-4">
+    <Card className="rounded p-4">
       <CardHeader className="px-0">
         <CardTitle>Evolução do Saldo</CardTitle>
         <CardDescription>Saldo dos últimos 12 meses</CardDescription>
