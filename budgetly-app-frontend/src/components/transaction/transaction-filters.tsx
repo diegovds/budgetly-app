@@ -127,6 +127,9 @@ export function TransactionFilters({
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
+                      disabled={(day) =>
+                        day > new Date(new Date().setHours(0, 0, 0, 0))
+                      }
                       locale={ptBR}
                     />
                   </PopoverContent>
@@ -170,6 +173,9 @@ export function TransactionFilters({
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
+                      disabled={(day) =>
+                        day > new Date(new Date().setHours(0, 0, 0, 0))
+                      }
                       locale={ptBR}
                     />
                   </PopoverContent>
