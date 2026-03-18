@@ -70,8 +70,11 @@ export function Modal({ onClose }: ModalProps) {
                 : 'Adicionar Categoria'}
           </h2>
 
-          <button onClick={onClose} className="bg-primary rounded-full p-0.5">
-            <X size={20} />
+          <button
+            onClick={onClose}
+            className="bg-primary flex size-6 cursor-pointer items-center justify-center rounded-full"
+          >
+            <X size={14} />
           </button>
         </div>
         <div>
