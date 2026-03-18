@@ -39,7 +39,7 @@ export function CategoryGrid({ type }: CategoryGridProps) {
   return (
     <>
       <Card className="divide-accent gap-0 divide-y overflow-x-auto rounded p-0">
-        <div className="grid min-w-sm grid-cols-[2fr_1.5fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
+        <div className="grid min-w-sm grid-cols-[1.5fr_1fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
           <p>Categoria</p>
           <p>Valor</p>
           <p>Percentual</p>
@@ -48,7 +48,7 @@ export function CategoryGrid({ type }: CategoryGridProps) {
           {data.categories.map((category) => (
             <li
               key={category.id}
-              className="grid min-w-sm grid-cols-[2fr_1.5fr_1fr] items-center gap-4 p-4"
+              className="grid min-w-sm grid-cols-[1.5fr_1fr_1fr] items-center gap-4 p-4"
             >
               <h3 className="truncate font-semibold">{category.name}</h3>
               <p
