@@ -58,7 +58,7 @@ export function Register() {
 
   return (
     <div className="flex w-full flex-col-reverse gap-8 lg:flex-row">
-      <div className="bg-accent flex flex-col items-center justify-center rounded-xl p-4 lg:min-w-lg">
+      <div className="bg-accent flex flex-col items-center justify-center rounded p-4 lg:min-w-lg">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-0.5">
             <h2 className="text-center text-2xl font-semibold md:text-3xl">
@@ -201,8 +201,8 @@ export function Register() {
         </div>
       </div>
 
-      <div className="from-accent via-primary to-background flex items-center justify-center rounded-xl bg-linear-to-br lg:flex-1">
-        <div className="relative max-w-md rounded-xl bg-white/10 p-8 text-center text-white shadow-2xl backdrop-blur-sm">
+      <div className="from-accent via-primary to-background flex items-center justify-center rounded bg-linear-to-br lg:flex-1">
+        <div className="relative max-w-md rounded bg-white/10 p-8 text-center text-white shadow-2xl backdrop-blur-sm">
           <h2 className="mb-4 text-2xl font-bold text-balance md:text-4xl">
             Alcance seus objetivos financeiros
           </h2>
