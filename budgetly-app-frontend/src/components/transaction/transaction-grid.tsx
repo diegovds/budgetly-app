@@ -58,7 +58,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
     <div className="space-y-8">
       <div className="bg-card divide-accent divide-y overflow-x-auto rounded border">
         {/* Header */}
-        <div className="grid min-w-225 grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] p-4 text-sm font-semibold md:text-base">
+        <div className="grid min-w-2xl grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
           <p>Data</p>
           <p>Descrição</p>
           <p>Categoria</p>
@@ -67,11 +67,11 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
         </div>
 
         {/* Body */}
-        <ul className="divide-accent min-w-225 divide-y text-sm md:text-base">
+        <ul className="divide-accent min-w-2xl divide-y text-sm md:text-base">
           {data.transactions.map((transaction) => (
             <li
               key={transaction.id}
-              className="grid grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] items-center p-4"
+              className="grid grid-cols-[120px_2fr_1.5fr_1.5fr_1fr] items-center gap-4 p-4"
             >
               <p className="text-muted-foreground">
                 {formatDate(new Date(transaction.date))}
