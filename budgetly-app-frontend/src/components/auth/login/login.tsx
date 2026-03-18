@@ -55,7 +55,7 @@ export function Login() {
         </p>
       </div>
 
-      <div className="bg-accent flex flex-col items-center justify-center rounded-xl p-4 lg:min-w-lg">
+      <div className="bg-accent flex flex-col items-center justify-center rounded p-4 lg:min-w-lg">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-0.5">
             <h2 className="text-center text-2xl font-semibold md:text-3xl">
@@ -69,7 +69,7 @@ export function Login() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-6 rounded-xl border p-4"
+              className="space-y-6 rounded border p-4"
             >
               {/* EMAIL */}
               <FormField
