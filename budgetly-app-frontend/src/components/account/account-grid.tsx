@@ -27,26 +27,31 @@ export function AccountGrid() {
     <div className="space-y-6">
       <div className="grid gap-4 lg:grid-cols-2 lg:gap-8">
         {data.accounts.map((account) => (
-          <div key={account.id} className="bg-accent space-y-4 rounded p-4">
-            <div className="space-y-0.5">
-              <h2 className="text-lg font-semibold md:text-xl">
-                {account.name}
-              </h2>
-              <p className="text-muted-foreground text-xs md:text-sm">
-                {account.type}
-              </p>
-            </div>
-            <div className="space-y-0.5">
-              <h2 className="text-muted-foreground text-sm font-semibold md:text-base">
-                Saldo atual
-              </h2>
-              <p
-                className={`text-2xl font-semibold md:text-3xl ${
-                  account.balance >= 0 ? 'text-green-500' : 'text-red-500'
-                }`}
-              >
-                {formatCurrency(account.balance)}
-              </p>
+          <div
+            key={account.id}
+            className="bg-accent flex items-end justify-between rounded p-4"
+          >
+            <div className="space-y-4">
+              <div className="space-y-0.5">
+                <h2 className="text-lg font-semibold md:text-xl">
+                  {account.name}
+                </h2>
+                <p className="text-muted-foreground text-xs md:text-sm">
+                  {account.type}
+                </p>
+              </div>
+              <div className="space-y-0.5">
+                <h2 className="text-muted-foreground text-sm font-semibold md:text-base">
+                  Saldo atual
+                </h2>
+                <p
+                  className={`text-2xl font-semibold md:text-3xl ${
+                    account.balance >= 0 ? 'text-green-500' : 'text-red-500'
+                  }`}
+                >
+                  {formatCurrency(account.balance)}
+                </p>
+              </div>
             </div>
             <div className="flex justify-end">
               <Link href={`/transaction?accountId=${account.id}`}>
