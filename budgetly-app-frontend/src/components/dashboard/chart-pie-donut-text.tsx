@@ -64,7 +64,7 @@ export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
   ]
 
   return (
-    <Card className="flex w-full flex-1 flex-col p-4">
+    <Card className="flex w-full flex-1 flex-col rounded p-4">
       <CardHeader className="items-center p-0">
         <CardTitle>Gastos por categoria</CardTitle>
         <CardDescription>
