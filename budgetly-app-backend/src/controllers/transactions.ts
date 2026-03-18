@@ -1,4 +1,5 @@
 import { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
+import removeAccents from 'remove-accents'
 import z from 'zod'
 import {
   listTransactionsSchema,
@@ -61,6 +62,9 @@ export const createTransaction: FastifyPluginAsyncZod = async (app) => {
           categoryId,
           date,
           description,
+          descriptionNormalized: description
+            ? removeAccents(description)
+            : null,
           type,
           userId,
         })

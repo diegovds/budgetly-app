@@ -1,4 +1,5 @@
 import { Prisma, TransactionType } from '@prisma/client'
+import removeAccents from 'remove-accents'
 import { BadRequestError, NotFoundError } from '../errors/http'
 import { prisma } from '../lib/prisma'
 import { ListTransactionsSummaryResponse } from '../schemas/transaction'
@@ -8,6 +9,7 @@ import { getCategoryById } from './categories'
 type InsertTransactionInput = {
   amount: number
   description: string | null
+  descriptionNormalized: string | null
   date: string
   type: TransactionType
   userId: string
@@ -50,6 +52,7 @@ export async function insertTransaction({
   categoryId,
   date,
   description,
+  descriptionNormalized,
   type,
   userId,
 }: InsertTransactionInput) {
@@ -77,6 +80,7 @@ export async function insertTransaction({
         amount,
         date: new Date(date),
         description,
+        descriptionNormalized,
         type,
         userId,
         categoryId,
@@ -184,8 +188,8 @@ export async function listTransactions(filters: ListTransactionsFilters) {
       : {}),
 
     ...(search && {
-      description: {
-        contains: search,
+      descriptionNormalized: {
+        contains: removeAccents(search),
         mode: 'insensitive',
       },
     }),
