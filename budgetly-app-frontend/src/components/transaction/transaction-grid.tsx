@@ -74,7 +74,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
               key={transaction.id}
               className="grid grid-cols-[0.3fr_120px_2fr_1.5fr_1.5fr_1fr] items-center gap-4 p-4"
             >
-              <div className="flex justify-between">
+              <div className="flex justify-between gap-4">
                 <Pencil size={15} />
                 <Trash size={15} />
               </div>
