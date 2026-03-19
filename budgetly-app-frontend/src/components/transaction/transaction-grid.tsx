@@ -7,6 +7,7 @@ import { formatCurrency, formatDate } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Pencil, Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 
 type TransactionGridProps = {
@@ -90,9 +91,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
               <p className="truncate font-semibold">
                 {transaction.description}
               </p>
-              <p className="w-fit rounded-xl border p-2 text-xs md:text-sm">
-                {transaction.categoryName}
-              </p>
+              <Badge variant="secondary">{transaction.categoryName}</Badge>
               <p className="text-muted-foreground">{transaction.accountName}</p>
               <p
                 className={`font-semibold ${
