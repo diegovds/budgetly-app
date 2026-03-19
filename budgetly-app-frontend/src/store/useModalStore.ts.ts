@@ -2,25 +2,22 @@ import {
   GetAccount200AccountsItem,
   GetCategory200CategoriesItem,
   GetTransactions200TransactionsItem,
-} from '@/http/api'
-import { create } from 'zustand'
+} from '@/http/api';
+import { create } from 'zustand';
+
+type ModalData =
+  | { type: 'transaction'; data: GetTransactions200TransactionsItem }
+  | { type: 'category'; data: GetCategory200CategoriesItem }
+  | { type: 'account'; data: GetAccount200AccountsItem }
+  | null
 
 interface ModalState {
   isOpen: boolean
   whoOpened: string
-  element:
-    | GetTransactions200TransactionsItem
-    | GetCategory200CategoriesItem
-    | GetAccount200AccountsItem
-    | null
+  element: ModalData
   setIsOpen: (isOpen: boolean) => void
   setWhoOpened: (whoOpened: string) => void
-  setElement: (
-    element:
-      | GetTransactions200TransactionsItem
-      | GetCategory200CategoriesItem
-      | GetAccount200AccountsItem,
-  ) => void
+  setElement: (element: ModalData) => void
   toggleIsOpen: () => void
   toggleWhoOpened: () => void
   toggleElement: () => void
