@@ -5,6 +5,7 @@ import { QueryClientContext } from '@/providers/query-client'
 import { StoreHydration } from '@/providers/store-hydration'
 import type { Metadata, Viewport } from 'next'
 import { Poppins } from 'next/font/google'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 const poppins = Poppins({
@@ -52,6 +53,7 @@ export default async function RootLayout({
           <Navbar token={token} />
           <main className="container mx-auto my-5 flex flex-1 px-4 md:my-10 md:px-10">
             {children}
+            <Toaster theme="dark" position="top-center" />
           </main>
           <Footer />
         </QueryClientContext>
