@@ -1,6 +1,7 @@
 'use client'
 
 import { SearchParams } from '@/app/transaction/page'
+import { useTransactionDeletionMutation } from '@/hooks/useTransactionDeleteMutation'
 import { getTransactions, GetTransactions200 } from '@/http/api'
 import { formatCurrency, formatDate } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
@@ -13,6 +14,8 @@ type TransactionGridProps = {
 }
 
 export function TransactionGrid({ searchParams }: TransactionGridProps) {
+  const { mutate, isPending, error, isSuccess } =
+    useTransactionDeletionMutation()
   const [page, setPage] = useState(Number(searchParams.page ?? 1))
 
   useEffect(() => {
@@ -76,7 +79,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
             >
               <div className="flex justify-between gap-4">
                 <Pencil size={15} />
-                <Trash size={15} />
+                <Trash size={15} onClick={() => mutate(transaction.id)} />
               </div>
               <p className="text-muted-foreground">
                 {formatDate(new Date(transaction.date))}
