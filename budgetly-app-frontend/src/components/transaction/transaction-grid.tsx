@@ -62,7 +62,10 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
       <div className="bg-card divide-accent divide-y overflow-x-auto rounded border">
         {/* Header */}
         <div className="grid min-w-3xl grid-cols-[0.3fr_120px_2fr_1.5fr_1.5fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
-          <div />
+          <div className="invisible flex justify-between gap-4">
+            <Pencil size={15} />
+            <Trash size={15} />
+          </div>
           <p>Data</p>
           <p>Descrição</p>
           <p>Categoria</p>
