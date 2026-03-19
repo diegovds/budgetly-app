@@ -5,6 +5,7 @@ import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { NewCategory } from './category/new-category'
 import { NewAccount } from './new-account'
+import { DeleteTransaction } from './transaction/delete-transaction'
 import { NewTransaction } from './transaction/new-transaction'
 
 type ModalProps = {
@@ -13,7 +14,7 @@ type ModalProps = {
 }
 
 export function Modal({ onClose }: ModalProps) {
-  const { isOpen, toggleWhoOpened, whoOpened } = useModalStore()
+  const { isOpen, toggleWhoOpened, whoOpened, toggleElement } = useModalStore()
   const [show, setShow] = useState(isOpen)
   const [exiting, setExiting] = useState(false)
 
@@ -32,6 +33,7 @@ export function Modal({ onClose }: ModalProps) {
     if (exiting) {
       setShow(false)
       toggleWhoOpened()
+      toggleElement()
     }
   }
 
@@ -67,7 +69,9 @@ export function Modal({ onClose }: ModalProps) {
               ? 'Adicionar Transação'
               : whoOpened === '/account/new'
                 ? 'Adicionar Conta'
-                : 'Adicionar Categoria'}
+                : whoOpened === '/category/new'
+                  ? 'Adicionar Categoria'
+                  : 'Deletar Transação'}
           </h2>
 
           <button
@@ -82,8 +86,10 @@ export function Modal({ onClose }: ModalProps) {
             <NewTransaction />
           ) : whoOpened === '/account/new' ? (
             <NewAccount />
-          ) : (
+          ) : whoOpened === '/category/new' ? (
             <NewCategory />
+          ) : (
+            <DeleteTransaction />
           )}
         </div>
       </div>

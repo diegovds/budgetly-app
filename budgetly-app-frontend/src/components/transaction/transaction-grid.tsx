@@ -1,8 +1,8 @@
 'use client'
 
 import { SearchParams } from '@/app/transaction/page'
-import { useTransactionDeletionMutation } from '@/hooks/useTransactionDeleteMutation'
 import { getTransactions, GetTransactions200 } from '@/http/api'
+import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency, formatDate } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Pencil, Trash } from 'lucide-react'
@@ -15,8 +15,7 @@ type TransactionGridProps = {
 }
 
 export function TransactionGrid({ searchParams }: TransactionGridProps) {
-  const { mutate, isPending, error, isSuccess } =
-    useTransactionDeletionMutation()
+  const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(Number(searchParams.page ?? 1))
 
   useEffect(() => {
@@ -82,8 +81,16 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
               className="grid grid-cols-[0.3fr_120px_2fr_1.5fr_1.5fr_1fr] items-center gap-4 p-4"
             >
               <div className="flex justify-between gap-4">
-                <Pencil size={15} />
-                <Trash size={15} onClick={() => mutate(transaction.id)} />
+                <Pencil size={15} className="cursor-pointer" />
+                <Trash
+                  size={15}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setElement({ type: 'transaction', data: transaction })
+                    setWhoOpened('transaction/delete')
+                    setIsOpen(true)
+                  }}
+                />
               </div>
               <p className="text-muted-foreground">
                 {formatDate(new Date(transaction.date))}
