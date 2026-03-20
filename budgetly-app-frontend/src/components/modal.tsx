@@ -5,8 +5,8 @@ import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { NewCategory } from './category/new-category'
 import { NewAccount } from './new-account'
-import { DeleteTransaction } from './transaction/delete-transaction'
 import { NewTransaction } from './transaction/new-transaction'
+import { TransactionManagement } from './transaction/transaction-management'
 
 type ModalProps = {
   onClose: () => void
@@ -89,7 +89,7 @@ export function Modal({ onClose }: ModalProps) {
           ) : whoOpened === '/category/new' ? (
             <NewCategory />
           ) : (
-            <DeleteTransaction />
+            <TransactionManagement />
           )}
         </div>
       </div>
