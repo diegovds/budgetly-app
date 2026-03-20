@@ -64,7 +64,7 @@ export function TransactionManagement() {
   })
 
   function onSubmit(data: CreateNewTransactionFormData) {
-    if (element?.type === 'transaction') {
+    if (element?.type === 'transaction' && form.formState.isDirty) {
       updateT.mutate({
         id: element.data.id,
         body: {
