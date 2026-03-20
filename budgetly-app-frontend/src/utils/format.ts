@@ -19,10 +19,13 @@ export function formatDate(date: Date): string {
   return formatted
 }
 
-export function formatCurrencyString(value: string) {
-  const numeric = value.replace(/\D/g, '')
+export function formatCurrencyString(value: string | number) {
+  if (!value) return ''
 
-  const number = Number(numeric) / 100
+  const number =
+    typeof value === 'number' ? value : Number(value.replace(/\D/g, '')) / 100
+
+  if (isNaN(number)) return ''
 
   return number.toLocaleString('pt-BR', {
     style: 'currency',
