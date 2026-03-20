@@ -16,7 +16,7 @@ type TransactionGridProps = {
 
 export function TransactionGrid({ searchParams }: TransactionGridProps) {
   const { setElement, setWhoOpened, setIsOpen } = useModalStore()
-  const [page, setPage] = useState(Number(searchParams.page ?? 1))
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
     setPage(1)
