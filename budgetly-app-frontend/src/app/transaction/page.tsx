@@ -46,14 +46,13 @@ export default async function TransactionPage({ searchParams }: Props) {
   }
 
   const params = await searchParams
-  const page = Number(params.page ?? 1)
 
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({
     queryKey: [
       'transactions',
-      page,
+      1,
       params.startDate,
       params.endDate,
       params.accountId,
@@ -63,7 +62,7 @@ export default async function TransactionPage({ searchParams }: Props) {
     queryFn: () =>
       getTransactions({
         limit: 8,
-        page,
+        page: 1,
         startDate: params.startDate,
         endDate: params.endDate,
         accountId: params.accountId,
