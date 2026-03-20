@@ -71,7 +71,7 @@ export function Modal({ onClose }: ModalProps) {
                 ? 'Adicionar Conta'
                 : whoOpened === '/category/new'
                   ? 'Adicionar Categoria'
-                  : 'Deletar Transação'}
+                  : 'Gerenciamento de Transação'}
           </h2>
 
           <button
