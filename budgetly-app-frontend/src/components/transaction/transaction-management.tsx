@@ -43,12 +43,15 @@ export function TransactionManagement() {
   const deleteT = useTransactionDeletionMutation()
   const updateT = useTransactionUpdateMutation()
   const { element, toggleIsOpen } = useModalStore()
+  const isExpense = element?.data.type === 'EXPENSE'
 
   const form = useForm<CreateNewTransactionFormData>({
     resolver: zodResolver(createTransactionSchema),
     defaultValues: {
       amount:
-        element?.type === 'transaction' ? element.data.amount.toString() : '',
+        element?.type === 'transaction'
+          ? formatCurrencyString(Math.abs(element.data.amount))
+          : '',
       date:
         element?.type === 'transaction'
           ? new Date(element.data.date)
@@ -90,16 +93,23 @@ export function TransactionManagement() {
                 <FormItem>
                   <FormLabel className="text-sm md:text-base">Valor</FormLabel>
                   <FormControl>
-                    <Input
-                      className="text-xs md:text-base"
-                      type="text"
-                      placeholder="R$ 1.000,00"
-                      value={field.value ?? ''}
-                      onChange={(e) => {
-                        const formatted = formatCurrencyString(e.target.value)
-                        field.onChange(formatted)
-                      }}
-                    />
+                    <div className="relative">
+                      {isExpense && (
+                        <span className="absolute top-1/2 left-2 -translate-y-1/2">
+                          -
+                        </span>
+                      )}
+                      <Input
+                        className={`text-xs md:text-base ${isExpense ? 'pl-4' : ''}`}
+                        type="text"
+                        placeholder="R$ 1.000,00"
+                        value={field.value ?? ''}
+                        onChange={(e) => {
+                          const formatted = formatCurrencyString(e.target.value)
+                          field.onChange(formatted)
+                        }}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
