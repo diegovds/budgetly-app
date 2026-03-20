@@ -5,7 +5,7 @@ import { getTransactions, GetTransactions200 } from '@/http/api'
 import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency, formatDate } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
-import { ChevronLeft, ChevronRight, Pencil, Trash } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
@@ -61,10 +61,9 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
     <div className="space-y-8">
       <div className="bg-card divide-accent divide-y overflow-x-auto rounded border">
         {/* Header */}
-        <div className="grid min-w-3xl grid-cols-[0.3fr_120px_2fr_1.5fr_1.5fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
+        <div className="grid min-w-3xl grid-cols-[0.1fr_120px_2fr_1.5fr_1.5fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
           <div className="invisible flex justify-between gap-4">
-            <Pencil size={15} />
-            <Trash size={15} />
+            <Ellipsis size={15} />
           </div>
           <p>Data</p>
           <p>Descrição</p>
@@ -78,11 +77,10 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
           {data.transactions.map((transaction) => (
             <li
               key={transaction.id}
-              className="grid grid-cols-[0.3fr_120px_2fr_1.5fr_1.5fr_1fr] items-center gap-4 p-4"
+              className="grid grid-cols-[0.1fr_120px_2fr_1.5fr_1.5fr_1fr] items-center gap-4 p-4"
             >
               <div className="flex justify-between gap-4">
-                <Pencil size={15} className="cursor-pointer" />
-                <Trash
+                <Ellipsis
                   size={15}
                   className="cursor-pointer"
                   onClick={() => {
