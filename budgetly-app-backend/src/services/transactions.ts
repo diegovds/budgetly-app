@@ -26,6 +26,7 @@ type UpdateTransactionInput = {
   id: string
   amount: number
   description: string | null
+  descriptionNormalized: string | null
   date: string
   transaction: InsertTransactionInput
 }
@@ -125,6 +126,7 @@ export async function updateTransaction({
   date,
   description,
   id,
+  descriptionNormalized,
 }: UpdateTransactionInput) {
   const updatedTransaction = await prisma.$transaction(async (tx) => {
     return await tx.transaction.update({
@@ -133,6 +135,7 @@ export async function updateTransaction({
         amount,
         date,
         description,
+        descriptionNormalized,
       },
     })
   })

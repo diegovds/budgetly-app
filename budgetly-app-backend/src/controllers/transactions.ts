@@ -182,6 +182,9 @@ export const updateTransaction_: FastifyPluginAsyncZod = async (app) => {
           id,
           amount,
           description,
+          descriptionNormalized: description
+            ? removeAccents(description)
+            : null,
           date,
           transaction: {
             ...transaction,
