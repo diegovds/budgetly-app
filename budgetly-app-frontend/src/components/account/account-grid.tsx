@@ -6,18 +6,32 @@ import { formatCurrency } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 
 export function AccountGrid() {
   const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
+  const toastId = useRef<string | number | undefined>(undefined)
+  const hasFetched = useRef(false)
 
-  const { data } = useQuery<GetAccount200>({
+  const { data, isFetching } = useQuery<GetAccount200>({
     queryKey: ['accounts', page],
     queryFn: () => getAccount({ limit: 4, page }),
     placeholderData: (prev) => prev,
   })
+
+  useEffect(() => {
+    if (isFetching) {
+      if (!hasFetched.current) return
+      toastId.current = toast.loading('Buscando contas...')
+    } else {
+      hasFetched.current = true
+      toast.dismiss(toastId.current)
+    }
+    return () => toast.dismiss(toastId.current)
+  }, [isFetching])
 
   if (!data) return null
 
