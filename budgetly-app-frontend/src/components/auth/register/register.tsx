@@ -182,6 +182,12 @@ export function Register() {
                 />
               </div>
 
+              {error && (
+                <p className="text-destructive text-center text-sm">
+                  {error.message}
+                </p>
+              )}
+
               <Button
                 type="submit"
                 className="w-full text-xs md:text-sm"
