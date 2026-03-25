@@ -3,16 +3,33 @@
 import { useModalStore } from '@/store/useModalStore.ts'
 import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { AccountManagement } from './account/account-management'
 import { CategoryManagement } from './category/category-management'
 import { NewCategory } from './category/new-category'
 import { NewAccount } from './new-account'
-import { AccountManagement } from './account/account-management'
 import { NewTransaction } from './transaction/new-transaction'
 import { TransactionManagement } from './transaction/transaction-management'
 
 type ModalProps = {
   onClose: () => void
-  // children: React.ReactNode
+}
+
+const MODAL_TITLES: Record<string, string> = {
+  '/transaction/new': 'Adicionar Transação',
+  '/account/new': 'Adicionar Conta',
+  '/category/new': 'Adicionar Categoria',
+  'account/manage': 'Gerenciamento de Conta',
+  'category/manage': 'Gerenciamento de Categoria',
+  'transaction/delete': 'Gerenciamento de Transação',
+}
+
+const MODAL_CONTENT: Record<string, React.ReactNode> = {
+  '/transaction/new': <NewTransaction />,
+  '/account/new': <NewAccount />,
+  '/category/new': <NewCategory />,
+  'account/manage': <AccountManagement />,
+  'category/manage': <CategoryManagement />,
+  'transaction/delete': <TransactionManagement />,
 }
 
 export function Modal({ onClose }: ModalProps) {
@@ -20,7 +37,6 @@ export function Modal({ onClose }: ModalProps) {
   const [show, setShow] = useState(isOpen)
   const [exiting, setExiting] = useState(false)
 
-  // Controla abertura e início da saída
   useEffect(() => {
     if (isOpen) {
       setShow(true)
@@ -30,7 +46,6 @@ export function Modal({ onClose }: ModalProps) {
     }
   }, [isOpen, show])
 
-  // Fecha o modal do DOM após animação de saída
   const handleAnimationEnd = () => {
     if (exiting) {
       setShow(false)
@@ -39,7 +54,6 @@ export function Modal({ onClose }: ModalProps) {
     }
   }
 
-  // Fecha com tecla ESC
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -50,34 +64,20 @@ export function Modal({ onClose }: ModalProps) {
 
   if (!show) return null
 
+  const overlayClass = `absolute inset-0 bg-black ${exiting ? 'overlay-exit' : 'overlay-animate'}`
+  const panelClass = `bg-accent relative z-10 mx-4 w-full max-w-lg rounded p-4 ${exiting ? 'modal-exit' : 'modal-animate'}`
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
-        className={`absolute inset-0 bg-black ${
-          exiting ? 'overlay-exit' : 'overlay-animate'
-        }`}
+        className={overlayClass}
         onClick={onClose}
         onAnimationEnd={handleAnimationEnd}
       />
-      <div
-        className={`bg-accent relative z-10 mx-4 w-full max-w-lg rounded p-4 ${
-          exiting ? 'modal-exit' : 'modal-animate'
-        }`}
-        onAnimationEnd={handleAnimationEnd}
-      >
+      <div className={panelClass} onAnimationEnd={handleAnimationEnd}>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold md:text-xl">
-            {whoOpened === '/transaction/new'
-              ? 'Adicionar Transação'
-              : whoOpened === '/account/new'
-                ? 'Adicionar Conta'
-                : whoOpened === '/category/new'
-                  ? 'Adicionar Categoria'
-                  : whoOpened === 'account/manage'
-                    ? 'Gerenciamento de Conta'
-                    : whoOpened === 'category/manage'
-                      ? 'Gerenciamento de Categoria'
-                      : 'Gerenciamento de Transação'}
+            {MODAL_TITLES[whoOpened]}
           </h2>
 
           <button
@@ -87,21 +87,8 @@ export function Modal({ onClose }: ModalProps) {
             <X size={14} />
           </button>
         </div>
-        <div>
-          {whoOpened === '/transaction/new' ? (
-            <NewTransaction />
-          ) : whoOpened === '/account/new' ? (
-            <NewAccount />
-          ) : whoOpened === '/category/new' ? (
-            <NewCategory />
-          ) : whoOpened === 'account/manage' ? (
-            <AccountManagement />
-          ) : whoOpened === 'category/manage' ? (
-            <CategoryManagement />
-          ) : (
-            <TransactionManagement />
-          )}
-        </div>
+
+        <div>{MODAL_CONTENT[whoOpened]}</div>
       </div>
     </div>
   )
