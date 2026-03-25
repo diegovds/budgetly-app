@@ -9,7 +9,7 @@ export function useAuthMutation() {
   const { setToken } = useAuthStore()
   const router = useRouter()
 
-  return useMutation<PostAuth200, Error, PostAuthBody, string>({
+  return useMutation<PostAuth200, Error, PostAuthBody, string | number>({
     mutationFn: (data) => postAuth(data),
     onMutate: () => {
       return toast.loading('Autenticando...')

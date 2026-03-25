@@ -18,7 +18,7 @@ export function useCategoryUpdateMutation() {
     PatchCategoryId200,
     Error,
     useCategoryUpdateMutationType,
-    string
+    string | number
   >({
     mutationFn: (data) => patchCategoryId(data.id, data.body),
     onMutate: () => {

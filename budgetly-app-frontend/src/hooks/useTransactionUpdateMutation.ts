@@ -18,7 +18,7 @@ export function useTransactionUpdateMutation() {
     PatchTransactionId200,
     Error,
     useTransactionUpdateMutationType,
-    string
+    string | number
   >({
     mutationFn: (data) => patchTransactionId(data.id, data.body),
     onMutate: () => {

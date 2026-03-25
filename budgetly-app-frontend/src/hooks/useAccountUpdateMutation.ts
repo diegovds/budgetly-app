@@ -18,7 +18,7 @@ export function useAccountUpdateMutation() {
     PatchAccountId200,
     Error,
     useAccountUpdateMutationType,
-    string
+    string | number
   >({
     mutationFn: (data) => patchAccountId(data.id, data.body),
     onMutate: () => {

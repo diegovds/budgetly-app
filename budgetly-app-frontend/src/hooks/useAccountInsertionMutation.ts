@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 export function useAccountInsertionMutation() {
   const router = useRouter()
 
-  return useMutation<PostAccount200, Error, PostAccountBody, string>({
+  return useMutation<PostAccount200, Error, PostAccountBody, string | number>({
     mutationFn: (data) => postAccount(data),
     onMutate: () => {
       return toast.loading('Criando conta...')

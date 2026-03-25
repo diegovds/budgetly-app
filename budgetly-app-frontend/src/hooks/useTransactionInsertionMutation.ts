@@ -10,7 +10,7 @@ import { toast } from 'sonner'
 export function useTransactionInsertionMutation() {
   const router = useRouter()
 
-  return useMutation<PostTransaction200, Error, PostTransactionBody, string>({
+  return useMutation<PostTransaction200, Error, PostTransactionBody, string | number>({
     mutationFn: (data) => postTransaction(data),
     onMutate: () => {
       return toast.loading('Salvando transação...')

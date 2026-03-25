@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 export function useAccountDeletionMutation() {
   const queryClient = useQueryClient()
 
-  return useMutation<DeleteAccountId200, Error, string, string>({
+  return useMutation<DeleteAccountId200, Error, string, string | number>({
     mutationFn: (id) => deleteAccountId(id),
     onMutate: () => {
       return toast.loading('Excluindo conta...')

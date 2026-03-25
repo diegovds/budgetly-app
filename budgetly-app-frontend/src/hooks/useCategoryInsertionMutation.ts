@@ -7,7 +7,7 @@ export function useCategoryInsertionMutation() {
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  return useMutation<PostCategory200, Error, PostCategoryBody, string>({
+  return useMutation<PostCategory200, Error, PostCategoryBody, string | number>({
     mutationFn: (data) => postCategory(data),
     onMutate: () => {
       return toast.loading('Criando categoria...')

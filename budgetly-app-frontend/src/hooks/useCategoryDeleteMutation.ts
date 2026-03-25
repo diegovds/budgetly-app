@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 export function useCategoryDeletionMutation() {
   const queryClient = useQueryClient()
 
-  return useMutation<DeleteCategoryId200, Error, string, string>({
+  return useMutation<DeleteCategoryId200, Error, string, string | number>({
     mutationFn: (id) => deleteCategoryId(id),
     onMutate: () => {
       return toast.loading('Excluindo categoria...')
