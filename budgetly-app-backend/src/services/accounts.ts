@@ -64,7 +64,7 @@ export async function getAccountsByUserId({
       take,
       skip,
     }),
-    prisma.account.count(),
+    prisma.account.count({ where: { userId } }),
   ])
 
   const accountsWithBalance = await Promise.all(
