@@ -488,6 +488,138 @@ export type PatchTransactionId500 = {
   message: string
 }
 
+export type DeleteAccountId200Type =
+  (typeof DeleteAccountId200Type)[keyof typeof DeleteAccountId200Type]
+
+export const DeleteAccountId200Type = {
+  CHECKING: 'CHECKING',
+  SAVING: 'SAVING',
+  CREDIT: 'CREDIT',
+  CASH: 'CASH',
+} as const
+
+export type DeleteAccountId200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string
+  name: string
+  type: DeleteAccountId200Type
+  balance?: number
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  createdAt: string
+}
+
+export type DeleteAccountId401 = {
+  message: string
+}
+
+export type DeleteAccountId404 = {
+  message: string
+}
+
+export type DeleteAccountId500 = {
+  message: string
+}
+
+export type PatchAccountIdBody = {
+  /** @minLength 2 */
+  name: string
+}
+
+export type PatchAccountId200Type =
+  (typeof PatchAccountId200Type)[keyof typeof PatchAccountId200Type]
+
+export const PatchAccountId200Type = {
+  CHECKING: 'CHECKING',
+  SAVING: 'SAVING',
+  CREDIT: 'CREDIT',
+  CASH: 'CASH',
+} as const
+
+export type PatchAccountId200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string
+  name: string
+  type: PatchAccountId200Type
+  balance?: number
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  createdAt: string
+}
+
+export type PatchAccountId401 = {
+  message: string
+}
+
+export type PatchAccountId404 = {
+  message: string
+}
+
+export type PatchAccountId500 = {
+  message: string
+}
+
+export type DeleteCategoryId200Type =
+  (typeof DeleteCategoryId200Type)[keyof typeof DeleteCategoryId200Type]
+
+export const DeleteCategoryId200Type = {
+  INCOME: 'INCOME',
+  EXPENSE: 'EXPENSE',
+} as const
+
+export type DeleteCategoryId200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string
+  name: string
+  type: DeleteCategoryId200Type
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  createdAt: string
+}
+
+export type DeleteCategoryId401 = {
+  message: string
+}
+
+export type DeleteCategoryId404 = {
+  message: string
+}
+
+export type DeleteCategoryId500 = {
+  message: string
+}
+
+export type PatchCategoryIdBody = {
+  /** @minLength 2 */
+  name: string
+}
+
+export type PatchCategoryId200Type =
+  (typeof PatchCategoryId200Type)[keyof typeof PatchCategoryId200Type]
+
+export const PatchCategoryId200Type = {
+  INCOME: 'INCOME',
+  EXPENSE: 'EXPENSE',
+} as const
+
+export type PatchCategoryId200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string
+  name: string
+  type: PatchCategoryId200Type
+  /** @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$ */
+  createdAt: string
+}
+
+export type PatchCategoryId401 = {
+  message: string
+}
+
+export type PatchCategoryId404 = {
+  message: string
+}
+
+export type PatchCategoryId500 = {
+  message: string
+}
+
 export type GetTransactionsParams = {
   /**
    * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
@@ -1242,6 +1374,80 @@ export const patchTransactionId = async (
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(patchTransactionIdBody),
+  })
+}
+
+/**
+ * @summary Exclui uma conta pelo ID para o usuário autenticado.
+ */
+export const getDeleteAccountIdUrl = (id: string) => {
+  return `/account/${id}`
+}
+
+export const deleteAccountId = async (
+  id: string,
+  options?: RequestInit,
+): Promise<DeleteAccountId200> => {
+  return customFetch<DeleteAccountId200>(getDeleteAccountIdUrl(id), {
+    ...options,
+    method: 'DELETE',
+  })
+}
+
+/**
+ * @summary Atualiza uma conta pelo ID para o usuário autenticado.
+ */
+export const getPatchAccountIdUrl = (id: string) => {
+  return `/account/${id}`
+}
+
+export const patchAccountId = async (
+  id: string,
+  patchAccountIdBody: PatchAccountIdBody,
+  options?: RequestInit,
+): Promise<PatchAccountId200> => {
+  return customFetch<PatchAccountId200>(getPatchAccountIdUrl(id), {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(patchAccountIdBody),
+  })
+}
+
+/**
+ * @summary Exclui uma categoria pelo ID para o usuário autenticado.
+ */
+export const getDeleteCategoryIdUrl = (id: string) => {
+  return `/category/${id}`
+}
+
+export const deleteCategoryId = async (
+  id: string,
+  options?: RequestInit,
+): Promise<DeleteCategoryId200> => {
+  return customFetch<DeleteCategoryId200>(getDeleteCategoryIdUrl(id), {
+    ...options,
+    method: 'DELETE',
+  })
+}
+
+/**
+ * @summary Atualiza uma categoria pelo ID para o usuário autenticado.
+ */
+export const getPatchCategoryIdUrl = (id: string) => {
+  return `/category/${id}`
+}
+
+export const patchCategoryId = async (
+  id: string,
+  patchCategoryIdBody: PatchCategoryIdBody,
+  options?: RequestInit,
+): Promise<PatchCategoryId200> => {
+  return customFetch<PatchCategoryId200>(getPatchCategoryIdUrl(id), {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(patchCategoryIdBody),
   })
 }
 
