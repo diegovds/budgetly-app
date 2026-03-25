@@ -92,3 +92,32 @@ export async function getAccountsByUserId({
     },
   }
 }
+
+export async function deleteAccount(id: string) {
+  const deletedAccount = await prisma.account.delete({
+    where: { id },
+  })
+
+  return {
+    ...deletedAccount,
+    createdAt: deletedAccount.createdAt.toISOString(),
+  }
+}
+
+export async function updateAccount({
+  id,
+  name,
+}: {
+  id: string
+  name: string
+}) {
+  const updatedAccount = await prisma.account.update({
+    where: { id },
+    data: { name },
+  })
+
+  return {
+    ...updatedAccount,
+    createdAt: updatedAccount.createdAt.toISOString(),
+  }
+}

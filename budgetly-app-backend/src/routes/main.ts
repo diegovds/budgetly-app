@@ -1,13 +1,17 @@
 import { FastifyInstance } from 'fastify'
 import {
   createAccount,
+  dropAccount,
   getAccounts,
   getAccountTypes,
+  updateAccount_,
 } from '../controllers/accounts'
 import {
   createCategory,
+  dropCategory,
   getCategoryTypes,
   listCategories,
+  updateCategory_,
 } from '../controllers/categories'
 import {
   getBalanceLastMonths,
@@ -35,6 +39,10 @@ export async function routes(app: FastifyInstance) {
   app.register(createTransaction)
   app.register(dropTransaction)
   app.register(updateTransaction_)
+  app.register(dropAccount)
+  app.register(updateAccount_)
+  app.register(dropCategory)
+  app.register(updateCategory_)
   app.register(getTransactions)
   app.register(getFinancial)
   app.register(getFinancialSummary)

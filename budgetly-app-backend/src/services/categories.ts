@@ -125,3 +125,32 @@ export async function listCategoriesSummary({
     },
   }
 }
+
+export async function deleteCategory(id: string) {
+  const deletedCategory = await prisma.category.delete({
+    where: { id },
+  })
+
+  return {
+    ...deletedCategory,
+    createdAt: deletedCategory.createdAt.toISOString(),
+  }
+}
+
+export async function updateCategory({
+  id,
+  name,
+}: {
+  id: string
+  name: string
+}) {
+  const updatedCategory = await prisma.category.update({
+    where: { id },
+    data: { name },
+  })
+
+  return {
+    ...updatedCategory,
+    createdAt: updatedCategory.createdAt.toISOString(),
+  }
+}

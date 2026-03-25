@@ -7,7 +7,7 @@ import {
   listAccountsSchema,
 } from '../schemas/account'
 import { paginationMetaSchema } from '../schemas/transaction'
-import { getAccountsByUserId, insertAccount } from '../services/accounts'
+import { deleteAccount, getAccountById, getAccountsByUserId, insertAccount, updateAccount } from '../services/accounts'
 import { findUserById } from '../services/users'
 
 export const createAccount: FastifyPluginAsyncZod = async (app) => {
@@ -151,6 +151,106 @@ export const getAccountTypes: FastifyPluginAsyncZod = async (app) => {
                   ? 'Conta Poupança'
                   : 'Dinheiro',
         }))
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const dropAccount: FastifyPluginAsyncZod = async (app) => {
+  app.delete(
+    '/account/:id',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Account'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Exclui uma conta pelo ID para o usuário autenticado.',
+        params: z.object({
+          id: z.uuid(),
+        }),
+        response: {
+          200: accountSchema,
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const { id } = request.params
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const account = await getAccountById(id, userId)
+
+        if (!account) {
+          return reply.status(404).send({ message: 'Conta não encontrada.' })
+        }
+
+        const deletedAccount = await deleteAccount(id)
+
+        return reply.send(deletedAccount)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const updateAccount_: FastifyPluginAsyncZod = async (app) => {
+  app.patch(
+    '/account/:id',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Account'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Atualiza uma conta pelo ID para o usuário autenticado.',
+        params: z.object({
+          id: z.uuid(),
+        }),
+        body: z.object({
+          name: z
+            .string()
+            .min(2, { message: 'O nome deve ter pelo menos 2 caracteres' }),
+        }),
+        response: {
+          200: accountSchema,
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const { id } = request.params
+        const { name } = request.body
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const account = await getAccountById(id, userId)
+
+        if (!account) {
+          return reply.status(404).send({ message: 'Conta não encontrada.' })
+        }
+
+        const updatedAccount = await updateAccount({ id, name })
+
+        return reply.send(updatedAccount)
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })

@@ -6,7 +6,7 @@ import {
   ListCategoriesSummaryResponseSchema,
 } from '../schemas/category'
 import { transactionTypeSchema } from '../schemas/transaction'
-import { insertCategory, listCategoriesSummary } from '../services/categories'
+import { deleteCategory, getCategoryById, insertCategory, listCategoriesSummary, updateCategory } from '../services/categories'
 import { findUserById } from '../services/users'
 
 export const createCategory: FastifyPluginAsyncZod = async (app) => {
@@ -141,6 +141,106 @@ export const getCategoryTypes: FastifyPluginAsyncZod = async (app) => {
           value: type,
           label: type === 'INCOME' ? 'Receita' : 'Despesa',
         }))
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const dropCategory: FastifyPluginAsyncZod = async (app) => {
+  app.delete(
+    '/category/:id',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Category'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Exclui uma categoria pelo ID para o usuário autenticado.',
+        params: z.object({
+          id: z.uuid(),
+        }),
+        response: {
+          200: categorySchema,
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const { id } = request.params
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const category = await getCategoryById(id, userId)
+
+        if (!category) {
+          return reply.status(404).send({ message: 'Categoria não encontrada.' })
+        }
+
+        const deletedCategory = await deleteCategory(id)
+
+        return reply.send(deletedCategory)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const updateCategory_: FastifyPluginAsyncZod = async (app) => {
+  app.patch(
+    '/category/:id',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['Category'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Atualiza uma categoria pelo ID para o usuário autenticado.',
+        params: z.object({
+          id: z.uuid(),
+        }),
+        body: z.object({
+          name: z
+            .string()
+            .min(2, { message: 'O nome deve ter pelo menos 2 caracteres' }),
+        }),
+        response: {
+          200: categorySchema,
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const { id } = request.params
+        const { name } = request.body
+        const userId = request.user.sub
+        const user = await findUserById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const category = await getCategoryById(id, userId)
+
+        if (!category || category.userId !== userId) {
+          return reply.status(404).send({ message: 'Categoria não encontrada.' })
+        }
+
+        const updatedCategory = await updateCategory({ id, name })
+
+        return reply.send(updatedCategory)
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })
