@@ -8,21 +8,21 @@ type FinancialOverviewSummary = {
 }
 
 export async function getAccountBalance(accountId: string) {
-  const transactions = await prisma.transaction.findMany({
-    where: { accountId },
-    select: {
-      amount: true,
-      type: true,
-    },
-  })
+  const [incomeAgg, expenseAgg] = await Promise.all([
+    prisma.transaction.aggregate({
+      where: { accountId, type: TransactionType.INCOME },
+      _sum: { amount: true },
+    }),
+    prisma.transaction.aggregate({
+      where: { accountId, type: TransactionType.EXPENSE },
+      _sum: { amount: true },
+    }),
+  ])
 
-  const balance = transactions.reduce((acc, transaction) => {
-    return transaction.type === TransactionType.INCOME
-      ? acc + Number(transaction.amount)
-      : acc - Number(transaction.amount)
-  }, 0)
+  const income = Number(incomeAgg._sum.amount ?? 0)
+  const expense = Number(expenseAgg._sum.amount ?? 0)
 
-  return Number(balance.toFixed(2))
+  return Number((income - expense).toFixed(2))
 }
 
 export async function getMonthlyBalance({
@@ -131,7 +131,7 @@ export async function getBalanceByCategory({
     entry.total +=
       transaction.type === TransactionType.INCOME
         ? Number(transaction.amount)
-        : Number(transaction.amount)
+        : -Number(transaction.amount)
   }
 
   return Array.from(categoryMap.values()).map((c) => ({
