@@ -43,7 +43,7 @@ export function CategoryList({ label, type }: CategoryListProps) {
       hasFetched.current = true
       toast.dismiss(toastId.current)
     }
-    return () => toast.dismiss(toastId.current)
+    return () => { toast.dismiss(toastId.current) }
   }, [isFetching])
 
   if (!data) return null
