@@ -1,14 +1,16 @@
 'use client'
 
 import { getAccount, GetAccount200 } from '@/http/api'
+import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from '../ui/button'
 
 export function AccountGrid() {
+  const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
 
   const { data } = useQuery<GetAccount200>({
@@ -33,9 +35,20 @@ export function AccountGrid() {
           >
             <div className="space-y-4">
               <div className="space-y-0.5">
-                <h2 className="text-lg font-semibold md:text-xl">
-                  {account.name}
-                </h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-lg font-semibold md:text-xl">
+                    {account.name}
+                  </h2>
+                  <Ellipsis
+                    size={15}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setElement({ type: 'account', data: account })
+                      setWhoOpened('account/manage')
+                      setIsOpen(true)
+                    }}
+                  />
+                </div>
                 <p className="text-muted-foreground text-xs md:text-sm">
                   {account.type}
                 </p>

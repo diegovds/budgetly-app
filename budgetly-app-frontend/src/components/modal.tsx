@@ -3,8 +3,10 @@
 import { useModalStore } from '@/store/useModalStore.ts'
 import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { CategoryManagement } from './category/category-management'
 import { NewCategory } from './category/new-category'
 import { NewAccount } from './new-account'
+import { AccountManagement } from './account/account-management'
 import { NewTransaction } from './transaction/new-transaction'
 import { TransactionManagement } from './transaction/transaction-management'
 
@@ -71,7 +73,11 @@ export function Modal({ onClose }: ModalProps) {
                 ? 'Adicionar Conta'
                 : whoOpened === '/category/new'
                   ? 'Adicionar Categoria'
-                  : 'Gerenciamento de Transação'}
+                  : whoOpened === 'account/manage'
+                    ? 'Gerenciamento de Conta'
+                    : whoOpened === 'category/manage'
+                      ? 'Gerenciamento de Categoria'
+                      : 'Gerenciamento de Transação'}
           </h2>
 
           <button
@@ -88,6 +94,10 @@ export function Modal({ onClose }: ModalProps) {
             <NewAccount />
           ) : whoOpened === '/category/new' ? (
             <NewCategory />
+          ) : whoOpened === 'account/manage' ? (
+            <AccountManagement />
+          ) : whoOpened === 'category/manage' ? (
+            <CategoryManagement />
           ) : (
             <TransactionManagement />
           )}

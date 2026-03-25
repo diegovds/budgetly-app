@@ -5,8 +5,9 @@ import {
   GetCategory200,
   GetCategory200CategoriesItemType,
 } from '@/http/api'
+import { useModalStore } from '@/store/useModalStore.ts'
 import { useQuery } from '@tanstack/react-query'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from '../ui/button'
@@ -17,6 +18,7 @@ type CategoryListProps = {
 }
 
 export function CategoryList({ label, type }: CategoryListProps) {
+  const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
 
   const { data } = useQuery<GetCategory200>({
@@ -46,9 +48,20 @@ export function CategoryList({ label, type }: CategoryListProps) {
           <div key={category.id}>
             <h4 className="bg-background flex items-center justify-between rounded p-4 text-xs font-semibold">
               {category.name}
-              <Link href={`/transaction?categoryId=${category.id}`}>
-                <ChevronRight size={15} />
-              </Link>
+              <div className="flex items-center gap-2">
+                <Ellipsis
+                  size={15}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setElement({ type: 'category', data: category })
+                    setWhoOpened('category/manage')
+                    setIsOpen(true)
+                  }}
+                />
+                <Link href={`/transaction?categoryId=${category.id}`}>
+                  <ChevronRight size={15} />
+                </Link>
+              </div>
             </h4>
           </div>
         ))}
