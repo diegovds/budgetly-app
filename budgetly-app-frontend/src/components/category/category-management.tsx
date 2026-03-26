@@ -35,8 +35,10 @@ export function CategoryManagement() {
     },
   })
 
+  const { isDirty } = form.formState
+
   function onSubmit(data: UpdateCategoryFormData) {
-    if (element?.type === 'category' && form.formState.isDirty) {
+    if (element?.type === 'category' && isDirty) {
       updateC.mutate({
         id: element.data.id,
         body: { name: data.name },

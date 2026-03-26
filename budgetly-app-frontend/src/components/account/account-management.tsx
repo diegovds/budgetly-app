@@ -35,8 +35,10 @@ export function AccountManagement() {
     },
   })
 
+  const { isDirty } = form.formState
+
   function onSubmit(data: UpdateAccountFormData) {
-    if (element?.type === 'account' && form.formState.isDirty) {
+    if (element?.type === 'account' && isDirty) {
       updateA.mutate({
         id: element.data.id,
         body: { name: data.name },
