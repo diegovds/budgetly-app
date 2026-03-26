@@ -19,9 +19,7 @@ type CategoryGridProps = {
 
 export function CategoryGrid({ type }: CategoryGridProps) {
   const [page, setPage] = useState(1)
-  const [isFirst, setIsFirst] = useState(false)
-
-  const { data, isFetching, isPlaceholderData, isError, error } =
+  const { data, isPlaceholderData, isError, error } =
     useQuery<GetDashboardGetlistcategories200>({
       queryKey: ['dashboard-categories', type, page],
       queryFn: () =>
@@ -40,10 +38,6 @@ export function CategoryGrid({ type }: CategoryGridProps) {
       )
     }
   }, [isError, error, type])
-
-  useEffect(() => {
-    if (!isFetching && !isPlaceholderData) setIsFirst(true)
-  }, [isFetching, isPlaceholderData])
 
   if (!data) return null
 
@@ -84,7 +78,7 @@ export function CategoryGrid({ type }: CategoryGridProps) {
           {data.label}
         </p>
         {currentMeta.totalPages > 1 ? (
-          isFetching && isFirst ? (
+          isPlaceholderData ? (
             <Button variant="outline" className="text-xs md:text-sm">
               <Loader2 className="animate-spin" />
             </Button>

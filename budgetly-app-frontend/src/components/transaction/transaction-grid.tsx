@@ -18,8 +18,6 @@ type TransactionGridProps = {
 export function TransactionGrid({ searchParams }: TransactionGridProps) {
   const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
-  const [isFirst, setIsFirst] = useState(false)
-
   useEffect(() => {
     setPage(1)
   }, [
@@ -30,7 +28,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
     searchParams.search,
   ])
 
-  const { data, isFetching, isPlaceholderData, isError, error } = useQuery<
+  const { data, isPlaceholderData, isError, error } = useQuery<
     GetTransactions200,
     Error
   >({
@@ -62,9 +60,6 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
     }
   }, [isError, error])
 
-  useEffect(() => {
-    if (!isFetching && !isPlaceholderData) setIsFirst(true)
-  }, [isFetching, isPlaceholderData])
 
   if (!data) return null
 
@@ -131,7 +126,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
           Transações
         </p>
         {currentMeta.totalPages > 1 ? (
-          isFetching && isFirst ? (
+          isPlaceholderData ? (
             <Button variant="outline" className="text-xs md:text-sm">
               <Loader2 className="animate-spin" />
             </Button>

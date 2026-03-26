@@ -22,8 +22,7 @@ type CategoryListProps = {
 export function CategoryList({ label, type }: CategoryListProps) {
   const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
-  const [isFirst, setIsFirst] = useState(false)
-  const { data, isFetching, isPlaceholderData, isError, error } = useQuery<
+  const { data, isPlaceholderData, isError, error } = useQuery<
     GetCategory200,
     Error
   >({
@@ -43,10 +42,6 @@ export function CategoryList({ label, type }: CategoryListProps) {
       toast.error('Erro ao buscar categorias.')
     }
   }, [isError, error])
-
-  useEffect(() => {
-    if (!isFetching && !isPlaceholderData) setIsFirst(true)
-  }, [isFetching, isPlaceholderData])
 
   if (!data) return null
 
@@ -100,7 +95,7 @@ export function CategoryList({ label, type }: CategoryListProps) {
           {label}
         </p>
         {currentMeta.totalPages > 1 ? (
-          isFetching && isFirst ? (
+          isPlaceholderData ? (
             <Button variant="outline" className="text-xs md:text-sm">
               <Loader2 className="animate-spin" />
             </Button>
