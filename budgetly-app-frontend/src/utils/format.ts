@@ -50,14 +50,12 @@ export function handleAmountKeyDown(
 
   if (e.key === 'Backspace' || e.key === 'Delete') {
     const newDigits = digits.slice(0, -1)
-    onChange(
-      newDigits ? formatCurrencyString(String(Number(newDigits) / 100)) : '',
-    )
+    onChange(newDigits ? formatCurrencyString(Number(newDigits) / 100) : '')
     return
   }
 
   if (/^\d$/.test(e.key)) {
-    onChange(formatCurrencyString(String(Number(digits + e.key) / 100)))
+    onChange(formatCurrencyString(Number(digits + e.key) / 100))
   }
 }
 
