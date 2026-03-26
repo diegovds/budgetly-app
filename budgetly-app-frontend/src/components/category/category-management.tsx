@@ -102,7 +102,12 @@ export function CategoryManagement() {
           <Button
             type="submit"
             className="text-xs md:text-sm"
-            disabled={deleteC.isPending || deleteC.isSuccess}
+            disabled={
+              deleteC.isPending ||
+              deleteC.isSuccess ||
+              updateC.isPending ||
+              updateC.isSuccess
+            }
           >
             Editar Categoria
           </Button>

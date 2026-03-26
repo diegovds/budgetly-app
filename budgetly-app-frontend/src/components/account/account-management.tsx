@@ -102,7 +102,12 @@ export function AccountManagement() {
           <Button
             type="submit"
             className="text-xs md:text-sm"
-            disabled={deleteA.isPending || deleteA.isSuccess}
+            disabled={
+              deleteA.isPending ||
+              deleteA.isSuccess ||
+              updateA.isPending ||
+              updateA.isSuccess
+            }
           >
             Editar Conta
           </Button>
