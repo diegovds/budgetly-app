@@ -18,6 +18,7 @@ type TransactionGridProps = {
 export function TransactionGrid({ searchParams }: TransactionGridProps) {
   const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
+  const [isFirst, setIsFirst] = useState(false)
 
   useEffect(() => {
     setPage(1)
@@ -29,7 +30,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
     searchParams.search,
   ])
 
-  const { data, isFetching, isSuccess, isError, error } = useQuery<
+  const { data, isFetching, isPlaceholderData, isError, error } = useQuery<
     GetTransactions200,
     Error
   >({
@@ -60,6 +61,10 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
       toast.error('Erro ao buscar transações.')
     }
   }, [isError, error])
+
+  useEffect(() => {
+    if (!isFetching && !isPlaceholderData) setIsFirst(true)
+  }, [isFetching, isPlaceholderData])
 
   if (!data) return null
 
@@ -125,40 +130,40 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
           Mostrando {start} a {end} de um total de {currentMeta.total}{' '}
           Transações
         </p>
-        {isFetching && isSuccess ? (
-          <Button variant="outline" className="text-xs md:text-sm">
-            <Loader2 className="animate-spin" />
-          </Button>
-        ) : currentMeta.totalPages > 1 ? (
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={currentMeta.page === 1}
-              onClick={() => setPage((p) => p - 1)}
-            >
-              <ChevronLeft />
+        {currentMeta.totalPages > 1 ? (
+          isFetching && isFirst ? (
+            <Button variant="outline" className="text-xs md:text-sm">
+              <Loader2 className="animate-spin" />
             </Button>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                className="text-xs md:text-sm"
+                disabled={currentMeta.page === 1}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                <ChevronLeft />
+              </Button>
 
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={currentMeta.page === currentMeta.totalPages}
-              onClick={() => setPage((p) => p + 1)}
-            >
-              <ChevronRight />
-            </Button>
-          </div>
+              <Button
+                variant="outline"
+                className="text-xs md:text-sm"
+                disabled={currentMeta.page === currentMeta.totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                <ChevronRight />
+              </Button>
+            </div>
+          )
         ) : (
-          <div className="invisible flex items-center gap-2">
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={true}
-            >
-              <ChevronLeft />
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            className="invisible text-xs md:text-sm"
+            disabled={true}
+          >
+            <ChevronLeft />
+          </Button>
         )}
       </div>
     </div>
