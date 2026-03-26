@@ -36,14 +36,6 @@ export async function getCategoryById(id: string, userId: string) {
   })
 }
 
-function getLast30DaysRange() {
-  const now = new Date()
-  const past = new Date()
-  past.setDate(now.getDate() - 30)
-
-  return { startDate: past, endDate: now }
-}
-
 type ListCategoriesSummaryProps = {
   userId: string
   page: number
@@ -51,6 +43,7 @@ type ListCategoriesSummaryProps = {
   type?: TransactionType
   orderBy?: 'name' | 'total'
   order?: 'asc' | 'desc'
+  dateRange?: '30d' | 'all'
 }
 
 export async function listCategoriesSummary({
@@ -60,9 +53,17 @@ export async function listCategoriesSummary({
   type,
   orderBy,
   order,
+  dateRange = '30d',
 }: ListCategoriesSummaryProps): Promise<ListCategoriesSummaryResponse> {
   const skip = (page - 1) * limit
-  const { startDate, endDate } = getLast30DaysRange()
+
+  let dateFilter: { gte: Date; lte: Date } | undefined
+  if (dateRange === '30d') {
+    const now = new Date()
+    const past = new Date()
+    past.setDate(now.getDate() - 30)
+    dateFilter = { gte: past, lte: now }
+  }
 
   const [categories, totalCategories] = await Promise.all([
     prisma.category.findMany({
@@ -88,10 +89,7 @@ export async function listCategoriesSummary({
         where: {
           userId,
           categoryId: category.id,
-          date: {
-            gte: startDate,
-            lte: endDate,
-          },
+          ...(dateFilter ? { date: dateFilter } : {}),
         },
         _sum: {
           amount: true,

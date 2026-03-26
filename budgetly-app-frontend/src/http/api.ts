@@ -282,6 +282,7 @@ export type GetCategoryParams = {
   type?: GetCategoryType
   orderBy?: GetCategoryOrderBy
   order?: GetCategoryOrder
+  dateRange?: '30d' | 'all'
 }
 
 export type GetCategoryType =

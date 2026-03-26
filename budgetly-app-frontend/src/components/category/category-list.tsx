@@ -32,6 +32,7 @@ export function CategoryList({ label, type }: CategoryListProps) {
         type,
         limit: 9,
         page,
+        dateRange: 'all',
       }),
     placeholderData: (prev) => prev,
   })

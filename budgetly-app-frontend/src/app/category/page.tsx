@@ -32,6 +32,7 @@ export default async function CategoryPage() {
         type: 'EXPENSE',
         limit: 9,
         page: 1,
+        dateRange: 'all',
       }),
   })
 
@@ -42,6 +43,7 @@ export default async function CategoryPage() {
         type: 'INCOME',
         limit: 9,
         page: 1,
+        dateRange: 'all',
       }),
   })
 
