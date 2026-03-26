@@ -116,14 +116,7 @@ export const dropTransaction: FastifyPluginAsyncZod = async (app) => {
             .send({ message: 'Transação não encontrada.' })
         }
 
-        const deletedTransaction = await deleteTransaction({
-          id,
-          transaction: {
-            ...transaction,
-            amount: Number(transaction.amount),
-            date: transaction.date.toISOString(),
-          },
-        })
+        const deletedTransaction = await deleteTransaction({ id })
 
         return reply.send(deletedTransaction)
       } catch (err) {
@@ -186,11 +179,6 @@ export const updateTransaction_: FastifyPluginAsyncZod = async (app) => {
             ? removeAccents(description)
             : null,
           date,
-          transaction: {
-            ...transaction,
-            amount: Number(transaction.amount),
-            date: transaction.date.toISOString(),
-          },
         })
 
         return reply.send(updatedTransaction)
