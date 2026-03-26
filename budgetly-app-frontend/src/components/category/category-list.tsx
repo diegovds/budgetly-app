@@ -10,7 +10,7 @@ import { formatCurrency } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Ellipsis, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../ui/button'
 
@@ -22,8 +22,10 @@ type CategoryListProps = {
 export function CategoryList({ label, type }: CategoryListProps) {
   const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
-  const hasFetched = useRef(false)
-  const { data, isFetching, isError, error } = useQuery<GetCategory200, Error>({
+  const { data, isFetching, isSuccess, isError, error } = useQuery<
+    GetCategory200,
+    Error
+  >({
     queryKey: ['categories', type, page],
     queryFn: () =>
       getCategory({
@@ -34,10 +36,6 @@ export function CategoryList({ label, type }: CategoryListProps) {
       }),
     placeholderData: (prev) => prev,
   })
-
-  useEffect(() => {
-    if (!isFetching) hasFetched.current = true
-  }, [isFetching])
 
   useEffect(() => {
     if (isError) {
@@ -96,7 +94,7 @@ export function CategoryList({ label, type }: CategoryListProps) {
           Mostrando {start} a {end} de um total de {currentMeta.totalCategories}{' '}
           {label}
         </p>
-        {isFetching && hasFetched.current ? (
+        {isFetching && isSuccess ? (
           <Button variant="outline" className="text-xs md:text-sm">
             <Loader2 className="animate-spin" />
           </Button>
@@ -120,7 +118,17 @@ export function CategoryList({ label, type }: CategoryListProps) {
               <ChevronRight />
             </Button>
           </div>
-        ) : null}
+        ) : (
+          <div className="invisible flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="text-xs md:text-sm"
+              disabled={true}
+            >
+              <ChevronLeft />
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )
