@@ -46,9 +46,7 @@ export function NewCategory() {
   const { categoryTypes } = useCategoryTypesStore()
 
   function onSubmit(data: CreateCategoryFormData) {
-    mutate(data)
-
-    toggleIsOpen()
+    mutate(data, { onSuccess: () => toggleIsOpen() })
   }
 
   return (

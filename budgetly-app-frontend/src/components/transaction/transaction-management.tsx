@@ -71,16 +71,17 @@ export function TransactionManagement() {
 
   function onSubmit(data: CreateNewTransactionFormData) {
     if (element?.type === 'transaction' && isDirty) {
-      updateT.mutate({
-        id: element.data.id,
-        body: {
-          ...data,
-          date: data.date.toISOString(),
-          amount: currencyToNumber(data.amount),
+      updateT.mutate(
+        {
+          id: element.data.id,
+          body: {
+            ...data,
+            date: data.date.toISOString(),
+            amount: currencyToNumber(data.amount),
+          },
         },
-      })
-
-      toggleIsOpen()
+        { onSuccess: () => toggleIsOpen() },
+      )
     }
   }
 
@@ -211,8 +212,9 @@ export function TransactionManagement() {
               variant="destructive"
               className="text-xs md:text-sm"
               onClick={() => {
-                deleteT.mutate(element.data.id)
-                toggleIsOpen()
+                deleteT.mutate(element.data.id, {
+                  onSuccess: () => toggleIsOpen(),
+                })
               }}
               disabled={deleteT.isPending || deleteT.isSuccess}
             >

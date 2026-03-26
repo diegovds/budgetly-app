@@ -71,14 +71,15 @@ export function NewTransaction() {
 
     if (!category) return
 
-    mutate({
-      ...data,
-      date: data.date.toISOString(),
-      type: category.type,
-      amount: currencyToNumber(data.amount),
-    })
-
-    toggleIsOpen()
+    mutate(
+      {
+        ...data,
+        date: data.date.toISOString(),
+        type: category.type,
+        amount: currencyToNumber(data.amount),
+      },
+      { onSuccess: () => toggleIsOpen() },
+    )
   }
 
   return (

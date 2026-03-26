@@ -46,9 +46,7 @@ export function NewAccount() {
   })
 
   function onSubmit(data: CreateAccountFormData) {
-    mutate(data)
-
-    toggleIsOpen()
+    mutate(data, { onSuccess: () => toggleIsOpen() })
   }
 
   return (

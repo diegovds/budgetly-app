@@ -39,12 +39,10 @@ export function CategoryManagement() {
 
   function onSubmit(data: UpdateCategoryFormData) {
     if (element?.type === 'category' && isDirty) {
-      updateC.mutate({
-        id: element.data.id,
-        body: { name: data.name },
-      })
-
-      toggleIsOpen()
+      updateC.mutate(
+        { id: element.data.id, body: { name: data.name } },
+        { onSuccess: () => toggleIsOpen() },
+      )
     }
   }
 
@@ -90,8 +88,9 @@ export function CategoryManagement() {
               variant="destructive"
               className="text-xs md:text-sm"
               onClick={() => {
-                deleteC.mutate(element.data.id)
-                toggleIsOpen()
+                deleteC.mutate(element.data.id, {
+                  onSuccess: () => toggleIsOpen(),
+                })
               }}
               disabled={deleteC.isPending || deleteC.isSuccess}
             >

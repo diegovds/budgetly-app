@@ -39,12 +39,10 @@ export function AccountManagement() {
 
   function onSubmit(data: UpdateAccountFormData) {
     if (element?.type === 'account' && isDirty) {
-      updateA.mutate({
-        id: element.data.id,
-        body: { name: data.name },
-      })
-
-      toggleIsOpen()
+      updateA.mutate(
+        { id: element.data.id, body: { name: data.name } },
+        { onSuccess: () => toggleIsOpen() },
+      )
     }
   }
 
@@ -90,8 +88,9 @@ export function AccountManagement() {
               variant="destructive"
               className="text-xs md:text-sm"
               onClick={() => {
-                deleteA.mutate(element.data.id)
-                toggleIsOpen()
+                deleteA.mutate(element.data.id, {
+                  onSuccess: () => toggleIsOpen(),
+                })
               }}
               disabled={deleteA.isPending || deleteA.isSuccess}
             >
