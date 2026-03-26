@@ -6,6 +6,7 @@ import {
   GetCategory200CategoriesItemType,
 } from '@/http/api'
 import { useModalStore } from '@/store/useModalStore.ts'
+import { formatCurrency } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 import Link from 'next/link'
@@ -63,22 +64,33 @@ export function CategoryList({ label, type }: CategoryListProps) {
         {data.categories.map((category) => (
           <div
             key={category.id}
-            className="bg-background flex items-center justify-between gap-2 rounded p-4"
+            className="bg-background flex flex-col gap-4 rounded p-4"
           >
-            <Ellipsis
-              size={15}
-              className="cursor-pointer"
-              onClick={() => {
-                setElement({ type: 'category', data: category })
-                setWhoOpened('category/manage')
-                setIsOpen(true)
-              }}
-            />
-            <h4 className="text-xs font-semibold">{category.name}</h4>
+            <div className="flex items-center justify-between gap-2">
+              <h4 className="text-xs font-semibold">{category.name}</h4>
+              <Ellipsis
+                size={15}
+                className="cursor-pointer"
+                onClick={() => {
+                  setElement({ type: 'category', data: category })
+                  setWhoOpened('category/manage')
+                  setIsOpen(true)
+                }}
+              />
+            </div>
 
-            <Link href={`/transaction?categoryId=${category.id}`}>
-              <ChevronRight size={15} />
-            </Link>
+            <div className="flex items-center justify-between">
+              <p
+                className={`text-xs font-semibold ${
+                  category.total >= 0 ? 'text-green-500' : 'text-red-500'
+                }`}
+              >
+                {formatCurrency(category.total)}
+              </p>
+              <Link href={`/transaction?categoryId=${category.id}`}>
+                <ChevronRight size={15} />
+              </Link>
+            </div>
           </div>
         ))}
       </div>
