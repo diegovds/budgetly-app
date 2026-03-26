@@ -88,35 +88,31 @@ export function AccountGrid() {
         <p className="text-xs md:text-sm">
           Mostrando {start} a {end} de um total de {currentMeta.total} Contas
         </p>
-        {currentMeta.totalPages > 1 && (
+        {isFetching && hasFetched.current ? (
+          <Button variant="outline" className="text-xs md:text-sm">
+            <Loader2 className="animate-spin" />
+          </Button>
+        ) : currentMeta.totalPages > 1 ? (
           <div className="flex items-center gap-2">
-            {isFetching && hasFetched.current ? (
-              <Button variant="outline" className="text-xs md:text-sm">
-                <Loader2 className="animate-spin" />
-              </Button>
-            ) : (
-              <>
-                <Button
-                  variant="outline"
-                  className="text-xs md:text-sm"
-                  disabled={currentMeta.page === 1}
-                  onClick={() => setPage((p) => p - 1)}
-                >
-                  <ChevronLeft />
-                </Button>
+            <Button
+              variant="outline"
+              className="text-xs md:text-sm"
+              disabled={currentMeta.page === 1}
+              onClick={() => setPage((p) => p - 1)}
+            >
+              <ChevronLeft />
+            </Button>
 
-                <Button
-                  variant="outline"
-                  className="text-xs md:text-sm"
-                  disabled={currentMeta.page === currentMeta.totalPages}
-                  onClick={() => setPage((p) => p + 1)}
-                >
-                  <ChevronRight />
-                </Button>
-              </>
-            )}
+            <Button
+              variant="outline"
+              className="text-xs md:text-sm"
+              disabled={currentMeta.page === currentMeta.totalPages}
+              onClick={() => setPage((p) => p + 1)}
+            >
+              <ChevronRight />
+            </Button>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   )
