@@ -32,7 +32,10 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
   const toastId = useRef<string | number | undefined>(undefined)
   const hasFetched = useRef(false)
 
-  const { data, isFetching } = useQuery<GetTransactions200>({
+  const { data, isFetching, isError, error } = useQuery<
+    GetTransactions200,
+    Error
+  >({
     queryKey: [
       'transactions',
       page,
@@ -63,8 +66,16 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
       hasFetched.current = true
       toast.dismiss(toastId.current)
     }
-    return () => { toast.dismiss(toastId.current) }
+    return () => {
+      toast.dismiss(toastId.current)
+    }
   }, [isFetching])
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('Erro ao buscar transações.')
+    }
+  }, [isError, error])
 
   if (!data) return null
 

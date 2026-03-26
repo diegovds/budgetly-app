@@ -16,7 +16,7 @@ export function AccountGrid() {
   const toastId = useRef<string | number | undefined>(undefined)
   const hasFetched = useRef(false)
 
-  const { data, isFetching } = useQuery<GetAccount200>({
+  const { data, isFetching, isError, error } = useQuery<GetAccount200, Error>({
     queryKey: ['accounts', page],
     queryFn: () => getAccount({ limit: 4, page }),
     placeholderData: (prev) => prev,
@@ -34,6 +34,12 @@ export function AccountGrid() {
       toast.dismiss(toastId.current)
     }
   }, [isFetching])
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('Erro ao buscar contas.')
+    }
+  }, [isError, error])
 
   if (!data) return null
 

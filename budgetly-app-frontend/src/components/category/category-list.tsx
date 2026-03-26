@@ -25,7 +25,7 @@ export function CategoryList({ label, type }: CategoryListProps) {
   const toastId = useRef<string | number | undefined>(undefined)
   const hasFetched = useRef(false)
 
-  const { data, isFetching } = useQuery<GetCategory200>({
+  const { data, isFetching, isError, error } = useQuery<GetCategory200, Error>({
     queryKey: ['categories', type, page],
     queryFn: () =>
       getCategory({
@@ -48,6 +48,12 @@ export function CategoryList({ label, type }: CategoryListProps) {
       toast.dismiss(toastId.current)
     }
   }, [isFetching])
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('Erro ao buscar categorias.')
+    }
+  }, [isError, error])
 
   if (!data) return null
 
