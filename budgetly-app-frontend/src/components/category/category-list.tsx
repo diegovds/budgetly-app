@@ -10,7 +10,7 @@ import { formatCurrency } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Ellipsis, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../ui/button'
 
@@ -22,6 +22,7 @@ type CategoryListProps = {
 export function CategoryList({ label, type }: CategoryListProps) {
   const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
+  const hasFetched = useRef(false)
   const { data, isFetching, isError, error } = useQuery<GetCategory200, Error>({
     queryKey: ['categories', type, page],
     queryFn: () =>
@@ -33,6 +34,10 @@ export function CategoryList({ label, type }: CategoryListProps) {
       }),
     placeholderData: (prev) => prev,
   })
+
+  useEffect(() => {
+    if (!isFetching) hasFetched.current = true
+  }, [isFetching])
 
   useEffect(() => {
     if (isError) {
@@ -93,7 +98,7 @@ export function CategoryList({ label, type }: CategoryListProps) {
         </p>
         {currentMeta.totalPages > 1 && (
           <div className="flex items-center gap-2">
-            {isFetching ? (
+            {isFetching && hasFetched.current ? (
               <Button variant="outline" className="text-xs md:text-sm">
                 <Loader2 className="animate-spin" />
               </Button>

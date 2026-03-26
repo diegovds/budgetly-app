@@ -8,7 +8,7 @@ import {
 import { formatCurrency } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
@@ -19,6 +19,7 @@ type CategoryGridProps = {
 
 export function CategoryGrid({ type }: CategoryGridProps) {
   const [page, setPage] = useState(1)
+  const hasFetched = useRef(false)
 
   const { data, isFetching, isError, error } =
     useQuery<GetDashboardGetlistcategories200>({
@@ -39,6 +40,10 @@ export function CategoryGrid({ type }: CategoryGridProps) {
       )
     }
   }, [isError, error, type])
+
+  useEffect(() => {
+    if (!isFetching) hasFetched.current = true
+  }, [isFetching])
 
   if (!data) return null
 
@@ -80,7 +85,7 @@ export function CategoryGrid({ type }: CategoryGridProps) {
         </p>
         {currentMeta.totalPages > 1 && (
           <div className="flex items-center gap-2">
-            {isFetching ? (
+            {isFetching && hasFetched.current ? (
               <Button variant="outline" className="text-xs md:text-sm">
                 <Loader2 className="animate-spin" />
               </Button>
