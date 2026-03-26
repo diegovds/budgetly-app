@@ -96,6 +96,7 @@ export default async function TransactionPage({ searchParams }: Props) {
         />
 
         <TransactionFilters
+          key={`${params.startDate ?? ''}-${params.endDate ?? ''}-${params.accountId ?? ''}-${params.categoryId ?? ''}-${params.search ?? ''}`}
           accounts={accounts.accounts}
           categories={categories.categories}
           params={params}

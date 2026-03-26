@@ -9,6 +9,7 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 
@@ -57,6 +58,7 @@ export function TransactionFilters({
   params,
 }: TransactionFiltersProps) {
   const router = useRouter()
+  const [selectKey] = useState(0)
 
   const form = useForm<CreateNewTransactionFormData>({
     resolver: zodResolver(createTransactionSchema),
@@ -82,7 +84,6 @@ export function TransactionFilters({
   }
 
   function handleReset() {
-    form.reset()
     router.push('/transaction')
   }
 
@@ -193,6 +194,7 @@ export function TransactionFilters({
               <FormItem className="flex flex-col items-center justify-between">
                 <FormLabel className="text-sm md:text-base">Conta</FormLabel>
                 <Select
+                  key={selectKey}
                   value={field.value ?? ALL_VALUE}
                   onValueChange={(value) =>
                     field.onChange(value === ALL_VALUE ? undefined : value)
@@ -236,6 +238,7 @@ export function TransactionFilters({
                   Categoria
                 </FormLabel>
                 <Select
+                  key={selectKey}
                   value={field.value ?? ALL_VALUE}
                   onValueChange={(value) =>
                     field.onChange(value === ALL_VALUE ? undefined : value)
