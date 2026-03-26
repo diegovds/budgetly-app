@@ -19,7 +19,6 @@ type InsertTransactionInput = {
 
 type DeleteTransactionInput = {
   id: string
-  transaction: InsertTransactionInput
 }
 
 type UpdateTransactionInput = {
@@ -28,7 +27,6 @@ type UpdateTransactionInput = {
   description: string | null
   descriptionNormalized: string | null
   date: string
-  transaction: InsertTransactionInput
 }
 
 export type ListTransactionsFilters = {
@@ -133,7 +131,7 @@ export async function updateTransaction({
       where: { id },
       data: {
         amount,
-        date,
+        date: new Date(date),
         description,
         descriptionNormalized,
       },
