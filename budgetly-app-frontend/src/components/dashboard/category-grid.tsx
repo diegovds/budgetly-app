@@ -7,8 +7,9 @@ import {
 } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 
@@ -19,16 +20,25 @@ type CategoryGridProps = {
 export function CategoryGrid({ type }: CategoryGridProps) {
   const [page, setPage] = useState(1)
 
-  const { data } = useQuery<GetDashboardGetlistcategories200>({
-    queryKey: ['dashboard-categories', type, page],
-    queryFn: () =>
-      getDashboardGetlistcategories({
-        type,
-        limit: 5,
-        page,
-      }),
-    placeholderData: (prev) => prev,
-  })
+  const { data, isFetching, isError, error } =
+    useQuery<GetDashboardGetlistcategories200>({
+      queryKey: ['dashboard-categories', type, page],
+      queryFn: () =>
+        getDashboardGetlistcategories({
+          type,
+          limit: 5,
+          page,
+        }),
+      placeholderData: (prev) => prev,
+    })
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(
+        `Erro ao buscar ${type === 'EXPENSE' ? 'despesas' : 'receitas'}`,
+      )
+    }
+  }, [isError, error, type])
 
   if (!data) return null
 
@@ -70,23 +80,31 @@ export function CategoryGrid({ type }: CategoryGridProps) {
         </p>
         {currentMeta.totalPages > 1 && (
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={currentMeta.page === 1}
-              onClick={() => setPage((p) => p - 1)}
-            >
-              <ChevronLeft />
-            </Button>
+            {isFetching ? (
+              <Button variant="outline" className="text-xs md:text-sm">
+                <Loader2 className="animate-spin" />
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  className="text-xs md:text-sm"
+                  disabled={currentMeta.page === 1}
+                  onClick={() => setPage((p) => p - 1)}
+                >
+                  <ChevronLeft />
+                </Button>
 
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={currentMeta.page === currentMeta.totalPages}
-              onClick={() => setPage((p) => p + 1)}
-            >
-              <ChevronRight />
-            </Button>
+                <Button
+                  variant="outline"
+                  className="text-xs md:text-sm"
+                  disabled={currentMeta.page === currentMeta.totalPages}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  <ChevronRight />
+                </Button>
+              </>
+            )}
           </div>
         )}
       </div>

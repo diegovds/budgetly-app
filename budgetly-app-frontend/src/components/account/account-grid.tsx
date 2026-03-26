@@ -4,36 +4,21 @@ import { getAccount, GetAccount200 } from '@/http/api'
 import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency } from '@/utils/format'
 import { useQuery } from '@tanstack/react-query'
-import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Ellipsis, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../ui/button'
 
 export function AccountGrid() {
   const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
-  const toastId = useRef<string | number | undefined>(undefined)
-  const hasFetched = useRef(false)
 
   const { data, isFetching, isError, error } = useQuery<GetAccount200, Error>({
     queryKey: ['accounts', page],
     queryFn: () => getAccount({ limit: 4, page }),
     placeholderData: (prev) => prev,
   })
-
-  useEffect(() => {
-    if (isFetching) {
-      if (!hasFetched.current) return
-      toastId.current = toast.loading('Buscando contas...')
-    } else {
-      hasFetched.current = true
-      toast.dismiss(toastId.current)
-    }
-    return () => {
-      toast.dismiss(toastId.current)
-    }
-  }, [isFetching])
 
   useEffect(() => {
     if (isError) {
@@ -100,23 +85,31 @@ export function AccountGrid() {
         </p>
         {currentMeta.totalPages > 1 && (
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={currentMeta.page === 1}
-              onClick={() => setPage((p) => p - 1)}
-            >
-              <ChevronLeft />
-            </Button>
+            {isFetching ? (
+              <Button variant="outline" className="text-xs md:text-sm">
+                <Loader2 className="animate-spin" />
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  className="text-xs md:text-sm"
+                  disabled={currentMeta.page === 1}
+                  onClick={() => setPage((p) => p - 1)}
+                >
+                  <ChevronLeft />
+                </Button>
 
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={currentMeta.page === currentMeta.totalPages}
-              onClick={() => setPage((p) => p + 1)}
-            >
-              <ChevronRight />
-            </Button>
+                <Button
+                  variant="outline"
+                  className="text-xs md:text-sm"
+                  disabled={currentMeta.page === currentMeta.totalPages}
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  <ChevronRight />
+                </Button>
+              </>
+            )}
           </div>
         )}
       </div>
