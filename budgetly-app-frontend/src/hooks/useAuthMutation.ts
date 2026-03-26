@@ -14,8 +14,7 @@ export function useAuthMutation() {
     onMutate: () => {
       return toast.loading('Autenticando...')
     },
-    onSuccess: async (data, _, toastId) => {
-      toast.success('Login realizado com sucesso!', { id: toastId })
+    onSuccess: async (data) => {
       await setAuthCookie(data.token)
       setToken(data.token)
       router.push('/')
