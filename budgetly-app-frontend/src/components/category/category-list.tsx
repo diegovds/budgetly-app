@@ -22,10 +22,7 @@ type CategoryListProps = {
 export function CategoryList({ label, type }: CategoryListProps) {
   const { setElement, setWhoOpened, setIsOpen } = useModalStore()
   const [page, setPage] = useState(1)
-  const { data, isFetching, isSuccess, isError, error } = useQuery<
-    GetCategory200,
-    Error
-  >({
+  const { data, isFetching, isError, error } = useQuery<GetCategory200, Error>({
     queryKey: ['categories', type, page],
     queryFn: () =>
       getCategory({
@@ -94,40 +91,40 @@ export function CategoryList({ label, type }: CategoryListProps) {
           Mostrando {start} a {end} de um total de {currentMeta.totalCategories}{' '}
           {label}
         </p>
-        {isFetching && isSuccess ? (
-          <Button variant="outline" className="text-xs md:text-sm">
-            <Loader2 className="animate-spin" />
-          </Button>
-        ) : currentMeta.totalPages > 1 ? (
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={currentMeta.page === 1}
-              onClick={() => setPage((p) => p - 1)}
-            >
-              <ChevronLeft />
+        {currentMeta.totalPages > 1 ? (
+          isFetching ? (
+            <Button variant="outline" className="text-xs md:text-sm">
+              <Loader2 className="animate-spin" />
             </Button>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                className="text-xs md:text-sm"
+                disabled={currentMeta.page === 1}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                <ChevronLeft />
+              </Button>
 
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={currentMeta.page === currentMeta.totalPages}
-              onClick={() => setPage((p) => p + 1)}
-            >
-              <ChevronRight />
-            </Button>
-          </div>
+              <Button
+                variant="outline"
+                className="text-xs md:text-sm"
+                disabled={currentMeta.page === currentMeta.totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                <ChevronRight />
+              </Button>
+            </div>
+          )
         ) : (
-          <div className="invisible flex items-center gap-2">
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              disabled={true}
-            >
-              <ChevronLeft />
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            className="invisible text-xs md:text-sm"
+            disabled={true}
+          >
+            <ChevronLeft />
+          </Button>
         )}
       </div>
     </div>
