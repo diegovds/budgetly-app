@@ -43,7 +43,9 @@ export function CategoryList({ label, type }: CategoryListProps) {
       hasFetched.current = true
       toast.dismiss(toastId.current)
     }
-    return () => { toast.dismiss(toastId.current) }
+    return () => {
+      toast.dismiss(toastId.current)
+    }
   }, [isFetching])
 
   if (!data) return null
@@ -59,24 +61,24 @@ export function CategoryList({ label, type }: CategoryListProps) {
     <div className="flex flex-col gap-6">
       <div className="grid gap-4 lg:grid-cols-3">
         {data.categories.map((category) => (
-          <div key={category.id}>
-            <h4 className="bg-background flex items-center justify-between rounded p-4 text-xs font-semibold">
-              {category.name}
-              <div className="flex items-center gap-2">
-                <Ellipsis
-                  size={15}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    setElement({ type: 'category', data: category })
-                    setWhoOpened('category/manage')
-                    setIsOpen(true)
-                  }}
-                />
-                <Link href={`/transaction?categoryId=${category.id}`}>
-                  <ChevronRight size={15} />
-                </Link>
-              </div>
-            </h4>
+          <div
+            key={category.id}
+            className="bg-background flex items-center justify-between gap-2 rounded p-4"
+          >
+            <Ellipsis
+              size={15}
+              className="cursor-pointer"
+              onClick={() => {
+                setElement({ type: 'category', data: category })
+                setWhoOpened('category/manage')
+                setIsOpen(true)
+              }}
+            />
+            <h4 className="text-xs font-semibold">{category.name}</h4>
+
+            <Link href={`/transaction?categoryId=${category.id}`}>
+              <ChevronRight size={15} />
+            </Link>
           </div>
         ))}
       </div>
