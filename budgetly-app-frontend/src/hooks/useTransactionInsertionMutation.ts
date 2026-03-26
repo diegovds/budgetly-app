@@ -3,12 +3,13 @@ import {
   PostTransaction200,
   PostTransactionBody,
 } from '@/http/api'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 export function useTransactionInsertionMutation() {
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   return useMutation<PostTransaction200, Error, PostTransactionBody, string | number>({
     mutationFn: (data) => postTransaction(data),
@@ -17,6 +18,7 @@ export function useTransactionInsertionMutation() {
     },
     onSuccess: (_, __, toastId) => {
       toast.success('Transação salva com sucesso!', { id: toastId })
+      queryClient.invalidateQueries({ queryKey: ['transactions'] })
       router.refresh()
     },
     onError: (error, _, toastId) => {
