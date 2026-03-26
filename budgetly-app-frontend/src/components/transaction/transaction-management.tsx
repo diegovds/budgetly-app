@@ -3,7 +3,11 @@
 import { useTransactionDeletionMutation } from '@/hooks/useTransactionDeleteMutation'
 import { useTransactionUpdateMutation } from '@/hooks/useTransactionUpdateMutation'
 import { useModalStore } from '@/store/useModalStore.ts'
-import { currencyToNumber, formatCurrencyString } from '@/utils/format'
+import {
+  currencyToNumber,
+  formatCurrencyString,
+  handleAmountKeyDown,
+} from '@/utils/format'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -106,10 +110,14 @@ export function TransactionManagement() {
                         type="text"
                         placeholder="R$ 1.000,00"
                         value={field.value ?? ''}
-                        onChange={(e) => {
-                          const formatted = formatCurrencyString(e.target.value)
-                          field.onChange(formatted)
-                        }}
+                        onChange={() => {}}
+                        onKeyDown={(e) =>
+                          handleAmountKeyDown(
+                            e,
+                            field.value ?? '',
+                            field.onChange,
+                          )
+                        }
                       />
                     </div>
                   </FormControl>
@@ -215,7 +223,12 @@ export function TransactionManagement() {
           <Button
             type="submit"
             className="text-xs md:text-sm"
-            disabled={deleteT.isPending || deleteT.isSuccess}
+            disabled={
+              deleteT.isPending ||
+              deleteT.isSuccess ||
+              updateT.isPending ||
+              updateT.isSuccess
+            }
           >
             Editar Transação
           </Button>

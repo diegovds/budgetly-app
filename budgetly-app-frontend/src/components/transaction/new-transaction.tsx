@@ -4,7 +4,7 @@ import { useTransactionInsertionMutation } from '@/hooks/useTransactionInsertion
 import { useAccountsStore } from '@/store/account'
 import { useCategoriesStore } from '@/store/categories'
 import { useModalStore } from '@/store/useModalStore.ts'
-import { currencyToNumber, formatCurrencyString } from '@/utils/format'
+import { currencyToNumber, handleAmountKeyDown } from '@/utils/format'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -54,8 +54,7 @@ export function NewTransaction() {
   const { accounts } = useAccountsStore()
   const { categories } = useCategoriesStore()
 
-  const { mutate, isPending, error, isSuccess } =
-    useTransactionInsertionMutation()
+  const { mutate, isPending, isSuccess } = useTransactionInsertionMutation()
   const form = useForm<CreateNewTransactionFormData>({
     resolver: zodResolver(createTransactionSchema),
     defaultValues: {
@@ -102,10 +101,14 @@ export function NewTransaction() {
                       type="text"
                       placeholder="R$ 1.000,00"
                       value={field.value ?? ''}
-                      onChange={(e) => {
-                        const formatted = formatCurrencyString(e.target.value)
-                        field.onChange(formatted)
-                      }}
+                      onChange={() => {}}
+                      onKeyDown={(e) =>
+                        handleAmountKeyDown(
+                          e,
+                          field.value ?? '',
+                          field.onChange,
+                        )
+                      }
                     />
                   </FormControl>
                   <FormMessage />

@@ -33,6 +33,34 @@ export function formatCurrencyString(value: string | number) {
   })
 }
 
+export function handleAmountKeyDown(
+  e: React.KeyboardEvent<HTMLInputElement>,
+  currentValue: string,
+  onChange: (value: string) => void,
+) {
+  if (e.ctrlKey || e.metaKey) return
+  if (
+    ['Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)
+  )
+    return
+
+  e.preventDefault()
+
+  const digits = currentValue.replace(/\D/g, '')
+
+  if (e.key === 'Backspace' || e.key === 'Delete') {
+    const newDigits = digits.slice(0, -1)
+    onChange(
+      newDigits ? formatCurrencyString(String(Number(newDigits) / 100)) : '',
+    )
+    return
+  }
+
+  if (/^\d$/.test(e.key)) {
+    onChange(formatCurrencyString(String(Number(digits + e.key) / 100)))
+  }
+}
+
 export function currencyToNumber(value: string) {
   return Number(
     value
