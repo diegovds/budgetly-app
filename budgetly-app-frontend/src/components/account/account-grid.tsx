@@ -30,7 +30,9 @@ export function AccountGrid() {
       hasFetched.current = true
       toast.dismiss(toastId.current)
     }
-    return () => { toast.dismiss(toastId.current) }
+    return () => {
+      toast.dismiss(toastId.current)
+    }
   }, [isFetching])
 
   if (!data) return null
@@ -43,30 +45,27 @@ export function AccountGrid() {
     <div className="space-y-6">
       <div className="grid gap-8 lg:grid-cols-2">
         {data.accounts.map((account) => (
-          <div
-            key={account.id}
-            className="bg-accent flex items-end justify-between rounded p-4"
-          >
-            <div className="space-y-4">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-semibold md:text-xl">
-                    {account.name}
-                  </h2>
-                  <Ellipsis
-                    size={15}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setElement({ type: 'account', data: account })
-                      setWhoOpened('account/manage')
-                      setIsOpen(true)
-                    }}
-                  />
-                </div>
-                <p className="text-muted-foreground text-xs md:text-sm">
-                  {account.type}
-                </p>
-              </div>
+          <div key={account.id} className="bg-accent flex flex-col rounded p-4">
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="text-lg font-semibold md:text-xl">
+                {account.name}
+              </h2>
+              <Ellipsis
+                size={15}
+                className="cursor-pointer"
+                onClick={() => {
+                  setElement({ type: 'account', data: account })
+                  setWhoOpened('account/manage')
+                  setIsOpen(true)
+                }}
+              />
+            </div>
+
+            <p className="text-muted-foreground text-xs md:text-sm">
+              {account.type}
+            </p>
+
+            <div className="mt-4 flex items-end justify-between">
               <div className="space-y-0.5">
                 <h2 className="text-muted-foreground text-sm font-semibold md:text-base">
                   Saldo atual
@@ -79,8 +78,6 @@ export function AccountGrid() {
                   {formatCurrency(account.balance)}
                 </p>
               </div>
-            </div>
-            <div className="flex justify-end">
               <Link href={`/transaction?accountId=${account.id}`}>
                 <Button variant="outline" className="text-xs md:text-sm">
                   Ver Transações
