@@ -15,6 +15,14 @@ API REST do Budgetly construída com Fastify, Prisma ORM e PostgreSQL.
 | @fastify/swagger | — | Documentação OpenAPI |
 | tsx | — | Execução TypeScript em desenvolvimento |
 
+## Docker
+
+Para rodar o Docker Compose, utilize o comando:
+
+```bash
+docker compose up -d
+```
+
 ## Variáveis de ambiente
 
 Crie um arquivo `.env` na raiz do pacote com:
@@ -24,13 +32,6 @@ PORT=3333
 DATABASE_URL="postgresql://usuario:senha@localhost:5432/budgetly"
 JWT_SECRET_KEY="sua-chave-secreta"
 BASE_URL="http://localhost:3333"
-```
-## Docker
-
-Para rodar o Docker Compose, utilize o comando:
-
-```bash
-docker compose up -d
 ```
 
 ## Instalação e execução
