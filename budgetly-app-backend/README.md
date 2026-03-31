@@ -38,6 +38,9 @@ docker compose up -d
 ```bash
 npm install
 
+# Gera o Prisma
+npx prisma generate
+
 # Criar o banco e rodar as migrations
 npx prisma migrate dev
 
