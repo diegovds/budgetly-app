@@ -38,3 +38,29 @@ export async function findUserById(id: string) {
     },
   })
 }
+
+export async function findUserWithPasswordById(id: string) {
+  return await prisma.user.findUnique({
+    where: { id },
+    select: { id: true, password: true },
+  })
+}
+
+export async function updateUserPassword(id: string, passwordHash: string) {
+  return await prisma.user.update({
+    where: { id },
+    data: { password: passwordHash },
+  })
+}
+
+export async function getUserStats(id: string) {
+  const [accountsCount, categoriesCount, transactionsCount] = await Promise.all(
+    [
+      prisma.account.count({ where: { userId: id } }),
+      prisma.category.count({ where: { userId: id } }),
+      prisma.transaction.count({ where: { userId: id } }),
+    ],
+  )
+
+  return { accountsCount, categoriesCount, transactionsCount }
+}

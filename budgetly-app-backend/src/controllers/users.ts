@@ -4,7 +4,14 @@ import { mapUserForResponse } from '../mappers/user'
 import { accountSchema } from '../schemas/account'
 import { categorySchema } from '../schemas/category'
 import { transactionSchema } from '../schemas/transaction'
-import { findUserByEmail, findUserById, insertUser } from '../services/users'
+import {
+  findUserByEmail,
+  findUserById,
+  findUserWithPasswordById,
+  getUserStats,
+  insertUser,
+  updateUserPassword,
+} from '../services/users'
 
 export const auth: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -134,6 +141,98 @@ export const getUser: FastifyPluginAsyncZod = async (app) => {
 
         const mappedUser = await mapUserForResponse(user)
         return reply.send(mappedUser)
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const changePassword: FastifyPluginAsyncZod = async (app) => {
+  app.patch(
+    '/user/password',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['User'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Atualiza a senha do usuário autenticado',
+        body: z.object({
+          currentPassword: z
+            .string()
+            .min(6, { message: 'A senha deve ter pelo menos 6 caracteres' }),
+          newPassword: z
+            .string()
+            .min(6, { message: 'A nova senha deve ter pelo menos 6 caracteres' }),
+        }),
+        response: {
+          200: z.object({ message: z.string() }),
+          401: z.object({ message: z.string() }),
+          404: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const userId = request.user.sub
+        const { currentPassword, newPassword } = request.body
+
+        const user = await findUserWithPasswordById(userId)
+
+        if (!user) {
+          return reply.status(404).send({ message: 'Usuário não encontrado.' })
+        }
+
+        const passwordMatch = await app.bcrypt.compare(
+          currentPassword,
+          user.password,
+        )
+
+        if (!passwordMatch) {
+          return reply
+            .status(401)
+            .send({ message: 'Senha atual incorreta.' })
+        }
+
+        const newPasswordHash = await app.bcrypt.hash(newPassword)
+        await updateUserPassword(userId, newPasswordHash)
+
+        return reply.send({ message: 'Senha atualizada com sucesso.' })
+      } catch (err) {
+        console.error(err)
+        return reply.status(500).send({ message: 'Erro interno do servidor.' })
+      }
+    },
+  )
+}
+
+export const getUserStatsController: FastifyPluginAsyncZod = async (app) => {
+  app.get(
+    '/user/stats',
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ['User'],
+        security: [{ bearerAuth: [] }],
+        summary: 'Retorna estatísticas gerais do usuário autenticado',
+        response: {
+          200: z.object({
+            accountsCount: z.number(),
+            categoriesCount: z.number(),
+            transactionsCount: z.number(),
+          }),
+          401: z.object({ message: z.string() }),
+          500: z.object({ message: z.string() }),
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const userId = request.user.sub
+        const stats = await getUserStats(userId)
+        return reply.send(stats)
       } catch (err) {
         console.error(err)
         return reply.status(500).send({ message: 'Erro interno do servidor.' })

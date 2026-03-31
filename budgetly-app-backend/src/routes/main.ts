@@ -28,12 +28,19 @@ import {
   listTransactionsSummary,
   updateTransaction_,
 } from '../controllers/transactions'
-import { auth, getUser } from '../controllers/users'
+import {
+  auth,
+  changePassword,
+  getUser,
+  getUserStatsController,
+} from '../controllers/users'
 
 export async function routes(app: FastifyInstance) {
   app.register(main)
   app.register(auth)
   app.register(getUser)
+  app.register(changePassword)
+  app.register(getUserStatsController)
   app.register(createAccount)
   app.register(createCategory)
   app.register(createTransaction)
