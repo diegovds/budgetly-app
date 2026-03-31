@@ -37,14 +37,14 @@ export default async function ProfilePage() {
         </Link>
       </header>
 
-      <Card className="rounded">
-        <CardHeader>
+      <Card className="rounded p-4">
+        <CardHeader className="px-0">
           <CardTitle className="flex items-center gap-2">
             <BarChart3 className="size-5" />
             Estatísticas Gerais
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0">
           <UserStats />
         </CardContent>
       </Card>
