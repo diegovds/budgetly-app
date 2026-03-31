@@ -212,7 +212,7 @@ async function main() {
     const freelanceChance = p === 'good' ? 0.8 : p === 'bad' ? 0.25 : 0.5
     if (Math.random() < freelanceChance) {
       const freelanceDescs = [
-        'Projeto site WordPress',
+        'Projeto site Next.js',
         'Landing page cliente',
         'Consultoria técnica',
         'Desenvolvimento API',
@@ -386,7 +386,7 @@ async function main() {
       m >= 10 || m <= 2 ? randomBetween(180, 300) : randomBetween(95, 170)
     tx.push({
       amount: energia,
-      description: 'Conta de luz - Enel',
+      description: 'Conta de luz',
       date: dateInMonth(y, m, 12, 8, 14),
       type: TransactionType.EXPENSE,
       userId: user.id,
@@ -397,7 +397,7 @@ async function main() {
     // Água
     tx.push({
       amount: randomBetween(55, 110),
-      description: 'Conta de água - Sabesp',
+      description: 'Conta de água',
       date: dateInMonth(y, m, 18, 8, 14),
       type: TransactionType.EXPENSE,
       userId: user.id,
@@ -528,10 +528,10 @@ async function main() {
       tx.push({
         amount: randomBetween(15, 120),
         description: randomItem([
-          'Farmácia Drogasil',
+          'Panvel Farmácias',
           'Farmácia Droga Raia',
-          'Drogaria São Paulo',
-          'Farmácia Pague Menos',
+          'Farmácia São João',
+          'Agafarma Farmácias',
         ]),
         date: dateInMonth(y, m, randomDay(), 9, 20),
         type: TransactionType.EXPENSE,
@@ -595,11 +595,11 @@ async function main() {
     // Supermercado — 3-5 idas grandes por mês
     const mercadoCount = randomInt(3, 5)
     const mercadoDescs = [
-      'Pão de Açúcar',
-      'Carrefour',
-      'Extra Hiper',
-      'Assaí Atacadista',
-      'Mercado São Luiz',
+      'Beltrame Supermercados',
+      'Supermercado Carrefour',
+      'Big Supermercados',
+      'Rede Super Supermercados',
+      'Rede Vivo Supermercados',
     ]
     for (let j = 0; j < mercadoCount; j++) {
       tx.push({
