@@ -73,8 +73,8 @@ export function ChangePasswordForm() {
   }
 
   return (
-    <Card className="rounded">
-      <CardHeader>
+    <Card className="rounded p-4">
+      <CardHeader className="px-0">
         <CardTitle className="flex items-center gap-2">
           <Lock className="size-5" />
           Alterar Senha
@@ -83,7 +83,7 @@ export function ChangePasswordForm() {
           Informe sua senha atual e escolha uma nova senha.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-0">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
