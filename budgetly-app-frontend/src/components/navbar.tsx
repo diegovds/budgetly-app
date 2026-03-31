@@ -31,6 +31,7 @@ export function Navbar({ token }: NavbarProps) {
     { label: 'Contas', href: '/account' },
     { label: 'Categorias', href: '/category' },
     { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Perfil', href: '/profile' },
   ]
 
   async function handleLogout() {
@@ -83,7 +84,7 @@ export function Navbar({ token }: NavbarProps) {
         </div>
         {token && (
           <div
-            className={`flex w-full flex-col items-center overflow-hidden duration-500 ${menuOpened ? 'max-h-66' : 'max-h-0'}`}
+            className={`flex w-full flex-col items-center overflow-hidden duration-500 ${menuOpened ? 'max-h-90' : 'max-h-0'}`}
           >
             <div className="mt-4 flex w-full flex-col items-center gap-2">
               {menu.map((item) =>

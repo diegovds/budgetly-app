@@ -1675,3 +1675,43 @@ export const getDashboardGetlistcategories = async (
     },
   )
 }
+
+// ---- User Stats ----
+
+export type GetUserStats200 = {
+  accountsCount: number
+  categoriesCount: number
+  transactionsCount: number
+}
+
+export const getUserStats = async (
+  options?: RequestInit,
+): Promise<GetUserStats200> => {
+  return customFetch<GetUserStats200>('/user/stats', {
+    ...options,
+    method: 'GET',
+  })
+}
+
+// ---- Change Password ----
+
+export type PatchUserPasswordBody = {
+  currentPassword: string
+  newPassword: string
+}
+
+export type PatchUserPassword200 = {
+  message: string
+}
+
+export const patchUserPassword = async (
+  patchUserPasswordBody: PatchUserPasswordBody,
+  options?: RequestInit,
+): Promise<PatchUserPassword200> => {
+  return customFetch<PatchUserPassword200>('/user/password', {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(patchUserPasswordBody),
+  })
+}
