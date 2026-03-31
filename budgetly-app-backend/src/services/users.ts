@@ -54,13 +54,17 @@ export async function updateUserPassword(id: string, passwordHash: string) {
 }
 
 export async function getUserStats(id: string) {
-  const [accountsCount, categoriesCount, transactionsCount] = await Promise.all(
-    [
-      prisma.account.count({ where: { userId: id } }),
-      prisma.category.count({ where: { userId: id } }),
-      prisma.transaction.count({ where: { userId: id } }),
-    ],
-  )
+  const [
+    accountsCount,
+    incomeCategoriesCount,
+    expenseCategoriesCount,
+    transactionsCount,
+  ] = await Promise.all([
+    prisma.account.count({ where: { userId: id } }),
+    prisma.category.count({ where: { userId: id, type: 'INCOME' } }),
+    prisma.category.count({ where: { userId: id, type: 'EXPENSE' } }),
+    prisma.transaction.count({ where: { userId: id } }),
+  ])
 
-  return { accountsCount, categoriesCount, transactionsCount }
+  return { accountsCount, incomeCategoriesCount, expenseCategoriesCount, transactionsCount }
 }

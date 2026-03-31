@@ -220,7 +220,8 @@ export const getUserStatsController: FastifyPluginAsyncZod = async (app) => {
         response: {
           200: z.object({
             accountsCount: z.number(),
-            categoriesCount: z.number(),
+            incomeCategoriesCount: z.number(),
+            expenseCategoriesCount: z.number(),
             transactionsCount: z.number(),
           }),
           401: z.object({ message: z.string() }),
