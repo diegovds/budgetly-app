@@ -19,7 +19,9 @@ function StatCard({ icon, label, value, loading }: StatCardProps) {
         {icon}
       </div>
       {loading ? (
-        <div className="bg-muted h-8 w-16 animate-pulse rounded" />
+        <p className="bg-card w-fit animate-pulse rounded text-2xl font-semibold text-transparent md:text-3xl">
+          ____
+        </p>
       ) : (
         <p className="text-2xl font-semibold md:text-3xl">{value}</p>
       )}
