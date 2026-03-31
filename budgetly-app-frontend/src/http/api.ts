@@ -116,6 +116,44 @@ export type GetUser500 = {
   message: string
 }
 
+export type PatchUserPasswordBody = {
+  /** @minLength 6 */
+  currentPassword: string
+  /** @minLength 6 */
+  newPassword: string
+}
+
+export type PatchUserPassword200 = {
+  message: string
+}
+
+export type PatchUserPassword401 = {
+  message: string
+}
+
+export type PatchUserPassword404 = {
+  message: string
+}
+
+export type PatchUserPassword500 = {
+  message: string
+}
+
+export type GetUserStats200 = {
+  accountsCount: number
+  incomeCategoriesCount: number
+  expenseCategoriesCount: number
+  transactionsCount: number
+}
+
+export type GetUserStats401 = {
+  message: string
+}
+
+export type GetUserStats500 = {
+  message: string
+}
+
 export type PostAccountBodyType =
   (typeof PostAccountBodyType)[keyof typeof PostAccountBodyType]
 
@@ -282,7 +320,7 @@ export type GetCategoryParams = {
   type?: GetCategoryType
   orderBy?: GetCategoryOrderBy
   order?: GetCategoryOrder
-  dateRange?: '30d' | 'all'
+  dateRange?: GetCategoryDateRange
 }
 
 export type GetCategoryType =
@@ -307,6 +345,14 @@ export type GetCategoryOrder =
 export const GetCategoryOrder = {
   asc: 'asc',
   desc: 'desc',
+} as const
+
+export type GetCategoryDateRange =
+  (typeof GetCategoryDateRange)[keyof typeof GetCategoryDateRange]
+
+export const GetCategoryDateRange = {
+  '30d': '30d',
+  all: 'all',
 } as const
 
 export type GetCategory200CategoriesItemType =
@@ -1227,6 +1273,41 @@ export const getUser = async (options?: RequestInit): Promise<GetUser200> => {
 }
 
 /**
+ * @summary Atualiza a senha do usuário autenticado
+ */
+export const getPatchUserPasswordUrl = () => {
+  return `/user/password`
+}
+
+export const patchUserPassword = async (
+  patchUserPasswordBody: PatchUserPasswordBody,
+  options?: RequestInit,
+): Promise<PatchUserPassword200> => {
+  return customFetch<PatchUserPassword200>(getPatchUserPasswordUrl(), {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(patchUserPasswordBody),
+  })
+}
+
+/**
+ * @summary Retorna estatísticas gerais do usuário autenticado
+ */
+export const getGetUserStatsUrl = () => {
+  return `/user/stats`
+}
+
+export const getUserStats = async (
+  options?: RequestInit,
+): Promise<GetUserStats200> => {
+  return customFetch<GetUserStats200>(getGetUserStatsUrl(), {
+    ...options,
+    method: 'GET',
+  })
+}
+
+/**
  * @summary Cria uma nova conta para o usuário autenticado
  */
 export const getPostAccountUrl = () => {
@@ -1674,45 +1755,4 @@ export const getDashboardGetlistcategories = async (
       method: 'GET',
     },
   )
-}
-
-// ---- User Stats ----
-
-export type GetUserStats200 = {
-  accountsCount: number
-  incomeCategoriesCount: number
-  expenseCategoriesCount: number
-  transactionsCount: number
-}
-
-export const getUserStats = async (
-  options?: RequestInit,
-): Promise<GetUserStats200> => {
-  return customFetch<GetUserStats200>('/user/stats', {
-    ...options,
-    method: 'GET',
-  })
-}
-
-// ---- Change Password ----
-
-export type PatchUserPasswordBody = {
-  currentPassword: string
-  newPassword: string
-}
-
-export type PatchUserPassword200 = {
-  message: string
-}
-
-export const patchUserPassword = async (
-  patchUserPasswordBody: PatchUserPasswordBody,
-  options?: RequestInit,
-): Promise<PatchUserPassword200> => {
-  return customFetch<PatchUserPassword200>('/user/password', {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(patchUserPasswordBody),
-  })
 }
