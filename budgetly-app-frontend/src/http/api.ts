@@ -1680,7 +1680,8 @@ export const getDashboardGetlistcategories = async (
 
 export type GetUserStats200 = {
   accountsCount: number
-  categoriesCount: number
+  incomeCategoriesCount: number
+  expenseCategoriesCount: number
   transactionsCount: number
 }
 

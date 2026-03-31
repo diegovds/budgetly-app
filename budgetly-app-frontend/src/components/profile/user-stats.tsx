@@ -2,7 +2,7 @@
 
 import { getUserStats, GetUserStats200 } from '@/http/api'
 import { useQuery } from '@tanstack/react-query'
-import { CreditCard, Layers, Tag } from 'lucide-react'
+import { CreditCard, Layers, TrendingDown, TrendingUp } from 'lucide-react'
 
 type StatCardProps = {
   icon: React.ReactNode
@@ -36,7 +36,7 @@ export function UserStats() {
   })
 
   return (
-    <div className="grid gap-4 md:grid-cols-3 lg:gap-8">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
       <StatCard
         icon={<Layers size={20} />}
         label="Transações"
@@ -50,9 +50,15 @@ export function UserStats() {
         loading={isLoading}
       />
       <StatCard
-        icon={<Tag size={20} />}
-        label="Categorias"
-        value={data?.categoriesCount ?? 0}
+        icon={<TrendingUp size={20} />}
+        label="Categorias de Receita"
+        value={data?.incomeCategoriesCount ?? 0}
+        loading={isLoading}
+      />
+      <StatCard
+        icon={<TrendingDown size={20} />}
+        label="Categorias de Despesa"
+        value={data?.expenseCategoriesCount ?? 0}
         loading={isLoading}
       />
     </div>
