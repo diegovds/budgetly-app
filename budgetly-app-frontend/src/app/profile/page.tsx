@@ -3,6 +3,7 @@ import { ChangePasswordForm } from '@/components/profile/change-password-form'
 import { UserStats } from '@/components/profile/user-stats'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getUserStats } from '@/http/api'
 import { BarChart3 } from 'lucide-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
@@ -18,6 +19,8 @@ export default async function ProfilePage() {
   if (!token) {
     redirect('/login')
   }
+
+  const data = await getUserStats()
 
   return (
     <div className="w-full space-y-8">
@@ -45,7 +48,7 @@ export default async function ProfilePage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="px-0">
-          <UserStats />
+          <UserStats data={data} />
         </CardContent>
       </Card>
 
