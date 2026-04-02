@@ -123,16 +123,6 @@ async function main() {
       },
       { name: 'Compras', type: TransactionType.EXPENSE, userId: user.id },
       { name: 'Viagem', type: TransactionType.EXPENSE, userId: user.id },
-      {
-        name: 'Transferência',
-        type: TransactionType.EXPENSE,
-        userId: user.id,
-      },
-      {
-        name: 'Depósito',
-        type: TransactionType.INCOME,
-        userId: user.id,
-      },
     ],
   })
 
@@ -266,83 +256,6 @@ async function main() {
       })
     }
 
-    // ═══════════ TRANSFERÊNCIAS ENTRE CONTAS ═══════════
-
-    // Itaú → Nubank (pessoa transfere parte do salário para conta do dia a dia)
-    const transNubank = randomBetween(2000, 2800)
-    tx.push(
-      {
-        amount: transNubank,
-        description: 'Transferência para Nubank',
-        date: dateInMonth(y, m, 6, 9, 12),
-        type: TransactionType.EXPENSE,
-        userId: user.id,
-        accountId: itau.id,
-        categoryId: cat('Transferência').id,
-      },
-      {
-        amount: transNubank,
-        description: 'Transferência recebida Itaú',
-        date: dateInMonth(y, m, 6, 9, 12),
-        type: TransactionType.INCOME,
-        userId: user.id,
-        accountId: nubank.id,
-        categoryId: cat('Depósito').id,
-      },
-    )
-
-    // Saque para carteira — 2 a 3 vezes por mês
-    const saqueCount = randomInt(2, 3)
-    for (let j = 0; j < saqueCount; j++) {
-      const saqueVal = randomBetween(150, 400)
-      tx.push(
-        {
-          amount: saqueVal,
-          description: 'Saque dinheiro',
-          date: dateInMonth(y, m, randomDay(j * 12 + 3, j * 12 + 16), 10, 18),
-          type: TransactionType.EXPENSE,
-          userId: user.id,
-          accountId: nubank.id,
-          categoryId: cat('Transferência').id,
-        },
-        {
-          amount: saqueVal,
-          description: 'Saque dinheiro',
-          date: dateInMonth(y, m, randomDay(j * 12 + 3, j * 12 + 16), 10, 18),
-          type: TransactionType.INCOME,
-          userId: user.id,
-          accountId: carteira.id,
-          categoryId: cat('Depósito').id,
-        },
-      )
-    }
-
-    // Reserva mensal — guarda um pouco na poupança/CDB
-    if (p !== 'bad') {
-      const reservaVal =
-        p === 'good' ? randomBetween(500, 1000) : randomBetween(200, 500)
-      tx.push(
-        {
-          amount: reservaVal,
-          description: 'Aplicação reserva',
-          date: dateInMonth(y, m, 7, 10, 14),
-          type: TransactionType.EXPENSE,
-          userId: user.id,
-          accountId: itau.id,
-          categoryId: cat('Transferência').id,
-        },
-        {
-          amount: reservaVal,
-          description: 'Aplicação reserva',
-          date: dateInMonth(y, m, 7, 10, 14),
-          type: TransactionType.INCOME,
-          userId: user.id,
-          accountId: reserva.id,
-          categoryId: cat('Depósito').id,
-        },
-      )
-    }
-
     // ═══════════ MORADIA ═══════════
 
     tx.push(
@@ -413,7 +326,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(5, 20), 10, 16),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: carteira.id,
+        accountId: nubankCredito.id,
         categoryId: cat('Contas de Casa').id,
       })
     }
@@ -425,7 +338,7 @@ async function main() {
       date: dateInMonth(y, m, 15, 6, 8),
       type: TransactionType.EXPENSE,
       userId: user.id,
-      accountId: nubank.id,
+      accountId: nubankCredito.id,
       categoryId: cat('Contas de Casa').id,
     })
 
@@ -436,7 +349,7 @@ async function main() {
       date: dateInMonth(y, m, 22, 6, 8),
       type: TransactionType.EXPENSE,
       userId: user.id,
-      accountId: nubank.id,
+      accountId: nubankCredito.id,
       categoryId: cat('Contas de Casa').id,
     })
 
@@ -518,7 +431,7 @@ async function main() {
       date: dateInMonth(y, m, 5, 6, 8),
       type: TransactionType.EXPENSE,
       userId: user.id,
-      accountId: nubank.id,
+      accountId: nubankCredito.id,
       categoryId: cat('Saúde').id,
     })
 
@@ -536,7 +449,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(), 9, 20),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: randomItem([nubankCredito.id, nubank.id]),
+        accountId: nubankCredito.id,
         categoryId: cat('Saúde').id,
       })
     }
@@ -614,7 +527,7 @@ async function main() {
         ),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: randomItem([nubank.id, nubankCredito.id]),
+        accountId: nubankCredito.id,
         categoryId: cat('Mercado').id,
       })
     }
@@ -634,7 +547,7 @@ async function main() {
           date: dateInMonth(y, m, randomDay(), 7, 11),
           type: TransactionType.EXPENSE,
           userId: user.id,
-          accountId: carteira.id,
+          accountId: nubankCredito.id,
           categoryId: cat('Mercado').id,
         })
       }
@@ -653,7 +566,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(), 6, 9),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: randomItem([carteira.id, nubank.id]),
+        accountId: nubankCredito.id,
         categoryId: cat('Mercado').id,
       })
     }
@@ -701,7 +614,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(), 11, 14),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: randomItem([nubank.id, nubankCredito.id]),
+        accountId: nubankCredito.id,
         categoryId: cat('Restaurante').id,
       })
     }
@@ -748,7 +661,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(), 14, 18),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: randomItem([carteira.id, nubank.id]),
+        accountId: nubankCredito.id,
         categoryId: cat('Restaurante').id,
       })
     }
@@ -775,7 +688,7 @@ async function main() {
         ),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: nubank.id,
+        accountId: nubankCredito.id,
         categoryId: cat('Transporte').id,
       })
     }
@@ -807,7 +720,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(), 10, 20),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: randomItem([carteira.id, nubank.id]),
+        accountId: nubankCredito.id,
         categoryId: cat('Transporte').id,
       })
     }
@@ -820,7 +733,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(10, 25), 9, 14),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: nubank.id,
+        accountId: nubankCredito.id,
         categoryId: cat('Transporte').id,
       })
     }
@@ -859,7 +772,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(), 16, 23),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: randomItem([nubankCredito.id, nubank.id]),
+        accountId: nubankCredito.id,
         categoryId: cat('Lazer').id,
       })
     }
@@ -890,7 +803,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(10, 25), 9, 14),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: nubank.id,
+        accountId: nubankCredito.id,
         categoryId: cat('Pet').id,
       })
     }
@@ -1020,7 +933,7 @@ async function main() {
         date: dateInMonth(y, m, randomDay(10, 25), 7, 20),
         type: TransactionType.EXPENSE,
         userId: user.id,
-        accountId: randomItem([nubank.id, nubankCredito.id]),
+        accountId: nubankCredito.id,
         categoryId: cat('Viagem').id,
       })
     }
