@@ -1,29 +1,28 @@
 'use client'
 
-import {
-  getCategory,
-  GetCategory200,
-  getTransactionsSummary,
-  GetTransactionsSummary200,
-} from '@/http/api'
-import { useQuery } from '@tanstack/react-query'
+import { getCategory, getTransactionsSummary } from '@/http/api'
+import { useQueries } from '@tanstack/react-query'
 import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { Category } from './category'
 import { Transaction } from './transaction'
 
 export function MyTransactions() {
-  const { data: categories, isLoading: isLoadingCategories } =
-    useQuery<GetCategory200>({
-      queryKey: ['my-transactions-categories'],
-      queryFn: () => getCategory({ orderBy: 'total' }),
-    })
-
-  const { data: transactions, isLoading: isLoadingTransactions } =
-    useQuery<GetTransactionsSummary200>({
-      queryKey: ['my-transactions-transactions'],
-      queryFn: () => getTransactionsSummary(),
-    })
+  const [
+    { data: categories, isLoading: isLoadingCategories },
+    { data: transactions, isLoading: isLoadingTransactions },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: ['my-transactions-categories'],
+        queryFn: () => getCategory({ orderBy: 'total' }),
+      },
+      {
+        queryKey: ['my-transactions-transactions'],
+        queryFn: () => getTransactionsSummary(),
+      },
+    ],
+  })
 
   return (
     <div className="flex-2 space-y-8">
