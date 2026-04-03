@@ -7,7 +7,7 @@ import {
 } from '@/http/api'
 import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency } from '@/utils/format'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Ellipsis, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -34,7 +34,7 @@ export function CategoryList({ label, type }: CategoryListProps) {
         page,
         dateRange: 'all',
       }),
-    placeholderData: (prev) => prev,
+    placeholderData: keepPreviousData,
   })
 
   useEffect(() => {
@@ -43,7 +43,58 @@ export function CategoryList({ label, type }: CategoryListProps) {
     }
   }, [isError, error])
 
-  if (!data) return null
+  if (!data)
+    return (
+      <div className="flex flex-col gap-6">
+        <div className="grid gap-4 lg:grid-cols-3">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-accent flex animate-pulse flex-col gap-4 rounded p-4 text-transparent"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <h4 className="text-xs font-semibold">_</h4>
+                <Ellipsis size={15} className="cursor-pointer" />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <p className={`text-xs font-semibold`}>_</p>
+                <Link href={`/transaction?categoryId=`}>
+                  <ChevronRight size={15} />
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="bg-accent flex animate-pulse flex-col items-center justify-between gap-4 rounded text-transparent lg:flex-row">
+          <p className="text-xs md:text-sm">Mostrando de um total de {label}</p>
+          {isPlaceholderData ? (
+            <Button variant="outline" className="invisible text-xs md:text-sm">
+              <Loader2 className="animate-spin" />
+            </Button>
+          ) : (
+            <div className="invisible flex items-center gap-2">
+              <Button
+                variant="outline"
+                className="text-xs md:text-sm"
+                onClick={() => setPage((p) => p - 1)}
+              >
+                <ChevronLeft />
+              </Button>
+
+              <Button
+                variant="outline"
+                className="text-xs md:text-sm"
+                onClick={() => setPage((p) => p + 1)}
+              >
+                <ChevronRight />
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    )
 
   const currentMeta = data.meta
   const start = (currentMeta.page - 1) * currentMeta.limit + 1
