@@ -25,7 +25,7 @@ export function MyAccounts() {
 
   const { data: totalBalance, isLoading: isLoadingTotalBalance } =
     useQuery<GetFinancialSummary200>({
-      queryKey: ['my-accounts-totalBalance'],
+      queryKey: ['summary-information'],
       queryFn: () => getFinancialSummary(),
     })
 
