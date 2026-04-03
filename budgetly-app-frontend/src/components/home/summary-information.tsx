@@ -1,33 +1,35 @@
+'use client'
+
+import { getFinancialSummary, GetFinancialSummary200 } from '@/http/api'
+import { useQuery } from '@tanstack/react-query'
 import { Banknote, Landmark, ShoppingCart } from 'lucide-react'
 import { BalanceInformation } from './balance-information'
 
-type SummaryInformationProps = {
-  monthExpense: number
-  monthIncome: number
-  totalBalance: number
-}
+export function SummaryInformation() {
+  const { data, isLoading } = useQuery<GetFinancialSummary200>({
+    queryKey: ['summary-information'],
+    queryFn: () => getFinancialSummary(),
+  })
 
-export function SummaryInformation({
-  monthExpense,
-  monthIncome,
-  totalBalance,
-}: SummaryInformationProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-3 lg:gap-8">
+    <div className="bg-card grid gap-4 rounded p-4 md:grid-cols-3 lg:gap-8">
       <BalanceInformation
-        balance={totalBalance}
+        balance={data?.totalBalance}
         icon={<Landmark size={20} />}
         text="Saldo Total"
+        isLoading={isLoading}
       />
       <BalanceInformation
-        balance={monthIncome}
+        balance={data?.monthIncome}
         icon={<Banknote size={20} />}
         text="Receitas do mês"
+        isLoading={isLoading}
       />
       <BalanceInformation
-        balance={monthExpense}
+        balance={data?.monthExpense}
         icon={<ShoppingCart size={20} />}
         text="Despesas do mês"
+        isLoading={isLoading}
       />
     </div>
   )
