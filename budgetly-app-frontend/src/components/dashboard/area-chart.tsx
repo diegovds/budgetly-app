@@ -46,9 +46,10 @@ export function ChartArea() {
       >
         <ChartContainer
           config={chartConfig}
-          className="aspect-16/6 w-full md:aspect-16/3"
+          className={`aspect-16/6 w-full md:aspect-16/3 ${isLoading ? 'invisible' : ''}`}
         >
           <AreaChart
+            key={isLoading ? 'loading' : 'loaded'}
             accessibilityLayer
             data={data}
             margin={{
