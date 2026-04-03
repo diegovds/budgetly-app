@@ -35,7 +35,7 @@ export function AccountGrid() {
   const end = Math.min(currentMeta.page * currentMeta.limit, currentMeta.total)
 
   return (
-    <div className="space-y-6">
+    <div className="bg-card space-y-6 rounded p-4">
       <div className="grid gap-8 lg:grid-cols-2">
         {data.accounts.map((account) => (
           <div key={account.id} className="bg-accent flex flex-col rounded p-4">
