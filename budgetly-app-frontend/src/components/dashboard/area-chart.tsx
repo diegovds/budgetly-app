@@ -15,12 +15,12 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '@/components/ui/chart'
-import { GetDashboardBalancelastmonths200Item } from '@/http/api'
+import {
+  getDashboardBalancelastmonths,
+  GetDashboardBalancelastmonths200Item,
+} from '@/http/api'
 import { formatCurrency } from '@/utils/format'
-
-type ChartAreaProps = {
-  chartData: GetDashboardBalancelastmonths200Item[]
-}
+import { useQuery } from '@tanstack/react-query'
 
 const chartConfig = {
   accumulatedBalance: {
@@ -29,21 +29,28 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function ChartArea({ chartData }: ChartAreaProps) {
+export function ChartArea() {
+  const { data, isLoading } = useQuery<GetDashboardBalancelastmonths200Item[]>({
+    queryKey: ['chart-area'],
+    queryFn: () => getDashboardBalancelastmonths(),
+  })
+
   return (
     <Card className="rounded p-4">
       <CardHeader className="px-0">
         <CardTitle>Evolução do Saldo</CardTitle>
         <CardDescription>Saldo dos últimos 12 meses</CardDescription>
       </CardHeader>
-      <CardContent className="px-0">
+      <CardContent
+        className={`px-0 ${isLoading ? 'bg-accent animate-pulse rounded' : ''}`}
+      >
         <ChartContainer
           config={chartConfig}
           className="aspect-16/6 w-full md:aspect-16/3"
         >
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
               left: 12,
               right: 12,

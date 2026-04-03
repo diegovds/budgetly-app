@@ -6,7 +6,6 @@ import { ChartPieDonutText } from '@/components/dashboard/chart-pie-donut-text'
 import { HeaderPage } from '@/components/header-page'
 import { Card, CardTitle } from '@/components/ui/card'
 import {
-  getDashboardBalancelastmonths,
   getDashboardGetlistcategories,
   getDashboardGettopexpensecategories,
   getDashboardLastmonthsincomeexpense,
@@ -52,21 +51,16 @@ export default async function Dashboard() {
       }),
   })
 
-  const balanceLastMonthsData = getDashboardBalancelastmonths()
   const dashboardLastMonthsIncomeExpenseData =
     getDashboardLastmonthsincomeexpense()
   const getDashboardGetTopExpenseCategoriesData =
     getDashboardGettopexpensecategories()
 
-  const [
-    balanceLastMonths,
-    dashboardLastMonthsIncomeExpense,
-    topExpenseCategories,
-  ] = await Promise.all([
-    balanceLastMonthsData,
-    dashboardLastMonthsIncomeExpenseData,
-    getDashboardGetTopExpenseCategoriesData,
-  ])
+  const [dashboardLastMonthsIncomeExpense, topExpenseCategories] =
+    await Promise.all([
+      dashboardLastMonthsIncomeExpenseData,
+      getDashboardGetTopExpenseCategoriesData,
+    ])
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
@@ -79,7 +73,7 @@ export default async function Dashboard() {
           icon={false}
         />
 
-        <ChartArea chartData={balanceLastMonths} />
+        <ChartArea />
 
         <div className="flex flex-col items-start gap-8 lg:flex-row">
           <ChartBar chartData={dashboardLastMonthsIncomeExpense} />
