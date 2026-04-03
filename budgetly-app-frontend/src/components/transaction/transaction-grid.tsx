@@ -60,8 +60,89 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
     }
   }, [isError, error])
 
+  if (!data)
+    return (
+      <div className="space-y-8">
+        <div className="bg-card divide-accent divide-y overflow-x-auto rounded border">
+          {/* Header */}
+          <div className="grid min-w-3xl grid-cols-[0.1fr_120px_2fr_1.5fr_1.5fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
+            <div className="invisible flex justify-between gap-4">
+              <Ellipsis size={15} />
+            </div>
+            <p>Data</p>
+            <p>Descrição</p>
+            <p>Categoria</p>
+            <p>Conta</p>
+            <p>Valor</p>
+          </div>
 
-  if (!data) return null
+          {/* Body */}
+          <ul className="divide-accent min-w-3xl divide-y text-sm md:text-base">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <li
+                key={i}
+                className="grid grid-cols-[0.1fr_120px_2fr_1.5fr_1.5fr_1fr] items-center gap-4 p-4"
+              >
+                <p className="bg-accent w-full animate-pulse rounded text-transparent">
+                  _
+                </p>
+                <p className="bg-accent w-full animate-pulse rounded text-transparent">
+                  _
+                </p>
+                <p className="bg-accent w-full animate-pulse rounded text-transparent">
+                  _
+                </p>
+                <p className="bg-accent w-full animate-pulse rounded text-transparent">
+                  _
+                </p>
+                <p className="bg-accent w-full animate-pulse rounded text-transparent">
+                  _
+                </p>
+                <p
+                  className={`bg-accent w-full animate-pulse rounded text-transparent`}
+                >
+                  _
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="bg-card rounded p-4">
+          <div className="bg-accent flex animate-pulse flex-col items-center justify-between gap-4 rounded lg:flex-row">
+            <p className="text-xs text-transparent md:text-sm">
+              Mostrando Transações
+            </p>
+            {isPlaceholderData ? (
+              <Button
+                variant="outline"
+                className="invisible text-xs md:text-sm"
+              >
+                <Loader2 className="animate-spin" />
+              </Button>
+            ) : (
+              <div className="invisible flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  className="text-xs md:text-sm"
+                  onClick={() => setPage((p) => p - 1)}
+                >
+                  <ChevronLeft />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="text-xs md:text-sm"
+                  onClick={() => setPage((p) => p + 1)}
+                >
+                  <ChevronRight />
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )
 
   const currentMeta = data.meta
   const start = (currentMeta.page - 1) * currentMeta.limit + 1
@@ -120,7 +201,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
         </ul>
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
+      <div className="bg-card flex flex-col items-center justify-between gap-4 rounded p-4 lg:flex-row">
         <p className="text-xs md:text-sm">
           Mostrando {start} a {end} de um total de {currentMeta.total}{' '}
           Transações
