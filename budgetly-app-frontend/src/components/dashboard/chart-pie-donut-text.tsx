@@ -16,8 +16,12 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '@/components/ui/chart'
-import { GetDashboardGettopexpensecategories200 } from '@/http/api'
+import {
+  getDashboardGettopexpensecategories,
+  GetDashboardGettopexpensecategories200,
+} from '@/http/api'
 import { formatCurrency } from '@/utils/format'
+import { useQuery } from '@tanstack/react-query'
 
 const chartConfig = {
   visitors: {
@@ -45,38 +49,45 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-type ChartPieDonutTextProps = {
-  chartData: GetDashboardGettopexpensecategories200
-}
+export function ChartPieDonutText() {
+  const { data: chartData, isLoading } =
+    useQuery<GetDashboardGettopexpensecategories200>({
+      queryKey: ['chart-pie-donut-text'],
+      queryFn: () => getDashboardGettopexpensecategories(),
+    })
 
-export function ChartPieDonutText({ chartData }: ChartPieDonutTextProps) {
-  const data = [
-    ...chartData.categories.map((c, i) => ({
-      ...c,
-      category: `${c.category}:`,
-      fill: `var(--chart-${i + 1})`,
-    })),
-    {
-      category: 'Outras:',
-      percentage: chartData.othersPercentage,
-      fill: `var(--chart-5)`,
-    },
-  ]
+  const data = chartData
+    ? [
+        ...chartData.categories.map((c, i) => ({
+          ...c,
+          category: `${c.category}:`,
+          fill: `var(--chart-${i + 1})`,
+        })),
+        {
+          category: 'Outras:',
+          percentage: chartData.othersPercentage,
+          fill: `var(--chart-5)`,
+        },
+      ]
+    : []
 
   return (
     <Card className="flex w-full flex-1 flex-col rounded p-4">
       <CardHeader className="items-center p-0">
         <CardTitle>Gastos por categoria</CardTitle>
-        <CardDescription>
-          Total de despesas: {formatCurrency(chartData.totalExpenses)}
+        <CardDescription
+          className={`${isLoading ? 'bg-accent w-fit animate-pulse rounded text-transparent' : ''}`}
+        >
+          Total de despesas:{' '}
+          {chartData ? formatCurrency(chartData.totalExpenses) : '-'}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 p-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-62.5"
+          className={`mx-auto aspect-square max-h-62.5 ${isLoading ? 'bg-accent animate-pulse rounded' : ''}`}
         >
-          <PieChart>
+          <PieChart key={isLoading ? 'loading' : 'loaded'}>
             <ChartTooltip
               cursor={false}
               content={

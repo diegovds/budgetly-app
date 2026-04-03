@@ -4,10 +4,7 @@ import { ChartBar } from '@/components/dashboard/chart-bar'
 import { ChartPieDonutText } from '@/components/dashboard/chart-pie-donut-text'
 import { HeaderPage } from '@/components/header-page'
 import { Card, CardTitle } from '@/components/ui/card'
-import {
-  getDashboardGetlistcategories,
-  getDashboardGettopexpensecategories,
-} from '@/http/api'
+import { getDashboardGetlistcategories } from '@/http/api'
 import {
   dehydrate,
   HydrationBoundary,
@@ -49,13 +46,6 @@ export default async function Dashboard() {
       }),
   })
 
-  const getDashboardGetTopExpenseCategoriesData =
-    getDashboardGettopexpensecategories()
-
-  const [topExpenseCategories] = await Promise.all([
-    getDashboardGetTopExpenseCategoriesData,
-  ])
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="w-full space-y-8">
@@ -71,7 +61,7 @@ export default async function Dashboard() {
 
         <div className="flex flex-col items-start gap-8 lg:flex-row">
           <ChartBar />
-          <ChartPieDonutText chartData={topExpenseCategories} />
+          <ChartPieDonutText />
         </div>
 
         <div className="grid w-full items-start gap-8 lg:grid-cols-2">
