@@ -15,12 +15,12 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '@/components/ui/chart'
-import { GetDashboardLastmonthsincomeexpense200Item } from '@/http/api'
+import {
+  getDashboardLastmonthsincomeexpense,
+  GetDashboardLastmonthsincomeexpense200Item,
+} from '@/http/api'
 import { formatCurrency } from '@/utils/format'
-
-type ChartBarProps = {
-  chartData: GetDashboardLastmonthsincomeexpense200Item[]
-}
+import { useQuery } from '@tanstack/react-query'
 
 const chartConfig = {
   income: {
@@ -33,23 +33,37 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function ChartBar({ chartData }: ChartBarProps) {
+export function ChartBar() {
+  const { data, isLoading } = useQuery<
+    GetDashboardLastmonthsincomeexpense200Item[]
+  >({
+    queryKey: ['chart-bar'],
+    queryFn: () => getDashboardLastmonthsincomeexpense(),
+  })
+
   return (
     <Card className="w-full flex-2 rounded p-4">
       <CardHeader className="px-0">
         <CardTitle>Receitas vs Despesas</CardTitle>
-        <CardDescription>
-          {chartData[0].monthLabel} {chartData[0].year} -{' '}
-          {chartData[chartData.length - 1].monthLabel}{' '}
-          {chartData[chartData.length - 1].year}
-        </CardDescription>
+        {data && (
+          <CardDescription>
+            {data[0].monthLabel} {data[0].year} -{' '}
+            {data[data.length - 1].monthLabel} {data[data.length - 1].year}
+          </CardDescription>
+        )}
       </CardHeader>
-      <CardContent className="px-0">
+      <CardContent
+        className={`px-0 ${isLoading ? 'bg-accent animate-pulse rounded' : ''}`}
+      >
         <ChartContainer
           config={chartConfig}
-          className="aspect-16/8 w-full md:aspect-16/5"
+          className={`aspect-16/8 w-full md:aspect-16/5 ${isLoading ? 'invisible' : ''}`}
         >
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart
+            accessibilityLayer
+            data={data}
+            key={isLoading ? 'loading' : 'loaded'}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="monthLabel"
