@@ -1,4 +1,5 @@
 import { getAuthState } from '@/actions/get-auth-state'
+import { ChartArea } from '@/components/dashboard/area-chart'
 import { CategoryGrid } from '@/components/dashboard/category-grid'
 import { ChartBar } from '@/components/dashboard/chart-bar'
 import { ChartPieDonutText } from '@/components/dashboard/chart-pie-donut-text'
@@ -57,7 +58,7 @@ export default async function Dashboard() {
           icon={false}
         />
 
-        {/* <ChartArea /> */}
+        <ChartArea />
 
         <div className="flex flex-col items-start gap-8 lg:flex-row">
           <ChartBar />
