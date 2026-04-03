@@ -7,7 +7,6 @@ import {
   getAccount,
   getAccountTypes,
   getCategory,
-  getFinancialSummary,
   getTransactionsSummary,
 } from '@/http/api'
 import { StoreAccounts } from '@/providers/store-account'
@@ -27,31 +26,21 @@ export default async function Home() {
     redirect('/login')
   }
 
-  const financialSummaryData = getFinancialSummary()
-  const accountsData = getAccount({ limit: 4 })
   const categoriesData = getCategory({ orderBy: 'total' })
   const transactionsData = getTransactionsSummary()
+
   const accountsTrData = getAccount({ limit: 50 })
   const categoriesTrData = getCategory({ limit: 50 })
   const accountTypesData = getAccountTypes()
 
-  const [
-    financialSummary,
-    accounts,
-    categories,
-    transactions,
-    accountsTr,
-    categoriesTr,
-    accountTypes,
-  ] = await Promise.all([
-    financialSummaryData,
-    accountsData,
-    categoriesData,
-    transactionsData,
-    accountsTrData,
-    categoriesTrData,
-    accountTypesData,
-  ])
+  const [categories, transactions, accountsTr, categoriesTr, accountTypes] =
+    await Promise.all([
+      categoriesData,
+      transactionsData,
+      accountsTrData,
+      categoriesTrData,
+      accountTypesData,
+    ])
 
   return (
     <div className="w-full space-y-8">
@@ -65,16 +54,9 @@ export default async function Home() {
         href="/transaction/new"
         title="Visão Geral Financeira"
       />
-      <SummaryInformation
-        monthExpense={financialSummary.monthExpense}
-        monthIncome={financialSummary.monthIncome}
-        totalBalance={financialSummary.totalBalance}
-      />
+      <SummaryInformation />
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-        <MyAccounts
-          accounts={accounts.accounts}
-          totalBalance={financialSummary.totalBalance}
-        />
+        <MyAccounts />
         {categories.categories.length === 0 ? (
           <div className="flex-2 p-4" />
         ) : (
