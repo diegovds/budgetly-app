@@ -3,12 +3,7 @@ import { HeaderPage } from '@/components/header-page'
 import { MyAccounts } from '@/components/home/my-accounts'
 import { MyTransactions } from '@/components/home/my-transactions'
 import { SummaryInformation } from '@/components/home/summary-information'
-import {
-  getAccount,
-  getAccountTypes,
-  getCategory,
-  getTransactionsSummary,
-} from '@/http/api'
+import { getAccount, getAccountTypes, getCategory } from '@/http/api'
 import { StoreAccounts } from '@/providers/store-account'
 import { StoreAccountTypes } from '@/providers/store-account-type'
 import { StoreCategories } from '@/providers/store-category'
@@ -26,21 +21,15 @@ export default async function Home() {
     redirect('/login')
   }
 
-  const categoriesData = getCategory({ orderBy: 'total' })
-  const transactionsData = getTransactionsSummary()
-
   const accountsTrData = getAccount({ limit: 50 })
   const categoriesTrData = getCategory({ limit: 50 })
   const accountTypesData = getAccountTypes()
 
-  const [categories, transactions, accountsTr, categoriesTr, accountTypes] =
-    await Promise.all([
-      categoriesData,
-      transactionsData,
-      accountsTrData,
-      categoriesTrData,
-      accountTypesData,
-    ])
+  const [accountsTr, categoriesTr, accountTypes] = await Promise.all([
+    accountsTrData,
+    categoriesTrData,
+    accountTypesData,
+  ])
 
   return (
     <div className="w-full space-y-8">
@@ -57,14 +46,7 @@ export default async function Home() {
       <SummaryInformation />
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
         <MyAccounts />
-        {categories.categories.length === 0 ? (
-          <div className="flex-2 p-4" />
-        ) : (
-          <MyTransactions
-            categories={categories.categories}
-            transactions={transactions.transactions}
-          />
-        )}
+        <MyTransactions />
       </div>
     </div>
   )
