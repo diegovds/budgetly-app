@@ -6,7 +6,7 @@ import {
   GetDashboardGetlistcategories200Type,
 } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -28,6 +28,7 @@ export function CategoryGrid({ type }: CategoryGridProps) {
           limit: 5,
           page,
         }),
+      placeholderData: keepPreviousData,
     })
 
   useEffect(() => {
