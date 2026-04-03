@@ -26,7 +26,7 @@ export function BalanceInformation({
       <p
         className={`text-2xl font-semibold md:text-3xl ${isLoading ? 'invisible' : ''}`}
       >
-        {!isLoading && balance ? formatCurrency(balance) : '_'}
+        {!isLoading && balance !== undefined ? formatCurrency(balance) : '_'}
       </p>
     </div>
   )
