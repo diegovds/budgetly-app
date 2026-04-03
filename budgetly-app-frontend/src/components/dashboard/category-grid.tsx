@@ -28,7 +28,6 @@ export function CategoryGrid({ type }: CategoryGridProps) {
           limit: 5,
           page,
         }),
-      placeholderData: (prev) => prev,
     })
 
   useEffect(() => {
@@ -39,7 +38,58 @@ export function CategoryGrid({ type }: CategoryGridProps) {
     }
   }, [isError, error, type])
 
-  if (!data) return null
+  if (!data)
+    return (
+      <>
+        <Card className="divide-accent gap-0 divide-y overflow-x-auto rounded p-0">
+          <div className="grid min-w-sm grid-cols-[1.5fr_1fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
+            <p>Categoria</p>
+            <p>Valor</p>
+            <p>Percentual</p>
+          </div>
+          <ul className="divide-accent divide-y text-sm md:text-base">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <li
+                key={i}
+                className="grid min-w-sm grid-cols-[1.5fr_1fr_1fr] items-center gap-4 p-4"
+              >
+                <h3 className="bg-accent animate-pulse truncate rounded font-semibold text-transparent">
+                  _
+                </h3>
+                <p
+                  className={`bg-accent animate-pulse rounded font-semibold text-transparent`}
+                >
+                  _
+                </p>
+                <p className="bg-accent animate-pulse rounded font-semibold text-transparent">
+                  %
+                </p>
+              </li>
+            ))}
+          </ul>
+        </Card>
+        <div className="bg-accent flex flex-col items-center justify-between gap-4 rounded text-transparent lg:flex-row">
+          <p className="text-xs md:text-sm">Mostrando de um total de</p>
+          <div className="invisible flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="text-xs md:text-sm"
+              onClick={() => setPage((p) => p - 1)}
+            >
+              <ChevronLeft />
+            </Button>
+
+            <Button
+              variant="outline"
+              className="text-xs md:text-sm"
+              onClick={() => setPage((p) => p + 1)}
+            >
+              <ChevronRight />
+            </Button>
+          </div>
+        </div>
+      </>
+    )
 
   const currentMeta = data.meta
   const start = (currentMeta.page - 1) * currentMeta.limit + 1

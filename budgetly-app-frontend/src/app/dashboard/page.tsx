@@ -5,12 +5,6 @@ import { ChartBar } from '@/components/dashboard/chart-bar'
 import { ChartPieDonutText } from '@/components/dashboard/chart-pie-donut-text'
 import { HeaderPage } from '@/components/header-page'
 import { Card, CardTitle } from '@/components/ui/card'
-import { getDashboardGetlistcategories } from '@/http/api'
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -25,58 +19,34 @@ export default async function Dashboard() {
     redirect('/login')
   }
 
-  const queryClient = new QueryClient()
-
-  await queryClient.prefetchQuery({
-    queryKey: ['dashboard-categories', 'EXPENSE', 1],
-    queryFn: () =>
-      getDashboardGetlistcategories({
-        type: 'EXPENSE',
-        limit: 5,
-        page: 1,
-      }),
-  })
-
-  await queryClient.prefetchQuery({
-    queryKey: ['dashboard-categories', 'INCOME', 1],
-    queryFn: () =>
-      getDashboardGetlistcategories({
-        type: 'INCOME',
-        limit: 5,
-        page: 1,
-      }),
-  })
-
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="w-full space-y-8">
-        <HeaderPage
-          buttonText="Voltar para  a Home"
-          description="Sua saúde financeira, tendências de renda e hábitos de gasto em resumo. "
-          href="/"
-          title="Relatórios Financeiros"
-          icon={false}
-        />
+    <div className="w-full space-y-8">
+      <HeaderPage
+        buttonText="Voltar para  a Home"
+        description="Sua saúde financeira, tendências de renda e hábitos de gasto em resumo. "
+        href="/"
+        title="Relatórios Financeiros"
+        icon={false}
+      />
 
-        <ChartArea />
+      <ChartArea />
 
-        <div className="flex flex-col items-start gap-8 lg:flex-row">
-          <ChartBar />
-          <ChartPieDonutText />
-        </div>
-
-        <div className="grid w-full items-start gap-8 lg:grid-cols-2">
-          <Card className="overflow-x-auto rounded p-4">
-            <CardTitle className="">Desempenho das Receitas</CardTitle>
-            <CategoryGrid type="INCOME" />
-          </Card>
-
-          <Card className="overflow-x-auto rounded p-4">
-            <CardTitle className="">Desempenho das Despesas</CardTitle>
-            <CategoryGrid type="EXPENSE" />
-          </Card>
-        </div>
+      <div className="flex flex-col items-start gap-8 lg:flex-row">
+        <ChartBar />
+        <ChartPieDonutText />
       </div>
-    </HydrationBoundary>
+
+      <div className="grid w-full items-start gap-8 lg:grid-cols-2">
+        <Card className="overflow-x-auto rounded p-4">
+          <CardTitle className="">Desempenho das Receitas</CardTitle>
+          <CategoryGrid type="INCOME" />
+        </Card>
+
+        <Card className="overflow-x-auto rounded p-4">
+          <CardTitle className="">Desempenho das Despesas</CardTitle>
+          <CategoryGrid type="EXPENSE" />
+        </Card>
+      </div>
+    </div>
   )
 }
