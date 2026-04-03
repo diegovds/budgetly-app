@@ -130,24 +130,39 @@ export function ChartPieDonutText() {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex flex-col gap-4 p-0">
-        {data.map((category, index) => (
-          <div
-            key={index}
-            className="grid w-full grid-cols-[1fr_auto] text-xs font-semibold"
-          >
-            <div className="flex items-center gap-2 self-start">
+      <CardFooter
+        className={`flex flex-col gap-4 p-0 ${isLoading ? 'bg-accent animate-pulse rounded' : ''}`}
+      >
+        {data.length > 1
+          ? data.map((category, index) => (
               <div
-                className={`size-3 rounded-full`}
-                style={{ backgroundColor: category.fill }}
-              />
-              <p>{category.category.slice(0, -1)}</p>
-            </div>
-            <p className="w-11 text-start tabular-nums">
-              {category.percentage.toFixed(2)}%
-            </p>
-          </div>
-        ))}
+                key={index}
+                className="grid w-full grid-cols-[1fr_auto] text-xs font-semibold"
+              >
+                <div className="flex items-center gap-2 self-start">
+                  <div
+                    className={`size-3 rounded-full`}
+                    style={{ backgroundColor: category.fill }}
+                  />
+                  <p>{category.category.slice(0, -1)}</p>
+                </div>
+                <p className="w-11 text-start tabular-nums">
+                  {category.percentage.toFixed(2)}%
+                </p>
+              </div>
+            ))
+          : Array.from({ length: 5 }).map((_, index) => (
+              <div
+                key={index}
+                className="grid w-full grid-cols-[1fr_auto] text-xs font-semibold text-transparent"
+              >
+                <div className="flex items-center gap-2 self-start">
+                  <div className="bg-accent size-3 rounded-full" />
+                  <p>_</p>
+                </div>
+                <p>_</p>
+              </div>
+            ))}
       </CardFooter>
     </Card>
   )
