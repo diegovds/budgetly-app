@@ -1,14 +1,9 @@
 'use client'
 
-import {
-  getAccount,
-  GetAccount200,
-  getFinancialSummary,
-  GetFinancialSummary200,
-} from '@/http/api'
+import { getAccount, getFinancialSummary } from '@/http/api'
 import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency } from '@/utils/format'
-import { useQuery } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import { CirclePlus } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '../ui/button'
@@ -17,17 +12,21 @@ import { Account } from './account'
 export function MyAccounts() {
   const { setIsOpen, setWhoOpened } = useModalStore()
 
-  const { data: accounts, isLoading: isLoadingAccounts } =
-    useQuery<GetAccount200>({
-      queryKey: ['my-accounts-accounts'],
-      queryFn: () => getAccount({ limit: 4 }),
-    })
-
-  const { data: totalBalance, isLoading: isLoadingTotalBalance } =
-    useQuery<GetFinancialSummary200>({
-      queryKey: ['summary-information'],
-      queryFn: () => getFinancialSummary(),
-    })
+  const [
+    { data: accounts, isLoading: isLoadingAccounts },
+    { data: totalBalance, isLoading: isLoadingTotalBalance },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: ['my-accounts-accounts'],
+        queryFn: () => getAccount({ limit: 4 }),
+      },
+      {
+        queryKey: ['summary-information'],
+        queryFn: () => getFinancialSummary(),
+      },
+    ],
+  })
 
   return (
     <div className="bg-card flex-1 space-y-4 rounded p-4">
