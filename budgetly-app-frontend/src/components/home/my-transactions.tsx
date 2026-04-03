@@ -66,26 +66,32 @@ export function MyTransactions() {
           Transações Recentes
         </h2>
         <div className="grid grid-cols-1 gap-4">
-          {!isLoadingTransactions && transactions
-            ? transactions.transactions.map((transaction) => (
-                <Transaction key={transaction.id} transaction={transaction} />
-              ))
-            : Array.from({ length: 3 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="bg-accent flex animate-pulse items-center justify-between rounded p-4 text-transparent"
-                >
-                  <div className="flex-1 space-y-2">
-                    <h3 className="text-base font-medium md:text-xl">_</h3>
-                    <p className="text-xs md:text-sm">_</p>
-                  </div>
-                  <p
-                    className={`flex-1 text-right text-sm font-semibold md:text-base`}
-                  >
-                    _
-                  </p>
+          {isLoadingTransactions ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="bg-accent flex animate-pulse items-center justify-between rounded p-4 text-transparent"
+              >
+                <div className="flex-1 space-y-2">
+                  <h3 className="text-base font-medium md:text-xl">_</h3>
+                  <p className="text-xs md:text-sm">_</p>
                 </div>
-              ))}
+                <p
+                  className={`flex-1 text-right text-sm font-semibold md:text-base`}
+                >
+                  _
+                </p>
+              </div>
+            ))
+          ) : transactions && transactions.transactions.length > 0 ? (
+            transactions.transactions.map((transaction) => (
+              <Transaction key={transaction.id} transaction={transaction} />
+            ))
+          ) : (
+            <p className="text-muted-foreground text-xs md:text-sm">
+              Nenhuma Transação
+            </p>
+          )}
         </div>
       </div>
     </div>
