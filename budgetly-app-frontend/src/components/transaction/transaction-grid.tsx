@@ -4,7 +4,7 @@ import { SearchParams } from '@/app/transaction/page'
 import { getTransactions, GetTransactions200 } from '@/http/api'
 import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency, formatDate } from '@/utils/format'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { ChevronLeft, ChevronRight, Ellipsis, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -51,7 +51,7 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
         categoryId: searchParams.categoryId,
         search: searchParams.search,
       }),
-    placeholderData: (prev) => prev,
+    placeholderData: keepPreviousData,
   })
 
   useEffect(() => {
