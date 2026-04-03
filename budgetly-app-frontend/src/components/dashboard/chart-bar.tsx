@@ -45,12 +45,19 @@ export function ChartBar() {
     <Card className="w-full flex-2 rounded p-4">
       <CardHeader className="px-0">
         <CardTitle>Receitas vs Despesas</CardTitle>
-        {data && (
-          <CardDescription>
-            {data[0].monthLabel} {data[0].year} -{' '}
-            {data[data.length - 1].monthLabel} {data[data.length - 1].year}
-          </CardDescription>
-        )}
+
+        <CardDescription
+          className={`${isLoading ? 'bg-accent w-fit animate-pulse rounded text-transparent' : ''}`}
+        >
+          {data ? (
+            <>
+              {data[0].monthLabel} {data[0].year} -{' '}
+              {data[data.length - 1].monthLabel} {data[data.length - 1].year}
+            </>
+          ) : (
+            'Nov 2025 - Abr 2026'
+          )}
+        </CardDescription>
       </CardHeader>
       <CardContent
         className={`px-0 ${isLoading ? 'bg-accent animate-pulse rounded' : ''}`}
