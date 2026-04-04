@@ -15,6 +15,7 @@ export function useAccountInsertionMutation() {
     onSuccess: (_, __, toastId) => {
       toast.success('Conta criada com sucesso!', { id: toastId })
       queryClient.invalidateQueries({ queryKey: ['accounts'] })
+      queryClient.invalidateQueries({ queryKey: ['my-accounts-accounts'] })
       router.refresh()
     },
     onError: (error, _, toastId) => {
