@@ -65,7 +65,7 @@ export async function listCategoriesSummary({
     dateFilter = { gte: past, lte: now }
   }
 
-  const [categories, totalCategories] = await Promise.all([
+  const [allCategories, totalCategories] = await Promise.all([
     prisma.category.findMany({
       where: { userId, type },
       select: {
@@ -73,9 +73,6 @@ export async function listCategoriesSummary({
         name: true,
         type: true,
       },
-      orderBy: { name: order },
-      skip,
-      take: limit,
     }),
 
     prisma.category.count({
@@ -84,7 +81,7 @@ export async function listCategoriesSummary({
   ])
 
   const categoriesWithTotal = await Promise.all(
-    categories.map(async (category) => {
+    allCategories.map(async (category) => {
       const aggregate = await prisma.transaction.aggregate({
         where: {
           userId,
@@ -111,10 +108,16 @@ export async function listCategoriesSummary({
 
   if (orderBy === 'total') {
     categoriesWithTotal.sort((a, b) => b.total - a.total)
+  } else {
+    categoriesWithTotal.sort((a, b) =>
+      order === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name),
+    )
   }
 
+  const paginated = categoriesWithTotal.slice(skip, skip + limit)
+
   return {
-    categories: categoriesWithTotal,
+    categories: paginated,
     meta: {
       page,
       limit,
