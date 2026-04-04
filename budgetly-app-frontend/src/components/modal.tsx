@@ -65,7 +65,7 @@ export function Modal({ onClose }: ModalProps) {
   if (!show) return null
 
   const overlayClass = `absolute inset-0 bg-black ${exiting ? 'overlay-exit' : 'overlay-animate'}`
-  const panelClass = `bg-accent relative z-10 mx-4 w-full max-w-lg rounded p-4 ${exiting ? 'modal-exit' : 'modal-animate'}`
+  const panelClass = `bg-card relative z-10 mx-4 w-full max-w-lg rounded p-4 ${exiting ? 'modal-exit' : 'modal-animate'}`
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
