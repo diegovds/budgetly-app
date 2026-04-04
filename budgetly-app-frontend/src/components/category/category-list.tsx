@@ -109,7 +109,7 @@ export function CategoryList({ label, type }: CategoryListProps) {
         {data.categories.map((category) => (
           <div
             key={category.id}
-            className="bg-background flex flex-col gap-4 rounded p-4"
+            className="bg-accent flex flex-col gap-4 rounded p-4"
           >
             <div className="flex items-center justify-between gap-2">
               <h4 className="text-xs font-semibold">{category.name}</h4>
