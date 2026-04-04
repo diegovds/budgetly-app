@@ -1,8 +1,6 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { CategoryList } from '@/components/category/category-list'
 import { HeaderPage } from '@/components/header-page'
-import { getCategoryTypes } from '@/http/api'
-import { StoreCategoryTypes } from '@/providers/store-category-type'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -18,12 +16,8 @@ export default async function CategoryPage() {
     redirect('/login')
   }
 
-  const categoryTypes = await getCategoryTypes()
-
   return (
     <div className="w-full space-y-8">
-      <StoreCategoryTypes categoryTypes={categoryTypes} />
-
       <HeaderPage
         buttonText="Adicionar Categoria"
         description="Gerencie suas categorias de receitas e despesas para organizar melhor suas finanças."

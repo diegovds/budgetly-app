@@ -1,9 +1,7 @@
 'use client'
 
-import {
-  GetAccount200AccountsItem,
-  GetCategory200CategoriesItem,
-} from '@/http/api'
+import { useAccountsStore } from '@/store/account'
+import { useCategoriesStore } from '@/store/categories'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
@@ -34,8 +32,6 @@ import {
 } from '../ui/select'
 
 type TransactionFiltersProps = {
-  accounts: GetAccount200AccountsItem[]
-  categories: GetCategory200CategoriesItem[]
   params: SearchParams
 }
 
@@ -51,11 +47,9 @@ const createTransactionSchema = z.object({
 
 type CreateNewTransactionFormData = z.infer<typeof createTransactionSchema>
 
-export function TransactionFilters({
-  accounts,
-  categories,
-  params,
-}: TransactionFiltersProps) {
+export function TransactionFilters({ params }: TransactionFiltersProps) {
+  const { accounts } = useAccountsStore()
+  const { categories } = useCategoriesStore()
   const router = useRouter()
 
   const form = useForm<CreateNewTransactionFormData>({

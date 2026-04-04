@@ -3,10 +3,6 @@ import { HeaderPage } from '@/components/header-page'
 import { MyAccounts } from '@/components/home/my-accounts'
 import { MyTransactions } from '@/components/home/my-transactions'
 import { SummaryInformation } from '@/components/home/summary-information'
-import { getAccount, getAccountTypes, getCategory } from '@/http/api'
-import { StoreAccounts } from '@/providers/store-account'
-import { StoreAccountTypes } from '@/providers/store-account-type'
-import { StoreCategories } from '@/providers/store-category'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -21,22 +17,8 @@ export default async function Home() {
     redirect('/login')
   }
 
-  const accountsTrData = getAccount({ limit: 50 })
-  const categoriesTrData = getCategory({ limit: 50 })
-  const accountTypesData = getAccountTypes()
-
-  const [accountsTr, categoriesTr, accountTypes] = await Promise.all([
-    accountsTrData,
-    categoriesTrData,
-    accountTypesData,
-  ])
-
   return (
     <div className="w-full space-y-8">
-      <StoreAccounts accounts={accountsTr.accounts} />
-      <StoreCategories categories={categoriesTr.categories} />
-      <StoreAccountTypes accountTypes={accountTypes} />
-
       <HeaderPage
         buttonText="Adicionar Transação"
         description="Bem-vindo de volta, aqui está o seu resumo financeiro."
