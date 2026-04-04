@@ -1,7 +1,11 @@
 'use client'
 
 import { clearAuthCookie } from '@/actions/clear-auth-cookie'
+import { useAccountsStore } from '@/store/account'
+import { useAccountTypesStore } from '@/store/account-type'
 import { useAuthStore } from '@/store/auth'
+import { useCategoriesStore } from '@/store/categories'
+import { useCategoryTypesStore } from '@/store/category-type'
 import { useQueryClient } from '@tanstack/react-query'
 import { LogOut, Menu, X } from 'lucide-react'
 import Link from 'next/link'
@@ -24,6 +28,10 @@ export function Navbar({ token }: NavbarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const { clearToken } = useAuthStore()
+  const { clearAccounts } = useAccountsStore()
+  const { clearAccountTypes } = useAccountTypesStore()
+  const { clearCategories } = useCategoriesStore()
+  const { clearCategoryTypes } = useCategoryTypesStore()
 
   const menu: MenuItem[] = [
     { label: 'Painel', href: '/' },
@@ -37,6 +45,10 @@ export function Navbar({ token }: NavbarProps) {
   async function handleLogout() {
     await clearAuthCookie()
     clearToken()
+    clearAccounts()
+    clearAccountTypes()
+    clearCategories()
+    clearCategoryTypes()
     queryClient.clear()
     router.push('/login')
   }
