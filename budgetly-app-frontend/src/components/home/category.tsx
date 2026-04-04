@@ -9,7 +9,7 @@ type CategoryProps = {
 
 export function Category({ category }: CategoryProps) {
   return (
-    <div className="bg-background flex flex-col justify-between space-y-4 rounded p-4">
+    <div className="bg-accent flex flex-col justify-between space-y-4 rounded p-4">
       <div className="flex items-center justify-between">
         <h3 className="text-base font-medium md:text-xl">{category.name}</h3>
         <Link href={`/transaction?categoryId=${category.id}`}>
