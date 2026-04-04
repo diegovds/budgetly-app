@@ -216,9 +216,7 @@ export async function listTransactions(filters: ListTransactionsFilters) {
       where,
       take,
       skip,
-      orderBy: {
-        [orderBy]: order,
-      },
+      orderBy: [{ [orderBy]: order }, { createdAt: 'desc' }, { id: 'asc' }],
     }),
     prisma.transaction.count({ where }),
   ])
@@ -268,10 +266,9 @@ export async function listRecentTransactions({
         amount: true,
         date: true,
         type: true,
+        createdAt: true,
       },
-      orderBy: {
-        date: 'desc',
-      },
+      orderBy: [{ date: 'desc' }, { createdAt: 'desc' }, { id: 'asc' }],
       skip,
       take: limit,
     }),
