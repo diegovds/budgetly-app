@@ -58,7 +58,7 @@ export function Register() {
 
   return (
     <div className="flex w-full flex-col-reverse gap-8 lg:flex-row">
-      <div className="bg-accent flex flex-col items-center justify-center rounded p-4 lg:min-w-lg">
+      <div className="bg-card flex flex-col items-center justify-center rounded p-4 lg:min-w-lg">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-0.5">
             <h2 className="text-center text-2xl font-semibold md:text-3xl">
