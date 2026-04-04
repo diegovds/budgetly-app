@@ -53,7 +53,7 @@ export default async function RootLayout({
   const [accounts, categories, categoryTypes, accountTypes] = token
     ? await Promise.all([
         getAccount({ limit: 50 }),
-        getCategory({ limit: 50 }),
+        getCategory({ limit: 50, dateRange: 'all' }),
         getCategoryTypes(),
         getAccountTypes(),
       ])
