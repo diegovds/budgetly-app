@@ -5,8 +5,9 @@ import { useCategoriesStore } from '@/store/categories'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { CalendarIcon } from 'lucide-react'
+import { CalendarIcon, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 
@@ -51,6 +52,7 @@ export function TransactionFilters({ params }: TransactionFiltersProps) {
   const { accounts } = useAccountsStore()
   const { categories } = useCategoriesStore()
   const router = useRouter()
+  const [isFiltering, startTransition] = useTransition()
 
   const form = useForm<CreateNewTransactionFormData>({
     resolver: zodResolver(createTransactionSchema),
@@ -64,15 +66,17 @@ export function TransactionFilters({ params }: TransactionFiltersProps) {
   })
 
   function onSubmit(data: CreateNewTransactionFormData) {
-    router.push(
-      `/transaction?page=${1}${
-        data.startDate ? `&startDate=${data.startDate.toISOString()}` : ''
-      }${data.endDate ? `&endDate=${data.endDate.toISOString()}` : ''}${
-        data.accountId ? `&accountId=${data.accountId}` : ''
-      }${
-        data.categoryId ? `&categoryId=${data.categoryId}` : ''
-      }${data.search ? `&search=${data.search}` : ''}`,
-    )
+    startTransition(() => {
+      router.push(
+        `/transaction?page=${1}${
+          data.startDate ? `&startDate=${data.startDate.toISOString()}` : ''
+        }${data.endDate ? `&endDate=${data.endDate.toISOString()}` : ''}${
+          data.accountId ? `&accountId=${data.accountId}` : ''
+        }${
+          data.categoryId ? `&categoryId=${data.categoryId}` : ''
+        }${data.search ? `&search=${data.search}` : ''}`,
+      )
+    })
   }
 
   function handleReset() {
@@ -295,12 +299,17 @@ export function TransactionFilters({ params }: TransactionFiltersProps) {
             className="text-xs md:text-sm"
             variant="outline"
             onClick={handleReset}
+            disabled={isFiltering}
           >
             Limpar filtros
           </Button>
 
-          <Button type="submit" className="text-xs md:text-sm">
-            Filtrar
+          <Button
+            type="submit"
+            className="text-xs md:text-sm"
+            disabled={isFiltering}
+          >
+            {isFiltering ? <Loader2 className="animate-spin" /> : 'Filtrar'}
           </Button>
         </div>
       </form>
