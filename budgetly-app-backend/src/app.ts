@@ -4,8 +4,10 @@ import fastifySensible from '@fastify/sensible'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import fastify from 'fastify'
+import type { FastifyError } from 'fastify'
 import fastifyBcrypt from 'fastify-bcrypt'
 import {
+  hasZodFastifySchemaValidationErrors,
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
@@ -27,6 +29,17 @@ const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
+
+app.setErrorHandler((error: FastifyError, _request, reply) => {
+  if (hasZodFastifySchemaValidationErrors(error)) {
+    const message = error.validation[0]?.message ?? 'Dados inválidos.'
+    return reply.status(400).send({ message })
+  }
+
+  const status = error.statusCode ?? 500
+  const message = error.message ?? 'Erro interno do servidor.'
+  return reply.status(status).send({ message })
+})
 
 // CORS
 app.register(fastifyCors, {
