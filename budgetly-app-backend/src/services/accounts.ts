@@ -50,22 +50,21 @@ export async function getAccountsByUserId({
   const take = Math.min(limit, 100)
   const skip = (page - 1) * take
 
-  const [accounts, total] = await prisma.$transaction([
+  const [allAccounts, total] = await prisma.$transaction([
     prisma.account.findMany({
-      where: {
-        userId,
-      },
+      where: { userId },
       select: {
         id: true,
         name: true,
         type: true,
       },
-      orderBy: { name: 'asc' },
-      take,
-      skip,
     }),
     prisma.account.count({ where: { userId } }),
   ])
+
+  allAccounts.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
+
+  const accounts = allAccounts.slice(skip, skip + take)
 
   const accountsWithBalance = await Promise.all(
     accounts.map(async (account) => ({
