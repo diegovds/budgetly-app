@@ -4,6 +4,7 @@ import {
   PatchAccountIdBody,
 } from '@/http/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 type useAccountUpdateMutationType = {
@@ -13,6 +14,7 @@ type useAccountUpdateMutationType = {
 
 export function useAccountUpdateMutation() {
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   return useMutation<
     PatchAccountId200,
@@ -27,6 +29,7 @@ export function useAccountUpdateMutation() {
     onSuccess: (_, __, toastId) => {
       toast.success('Conta atualizada com sucesso!', { id: toastId })
       queryClient.invalidateQueries({ queryKey: ['accounts'] })
+      router.refresh()
     },
     onError: (error, _, toastId) => {
       toast.error(error.message ?? 'Erro ao atualizar conta.', { id: toastId })

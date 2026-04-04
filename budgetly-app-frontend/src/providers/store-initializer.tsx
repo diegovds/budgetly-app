@@ -8,7 +8,7 @@ import { useAccountsStore } from '@/store/account'
 import { useAccountTypesStore } from '@/store/account-type'
 import { useCategoriesStore } from '@/store/categories'
 import { useCategoryTypesStore } from '@/store/category-type'
-import { useRef } from 'react'
+import { useEffect } from 'react'
 
 type Props = {
   accounts: GetAccount200AccountsItem[]
@@ -23,15 +23,12 @@ export function StoreInitializer({
   categoryTypes,
   accountTypes,
 }: Props) {
-  const initialized = useRef(false)
-
-  if (!initialized.current) {
+  useEffect(() => {
     useAccountsStore.getState().setAccounts(accounts)
     useCategoriesStore.getState().setCategories(categories)
     useCategoryTypesStore.getState().setCategoryTypes(categoryTypes)
     useAccountTypesStore.getState().setAccountTypes(accountTypes)
-    initialized.current = true
-  }
+  }, [accounts, categories, categoryTypes, accountTypes])
 
   return null
 }
