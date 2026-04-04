@@ -127,7 +127,7 @@ export function CategoryList({ label, type }: CategoryListProps) {
             <div className="flex items-center justify-between">
               <p
                 className={`text-xs font-semibold ${
-                  category.total >= 0 ? 'text-green-500' : 'text-red-500'
+                  category.type === 'INCOME' ? 'text-green-500' : 'text-red-500'
                 }`}
               >
                 {formatCurrency(category.total)}

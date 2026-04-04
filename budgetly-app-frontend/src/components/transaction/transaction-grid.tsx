@@ -191,7 +191,9 @@ export function TransactionGrid({ searchParams }: TransactionGridProps) {
               <p className="text-muted-foreground">{transaction.accountName}</p>
               <p
                 className={`font-semibold ${
-                  transaction.amount >= 0 ? 'text-green-500' : 'text-red-500'
+                  transaction.type === 'INCOME'
+                    ? 'text-green-500'
+                    : 'text-red-500'
                 }`}
               >
                 {formatCurrency(transaction.amount)}
