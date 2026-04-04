@@ -52,7 +52,8 @@ export function TransactionFilters({ params }: TransactionFiltersProps) {
   const { accounts } = useAccountsStore()
   const { categories } = useCategoriesStore()
   const router = useRouter()
-  const [isFiltering, startTransition] = useTransition()
+  const [isFiltering, startFilterTransition] = useTransition()
+  const [isResetting, startResetTransition] = useTransition()
 
   const form = useForm<CreateNewTransactionFormData>({
     resolver: zodResolver(createTransactionSchema),
@@ -66,7 +67,7 @@ export function TransactionFilters({ params }: TransactionFiltersProps) {
   })
 
   function onSubmit(data: CreateNewTransactionFormData) {
-    startTransition(() => {
+    startFilterTransition(() => {
       router.push(
         `/transaction?page=${1}${
           data.startDate ? `&startDate=${data.startDate.toISOString()}` : ''
@@ -80,7 +81,9 @@ export function TransactionFilters({ params }: TransactionFiltersProps) {
   }
 
   function handleReset() {
-    router.push('/transaction')
+    startResetTransition(() => {
+      router.push('/transaction')
+    })
   }
 
   return (
@@ -299,15 +302,19 @@ export function TransactionFilters({ params }: TransactionFiltersProps) {
             className="text-xs md:text-sm"
             variant="outline"
             onClick={handleReset}
-            disabled={isFiltering}
+            disabled={isFiltering || isResetting}
           >
-            Limpar filtros
+            {isResetting ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              'Limpar filtros'
+            )}
           </Button>
 
           <Button
             type="submit"
             className="text-xs md:text-sm"
-            disabled={isFiltering}
+            disabled={isFiltering || isResetting}
           >
             {isFiltering ? <Loader2 className="animate-spin" /> : 'Filtrar'}
           </Button>
