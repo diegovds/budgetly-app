@@ -65,20 +65,14 @@ export async function listCategoriesSummary({
     dateFilter = { gte: past, lte: now }
   }
 
-  const [allCategories, totalCategories] = await Promise.all([
-    prisma.category.findMany({
-      where: { userId, type },
-      select: {
-        id: true,
-        name: true,
-        type: true,
-      },
-    }),
-
-    prisma.category.count({
-      where: { userId, type },
-    }),
-  ])
+  const allCategories = await prisma.category.findMany({
+    where: { userId, type },
+    select: {
+      id: true,
+      name: true,
+      type: true,
+    },
+  })
 
   const categoriesWithTotal = await Promise.all(
     allCategories.map(async (category) => {
@@ -106,23 +100,27 @@ export async function listCategoriesSummary({
     }),
   )
 
+  const activeCategories = dateFilter
+    ? categoriesWithTotal.filter((c) => c.total !== 0)
+    : categoriesWithTotal
+
   if (orderBy === 'total') {
-    categoriesWithTotal.sort((a, b) => b.total - a.total)
+    activeCategories.sort((a, b) => Math.abs(b.total) - Math.abs(a.total))
   } else {
-    categoriesWithTotal.sort((a, b) =>
+    activeCategories.sort((a, b) =>
       order === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name),
     )
   }
 
-  const paginated = categoriesWithTotal.slice(skip, skip + limit)
+  const paginated = activeCategories.slice(skip, skip + limit)
 
   return {
     categories: paginated,
     meta: {
       page,
       limit,
-      totalCategories,
-      totalPages: Math.ceil(totalCategories / limit),
+      totalCategories: activeCategories.length,
+      totalPages: Math.ceil(activeCategories.length / limit),
     },
   }
 }
