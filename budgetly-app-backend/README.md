@@ -10,6 +10,7 @@ API REST do Budgetly construída com Fastify, Prisma ORM e PostgreSQL.
 | Prisma | 7 | ORM e migrations |
 | PostgreSQL | — | Banco de dados |
 | Zod | 4 | Validação de schemas e tipos |
+| fastify-type-provider-zod | — | Integração Zod + Fastify (validação de rotas e serialização) |
 | @fastify/jwt | — | Autenticação JWT |
 | fastify-bcrypt | — | Hash de senhas |
 | @fastify/swagger | — | Documentação OpenAPI |
@@ -96,7 +97,7 @@ src/
 ├── lib/
 │   └── prisma.ts    # Instância singleton do PrismaClient
 ├── env.ts           # Validação de variáveis de ambiente
-├── app.ts           # Configuração do Fastify (plugins, JWT, Swagger)
+├── app.ts           # Configuração do Fastify (plugins, JWT, Swagger, error handler global)
 └── server.ts        # Ponto de entrada
 ```
 
@@ -120,6 +121,8 @@ User
 | POST | `/auth` | Login |
 | POST | `/users` | Registro |
 | GET | `/user` | Dados do usuário autenticado |
+| GET | `/user/stats` | Estatísticas gerais do usuário (total de contas, categorias e transações) |
+| PATCH | `/user/password` | Alterar senha do usuário autenticado |
 | GET | `/accounts` | Listar contas com saldo |
 | POST | `/account` | Criar conta |
 | PATCH | `/account/:id` | Editar conta |

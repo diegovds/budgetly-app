@@ -59,17 +59,24 @@ src/
 │   └── page.tsx                # Home (visão geral)
 ├── components/
 │   ├── account/
-│   │   ├── account-grid.tsx    # Listagem paginada de contas
+│   │   ├── account-grid.tsx        # Listagem paginada de contas
 │   │   └── account-management.tsx  # Edição/exclusão via modal
 │   ├── category/
-│   │   ├── category-list.tsx   # Listagem paginada de categorias
+│   │   ├── category-list.tsx       # Listagem paginada de categorias
 │   │   └── category-management.tsx
 │   ├── transaction/
 │   │   ├── transaction-grid.tsx
 │   │   └── transaction-management.tsx
-│   ├── modal.tsx               # Modal global controlado pelo Zustand
-│   ├── new-account.tsx
-│   └── ui/                     # Componentes base (Button, Input, Form…)
+│   ├── profile/
+│   │   ├── user-stats.tsx          # Estatísticas gerais do usuário
+│   │   ├── stat-card.tsx
+│   │   └── change-password-form.tsx
+│   ├── home/                       # Componentes da página inicial
+│   │   ├── my-transactions.tsx     # Grupos de transações e recentes
+│   │   ├── transaction.tsx
+│   │   └── category.tsx
+│   ├── modal.tsx                   # Modal global controlado pelo Zustand
+│   └── ui/                         # Componentes base (Button, Input, Form…)
 ├── hooks/                      # Mutations do TanStack Query
 │   ├── useAccountDeleteMutation.ts
 │   ├── useAccountInsertionMutation.ts
@@ -79,16 +86,21 @@ src/
 │   ├── useCategoryUpdateMutation.ts
 │   ├── useTransactionDeleteMutation.ts
 │   ├── useTransactionInsertionMutation.ts
-│   └── useTransactionUpdateMutation.ts
+│   ├── useTransactionUpdateMutation.ts
+│   └── useChangePasswordMutation.ts
 ├── http/
 │   └── api.ts                  # Cliente HTTP (gerado via Orval)
 ├── store/
-│   ├── useModalStore.ts.ts     # Estado do modal global
+│   ├── useModalStore.ts        # Estado do modal global
 │   ├── auth.ts
 │   ├── account.ts
 │   ├── account-type.ts
 │   ├── categories.ts
 │   └── category-type.ts
+├── providers/
+│   ├── store-initializer.tsx   # Inicializa stores Zustand com dados do servidor (via useEffect)
+│   ├── store-hydration.tsx
+│   └── query-client.tsx        # Provider do TanStack Query
 ├── actions/                    # Server Actions Next.js (cookies de auth)
 ├── utils/
 │   ├── format.ts               # Formatação de moeda e datas
@@ -114,7 +126,7 @@ Todas as ações de criação/edição/exclusão (contas, categorias, transaçõ
 O token JWT é armazenado em cookie via Server Action (`set-auth-cookie`). O middleware do Next.js valida o cookie em cada requisição e redireciona para `/login` quando necessário.
 
 **Mutations**
-Cada operação de escrita tem seu próprio hook em `src/hooks/`. Ao completar com sucesso, o hook invalida as queries relevantes no TanStack Query, forçando refetch automático dos dados na tela.
+Cada operação de escrita tem seu próprio hook em `src/hooks/`. Ao completar com sucesso, o hook invalida as queries relevantes no TanStack Query e chama `router.refresh()` para forçar o re-render dos Server Components. Isso garante que o `StoreInitializer` receba os dados atualizados do servidor e sincronize os stores do Zustand (usados nos selects de formulários).
 
 ## Páginas
 
@@ -127,3 +139,4 @@ Cada operação de escrita tem seu próprio hook em `src/hooks/`. Ao completar c
 | `/category` | Gerenciamento de categorias |
 | `/transaction` | Listagem de transações com filtros |
 | `/dashboard` | Gráficos e relatórios financeiros |
+| `/profile` | Estatísticas gerais e alteração de senha |
