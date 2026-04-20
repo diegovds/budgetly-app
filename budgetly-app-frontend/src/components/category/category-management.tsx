@@ -50,19 +50,18 @@ export function CategoryManagement() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-accent space-y-6 rounded border p-4"
+        className="space-y-6"
       >
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm md:text-base">
+              <FormLabel className="text-xs font-medium">
                 Nome da categoria
               </FormLabel>
               <FormControl>
                 <Input
-                  className="text-xs md:text-base"
                   placeholder="Ex: Alimentação"
                   {...field}
                 />
@@ -72,11 +71,11 @@ export function CategoryManagement() {
           )}
         />
 
-        <div className="flex flex-col justify-between gap-4 lg:flex-row">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button
             type="button"
             variant="outline"
-            className="text-xs md:text-sm"
+            size="sm"
             onClick={() => toggleIsOpen()}
           >
             Cancelar
@@ -86,7 +85,7 @@ export function CategoryManagement() {
             <Button
               type="button"
               variant="destructive"
-              className="text-xs md:text-sm"
+              size="sm"
               onClick={() => {
                 deleteC.mutate(element.data.id, {
                   onSuccess: () => toggleIsOpen(),
@@ -100,7 +99,7 @@ export function CategoryManagement() {
 
           <Button
             type="submit"
-            className="text-xs md:text-sm"
+            size="sm"
             disabled={
               deleteC.isPending ||
               deleteC.isSuccess ||
@@ -108,7 +107,7 @@ export function CategoryManagement() {
               updateC.isSuccess
             }
           >
-            Editar Categoria
+            Salvar
           </Button>
         </div>
       </form>

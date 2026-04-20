@@ -65,7 +65,7 @@ export function Modal({ onClose }: ModalProps) {
   if (!show) return null
 
   const overlayClass = `absolute inset-0 bg-black ${exiting ? 'overlay-exit' : 'overlay-animate'}`
-  const panelClass = `bg-card relative z-10 mx-4 w-full max-w-lg rounded p-4 ${exiting ? 'modal-exit' : 'modal-animate'}`
+  const panelClass = `bg-card relative z-10 mx-4 w-full max-w-lg rounded-xl p-5 ${exiting ? 'modal-exit' : 'modal-animate'}`
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -75,20 +75,22 @@ export function Modal({ onClose }: ModalProps) {
         onAnimationEnd={handleAnimationEnd}
       />
       <div className={panelClass} onAnimationEnd={handleAnimationEnd}>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold md:text-xl">
+        <div className="mb-5 flex items-center justify-between">
+          <h2 className="font-(family-name:--font-serif-display) text-xl md:text-2xl">
             {MODAL_TITLES[whoOpened]}
           </h2>
 
           <button
             onClick={onClose}
-            className="bg-primary flex size-6 cursor-pointer items-center justify-center rounded-full"
+            className="text-muted-foreground hover:text-foreground hover:bg-accent cursor-pointer rounded-lg p-1.5 transition-colors"
           >
-            <X size={14} />
+            <X size={16} />
           </button>
         </div>
 
-        <div>{MODAL_CONTENT[whoOpened]}</div>
+        <div className="border-border/50 border-t pt-5">
+          {MODAL_CONTENT[whoOpened]}
+        </div>
       </div>
     </div>
   )

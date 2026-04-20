@@ -89,7 +89,7 @@ export function TransactionManagement() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-accent space-y-6 rounded border p-4"
+        className="space-y-6"
       >
         <div className="space-y-4">
           <div>
@@ -98,7 +98,7 @@ export function TransactionManagement() {
               name="amount"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm md:text-base">Valor</FormLabel>
+                  <FormLabel className="text-xs font-medium">Valor</FormLabel>
                   <FormControl>
                     <div className="relative">
                       {isExpense && (
@@ -107,7 +107,7 @@ export function TransactionManagement() {
                         </span>
                       )}
                       <Input
-                        className={`text-xs md:text-base ${isExpense ? 'pl-4' : ''}`}
+                        className={isExpense ? 'pl-4' : ''}
                         type="text"
                         placeholder="R$ 1.000,00"
                         value={field.value ?? ''}
@@ -133,13 +133,13 @@ export function TransactionManagement() {
               name="date"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel className="text-sm md:text-base">Data</FormLabel>
+                  <FormLabel className="text-xs font-medium">Data</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant="outline"
-                          className={`w-full justify-start text-left text-xs font-normal md:text-base ${
+                          className={`w-full justify-start text-left font-normal ${
                             !field.value && 'text-muted-foreground'
                           }`}
                         >
@@ -176,13 +176,12 @@ export function TransactionManagement() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm md:text-base">
+                  <FormLabel className="text-xs font-medium">
                     Descrição
                   </FormLabel>
                   <FormControl>
                     <Input
                       type="text"
-                      className="text-xs md:text-base"
                       placeholder="Conta da luz"
                       {...field}
                     />
@@ -194,14 +193,12 @@ export function TransactionManagement() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between gap-4 lg:flex-row">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button
             type="button"
             variant="outline"
-            className="text-xs md:text-sm"
-            onClick={() => {
-              toggleIsOpen()
-            }}
+            size="sm"
+            onClick={() => toggleIsOpen()}
           >
             Cancelar
           </Button>
@@ -210,7 +207,7 @@ export function TransactionManagement() {
             <Button
               type="button"
               variant="destructive"
-              className="text-xs md:text-sm"
+              size="sm"
               onClick={() => {
                 deleteT.mutate(element.data.id, {
                   onSuccess: () => toggleIsOpen(),
@@ -224,7 +221,7 @@ export function TransactionManagement() {
 
           <Button
             type="submit"
-            className="text-xs md:text-sm"
+            size="sm"
             disabled={
               deleteT.isPending ||
               deleteT.isSuccess ||
@@ -232,7 +229,7 @@ export function TransactionManagement() {
               updateT.isSuccess
             }
           >
-            Editar Transação
+            Salvar
           </Button>
         </div>
       </form>

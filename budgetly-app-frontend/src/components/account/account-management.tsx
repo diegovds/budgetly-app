@@ -50,19 +50,18 @@ export function AccountManagement() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-accent space-y-6 rounded border p-4"
+        className="space-y-6"
       >
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm md:text-base">
+              <FormLabel className="text-xs font-medium">
                 Nome da conta
               </FormLabel>
               <FormControl>
                 <Input
-                  className="text-xs md:text-base"
                   placeholder="Ex: Nubank"
                   {...field}
                 />
@@ -72,11 +71,11 @@ export function AccountManagement() {
           )}
         />
 
-        <div className="flex flex-col justify-between gap-4 lg:flex-row">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <Button
             type="button"
             variant="outline"
-            className="text-xs md:text-sm"
+            size="sm"
             onClick={() => toggleIsOpen()}
           >
             Cancelar
@@ -86,7 +85,7 @@ export function AccountManagement() {
             <Button
               type="button"
               variant="destructive"
-              className="text-xs md:text-sm"
+              size="sm"
               onClick={() => {
                 deleteA.mutate(element.data.id, {
                   onSuccess: () => toggleIsOpen(),
@@ -100,7 +99,7 @@ export function AccountManagement() {
 
           <Button
             type="submit"
-            className="text-xs md:text-sm"
+            size="sm"
             disabled={
               deleteA.isPending ||
               deleteA.isSuccess ||
@@ -108,7 +107,7 @@ export function AccountManagement() {
               updateA.isSuccess
             }
           >
-            Editar Conta
+            Salvar
           </Button>
         </div>
       </form>
