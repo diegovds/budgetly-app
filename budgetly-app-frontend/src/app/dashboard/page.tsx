@@ -4,7 +4,7 @@ import { CategoryGrid } from '@/components/dashboard/category-grid'
 import { ChartBar } from '@/components/dashboard/chart-bar'
 import { ChartPieDonutText } from '@/components/dashboard/chart-pie-donut-text'
 import { HeaderPage } from '@/components/header-page'
-import { Card, CardTitle } from '@/components/ui/card'
+import { TrendingDown, TrendingUp } from 'lucide-react'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -22,8 +22,8 @@ export default async function Dashboard() {
   return (
     <div className="w-full space-y-8">
       <HeaderPage
-        buttonText="Voltar para  a Home"
-        description="Sua saúde financeira, tendências de renda e hábitos de gasto em resumo. "
+        buttonText="Voltar para a Home"
+        description="Sua saúde financeira, tendências de renda e hábitos de gasto em resumo."
         href="/"
         title="Relatórios Financeiros"
         icon={false}
@@ -37,15 +37,25 @@ export default async function Dashboard() {
       </div>
 
       <div className="grid w-full items-start gap-8 lg:grid-cols-2">
-        <Card className="overflow-x-auto rounded p-4">
-          <CardTitle className="">Desempenho das Receitas</CardTitle>
+        <div className="bg-card w-full space-y-4 rounded-xl border p-5 pb-0">
+          <div className="flex items-center gap-2.5">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-500/10">
+              <TrendingUp className="size-4 text-emerald-400" />
+            </div>
+            <h3 className="font-semibold">Desempenho das Receitas</h3>
+          </div>
           <CategoryGrid type="INCOME" />
-        </Card>
+        </div>
 
-        <Card className="overflow-x-auto rounded p-4">
-          <CardTitle className="">Desempenho das Despesas</CardTitle>
+        <div className="bg-card w-full space-y-4 rounded-xl border p-5 pb-0">
+          <div className="flex items-center gap-2.5">
+            <div className="bg-destructive/10 flex size-8 items-center justify-center rounded-lg">
+              <TrendingDown className="text-destructive size-4" />
+            </div>
+            <h3 className="font-semibold">Desempenho das Despesas</h3>
+          </div>
           <CategoryGrid type="EXPENSE" />
-        </Card>
+        </div>
       </div>
     </div>
   )

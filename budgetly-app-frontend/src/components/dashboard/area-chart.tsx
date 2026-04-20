@@ -36,8 +36,8 @@ export function ChartArea() {
   })
 
   return (
-    <Card className="rounded p-4">
-      <CardHeader className="px-0">
+    <Card className="rounded-xl p-5">
+      <CardHeader className="px-0 pb-4">
         <CardTitle>Evolução do Saldo</CardTitle>
         <CardDescription>Saldo dos últimos 12 meses</CardDescription>
       </CardHeader>

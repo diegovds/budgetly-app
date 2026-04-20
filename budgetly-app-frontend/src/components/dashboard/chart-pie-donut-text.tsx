@@ -72,8 +72,8 @@ export function ChartPieDonutText() {
     : []
 
   return (
-    <Card className="flex w-full flex-1 flex-col rounded p-4">
-      <CardHeader className="items-center p-0">
+    <Card className="flex w-full flex-1 flex-col rounded-xl p-5">
+      <CardHeader className="items-center p-0 pb-2">
         <CardTitle>Gastos por categoria</CardTitle>
         <CardDescription
           className={`${isLoading ? 'bg-accent w-fit animate-pulse rounded text-transparent' : ''}`}

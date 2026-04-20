@@ -7,11 +7,9 @@ import {
 } from '@/http/api'
 import { formatCurrency } from '@/utils/format'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { Button } from '../ui/button'
-import { Card } from '../ui/card'
+import { TablePagination } from '../table-pagination'
 
 type CategoryGridProps = {
   type: GetDashboardGetlistcategories200Type
@@ -41,55 +39,34 @@ export function CategoryGrid({ type }: CategoryGridProps) {
 
   if (!data)
     return (
-      <>
-        <Card className="divide-accent gap-0 divide-y overflow-x-auto rounded p-0">
-          <div className="grid min-w-sm grid-cols-[1.5fr_1fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
-            <p>Categoria</p>
-            <p>Valor</p>
-            <p>Percentual</p>
-          </div>
-          <ul className="divide-accent divide-y text-sm md:text-base">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <li
-                key={i}
-                className="grid min-w-sm grid-cols-[1.5fr_1fr_1fr] items-center gap-4 p-4"
-              >
-                <h3 className="bg-accent animate-pulse truncate rounded font-semibold text-transparent">
-                  _
-                </h3>
-                <p
-                  className={`bg-accent animate-pulse rounded font-semibold text-transparent`}
-                >
-                  _
-                </p>
-                <p className="bg-accent animate-pulse rounded font-semibold text-transparent">
-                  %
-                </p>
-              </li>
-            ))}
-          </ul>
-        </Card>
-        <div className="bg-accent flex flex-col items-center justify-between gap-4 rounded text-transparent lg:flex-row">
-          <p className="text-xs md:text-sm">Mostrando de um total de</p>
-          <div className="invisible flex items-center gap-2">
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              onClick={() => setPage((p) => p - 1)}
-            >
-              <ChevronLeft />
-            </Button>
-
-            <Button
-              variant="outline"
-              className="text-xs md:text-sm"
-              onClick={() => setPage((p) => p + 1)}
-            >
-              <ChevronRight />
-            </Button>
-          </div>
+      <div className="overflow-x-auto">
+        <div className="bg-muted/30 grid min-w-sm grid-cols-[1.5fr_1fr_1fr] gap-4 px-4 py-3">
+          <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">Categoria</p>
+          <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">Valor</p>
+          <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">Percentual</p>
         </div>
-      </>
+        <ul className="divide-border/60 min-w-sm divide-y text-sm">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <li key={i} className="grid min-w-sm grid-cols-[1.5fr_1fr_1fr] items-center gap-4 px-4 py-3.5">
+              <p className="bg-accent w-full animate-pulse rounded text-transparent">_</p>
+              <p className="bg-accent w-full animate-pulse rounded text-transparent">_</p>
+              <p className="bg-accent w-full animate-pulse rounded text-transparent">_</p>
+            </li>
+          ))}
+        </ul>
+        <TablePagination
+          page={1}
+          totalPages={2}
+          total={0}
+          start={0}
+          end={0}
+          label=""
+          isLoading={true}
+          className="border-border/60 min-w-sm border-t px-4 pt-4 pb-5"
+          onPrev={() => {}}
+          onNext={() => {}}
+        />
+      </div>
     )
 
   const currentMeta = data.meta
@@ -97,73 +74,44 @@ export function CategoryGrid({ type }: CategoryGridProps) {
   const end = Math.min(currentMeta.page * currentMeta.limit, currentMeta.total)
 
   return (
-    <>
-      <Card className="divide-accent gap-0 divide-y overflow-x-auto rounded p-0">
-        <div className="grid min-w-sm grid-cols-[1.5fr_1fr_1fr] gap-4 p-4 text-sm font-semibold md:text-base">
-          <p>Categoria</p>
-          <p>Valor</p>
-          <p>Percentual</p>
-        </div>
-        <ul className="divide-accent divide-y text-sm md:text-base">
-          {data.categories.map((category) => (
-            <li
-              key={category.id}
-              className="grid min-w-sm grid-cols-[1.5fr_1fr_1fr] items-center gap-4 p-4"
-            >
-              <h3 className="truncate font-semibold">{category.name}</h3>
-              <p
-                className={`font-semibold ${
-                  type === 'INCOME' ? 'text-green-500' : 'text-red-500'
-                }`}
-              >
-                {formatCurrency(category.total)}
-              </p>
-              <p className="font-semibold">{category.percentage.toFixed(2)}%</p>
-            </li>
-          ))}
-        </ul>
-      </Card>
-      <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
-        <p className="text-xs md:text-sm">
-          Mostrando {start} a {end} de um total de {currentMeta.total}{' '}
-          {data.label}
-        </p>
-        {currentMeta.totalPages > 1 ? (
-          isPlaceholderData ? (
-            <Button variant="outline" className="text-xs md:text-sm">
-              <Loader2 className="animate-spin" />
-            </Button>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                className="text-xs md:text-sm"
-                disabled={currentMeta.page === 1}
-                onClick={() => setPage((p) => p - 1)}
-              >
-                <ChevronLeft />
-              </Button>
-
-              <Button
-                variant="outline"
-                className="text-xs md:text-sm"
-                disabled={currentMeta.page === currentMeta.totalPages}
-                onClick={() => setPage((p) => p + 1)}
-              >
-                <ChevronRight />
-              </Button>
-            </div>
-          )
-        ) : (
-          <Button
-            variant="outline"
-            className="invisible text-xs md:text-sm"
-            disabled={true}
-          >
-            <ChevronLeft />
-          </Button>
-        )}
+    <div className="overflow-x-auto">
+      <div className="bg-muted/30 grid min-w-sm grid-cols-[1.5fr_1fr_1fr] gap-4 px-4 py-3">
+        <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">Categoria</p>
+        <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">Valor</p>
+        <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">Percentual</p>
       </div>
-    </>
+      <ul className="divide-border/60 min-w-sm divide-y text-sm">
+        {data.categories.map((category) => (
+          <li
+            key={category.id}
+            className="hover:bg-muted/20 grid min-w-sm grid-cols-[1.5fr_1fr_1fr] items-center gap-4 px-4 py-3.5 transition-colors"
+          >
+            <h3 className="truncate font-medium">{category.name}</h3>
+            <p
+              className={`font-semibold ${
+                type === 'INCOME' ? 'text-emerald-400' : 'text-destructive'
+              }`}
+            >
+              {formatCurrency(category.total)}
+            </p>
+            <p className="text-muted-foreground font-medium">
+              {category.percentage.toFixed(2)}%
+            </p>
+          </li>
+        ))}
+      </ul>
+      <TablePagination
+        page={currentMeta.page}
+        totalPages={currentMeta.totalPages}
+        total={currentMeta.total}
+        start={start}
+        end={end}
+        label={data.label}
+        isLoading={isPlaceholderData}
+        className="border-border/60 min-w-sm border-t px-4 pt-4 pb-5"
+        onPrev={() => setPage((p) => p - 1)}
+        onNext={() => setPage((p) => p + 1)}
+      />
+    </div>
   )
 }

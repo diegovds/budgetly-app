@@ -42,8 +42,8 @@ export function ChartBar() {
   })
 
   return (
-    <Card className="w-full flex-2 rounded p-4">
-      <CardHeader className="px-0">
+    <Card className="w-full flex-2 rounded-xl p-5">
+      <CardHeader className="px-0 pb-4">
         <CardTitle>Receitas vs Despesas</CardTitle>
 
         <CardDescription
