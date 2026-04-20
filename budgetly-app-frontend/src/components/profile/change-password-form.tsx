@@ -8,13 +8,6 @@ import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
   Form,
   FormControl,
   FormField,
@@ -73,19 +66,20 @@ export function ChangePasswordForm() {
   }
 
   return (
-    <Card className="rounded p-4">
-      <CardHeader className="px-0">
-        <CardTitle className="flex items-center gap-2">
-          <Lock className="size-5" />
-          Alterar Senha
-        </CardTitle>
-        <CardDescription>
+    <div className="bg-card space-y-5 rounded-xl border p-5">
+      <div>
+        <div className="flex items-center gap-2.5">
+          <div className="bg-primary/10 flex size-8 items-center justify-center rounded-lg">
+            <Lock className="text-primary size-4" />
+          </div>
+          <h3 className="font-semibold">Alterar Senha</h3>
+        </div>
+        <p className="text-muted-foreground mt-2 text-sm">
           Informe sua senha atual e escolha uma nova senha.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="px-0">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        </p>
+      </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="currentPassword"
@@ -187,7 +181,6 @@ export function ChangePasswordForm() {
             </Button>
           </form>
         </Form>
-      </CardContent>
-    </Card>
+    </div>
   )
 }

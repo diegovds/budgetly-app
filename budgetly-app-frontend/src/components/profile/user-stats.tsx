@@ -30,12 +30,14 @@ export function UserStats() {
         label="Categorias de Receita"
         value={data?.incomeCategoriesCount ?? 0}
         isLoading={isLoading}
+        variant="income"
       />
       <StatCard
         icon={<TrendingDown size={20} />}
         label="Categorias de Despesa"
         value={data?.expenseCategoriesCount ?? 0}
         isLoading={isLoading}
+        variant="expense"
       />
     </div>
   )
