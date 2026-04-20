@@ -29,16 +29,19 @@ export function MyAccounts() {
   })
 
   return (
-    <div className="bg-card flex-1 space-y-4 rounded p-4">
-      <div className="space-y-2">
+    <div className="bg-card flex-1 space-y-4 rounded-xl border p-5">
+      <div className="space-y-1">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold md:text-2xl">Minhas Contas</h2>
-          <Link href="/account" className="text-xs md:text-sm">
-            Ver Tudo
+          <h2 className="text-lg font-semibold">Minhas Contas</h2>
+          <Link
+            href="/account"
+            className="text-muted-foreground hover:text-primary text-xs transition-colors"
+          >
+            Ver tudo →
           </Link>
         </div>
         <p
-          className={`text-muted-foreground text-xs md:text-sm ${isLoadingTotalBalance && 'bg-accent animate-pulse rounded text-transparent'}`}
+          className={`text-muted-foreground text-xs ${isLoadingTotalBalance ? 'bg-accent animate-pulse rounded text-transparent' : ''}`}
         >
           Total:{' '}
           {!isLoadingTotalBalance && totalBalance
@@ -46,7 +49,8 @@ export function MyAccounts() {
             : '_'}
         </p>
       </div>
-      <div className="space-y-4">
+
+      <div className="space-y-2">
         {!isLoadingAccounts && accounts
           ? accounts.accounts.map((account) => (
               <Account key={account.id} account={account} />
@@ -54,23 +58,24 @@ export function MyAccounts() {
           : Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-accent flex animate-pulse items-center justify-between rounded p-4 text-transparent"
+                className="bg-accent flex animate-pulse items-center justify-between rounded-lg p-3 text-transparent"
               >
-                <h3 className="text-sm font-medium md:text-base">_</h3>
-                <p className={`text-sm font-semibold md:text-base`}>_</p>
+                <span className="text-sm">_</span>
+                <span className="text-sm">_</span>
               </div>
             ))}
       </div>
 
       <Button
         variant="outline"
-        className="text-xs md:text-sm"
+        size="sm"
+        className="w-full gap-1.5 text-xs"
         onClick={() => {
           setIsOpen(true)
           setWhoOpened('/account/new')
         }}
       >
-        <CirclePlus /> Adicionar Conta
+        <CirclePlus className="size-3.5" /> Adicionar Conta
       </Button>
     </div>
   )

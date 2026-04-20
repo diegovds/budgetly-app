@@ -4,10 +4,11 @@ import { getAccount, GetAccount200 } from '@/http/api'
 import { useModalStore } from '@/store/useModalStore.ts'
 import { formatCurrency } from '@/utils/format'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { ChevronLeft, ChevronRight, Ellipsis, Loader2 } from 'lucide-react'
+import { Ellipsis } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { TablePagination } from '../table-pagination'
 import { Button } from '../ui/button'
 
 export function AccountGrid() {
@@ -30,12 +31,12 @@ export function AccountGrid() {
 
   if (!data)
     return (
-      <div className="bg-card space-y-6 rounded p-4">
+      <div className="bg-card rounded-xl border p-5 pb-0">
         <div className="grid gap-8 lg:grid-cols-2">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="bg-accent flex animate-pulse flex-col rounded p-4 text-transparent"
+              className="bg-accent flex animate-pulse flex-col rounded-xl p-5 text-transparent"
             >
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-lg font-semibold md:text-xl">_</h2>
@@ -64,32 +65,18 @@ export function AccountGrid() {
           ))}
         </div>
 
-        <div className="bg-accent flex animate-pulse flex-col items-center justify-between gap-4 text-transparent lg:flex-row">
-          <p className="text-xs md:text-sm">Mostrando Contas</p>
-          {isPlaceholderData ? (
-            <Button variant="outline" className="invisible text-xs md:text-sm">
-              <Loader2 className="animate-spin" />
-            </Button>
-          ) : (
-            <div className="invisible flex items-center gap-2">
-              <Button
-                variant="outline"
-                className="text-xs md:text-sm"
-                onClick={() => setPage((p) => p - 1)}
-              >
-                <ChevronLeft />
-              </Button>
-
-              <Button
-                variant="outline"
-                className="text-xs md:text-sm"
-                onClick={() => setPage((p) => p + 1)}
-              >
-                <ChevronRight />
-              </Button>
-            </div>
-          )}
-        </div>
+        <TablePagination
+          page={1}
+          totalPages={2}
+          total={0}
+          start={0}
+          end={0}
+          label="Contas"
+          isLoading={true}
+          className="pt-4 pb-5"
+          onPrev={() => {}}
+          onNext={() => {}}
+        />
       </div>
     )
 
@@ -98,10 +85,10 @@ export function AccountGrid() {
   const end = Math.min(currentMeta.page * currentMeta.limit, currentMeta.total)
 
   return (
-    <div className="bg-card space-y-6 rounded p-4">
+    <div className="bg-card rounded-xl border p-5 pb-0">
       <div className="grid gap-8 lg:grid-cols-2">
         {data.accounts.map((account) => (
-          <div key={account.id} className="bg-accent flex flex-col rounded p-4">
+          <div key={account.id} className="border-border/60 card-hover flex flex-col rounded-xl border p-5">
             <div className="flex items-center justify-between gap-2">
               <h2 className="text-lg font-semibold md:text-xl">
                 {account.name}
@@ -128,7 +115,7 @@ export function AccountGrid() {
                 </h2>
                 <p
                   className={`text-2xl font-semibold md:text-3xl ${
-                    account.balance >= 0 ? 'text-green-500' : 'text-red-500'
+                    account.balance >= 0 ? 'text-emerald-400' : 'text-destructive'
                   }`}
                 >
                   {formatCurrency(account.balance)}
@@ -144,46 +131,18 @@ export function AccountGrid() {
         ))}
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
-        <p className="text-xs md:text-sm">
-          Mostrando {start} a {end} de um total de {currentMeta.total} Contas
-        </p>
-        {currentMeta.totalPages > 1 ? (
-          isPlaceholderData ? (
-            <Button variant="outline" className="text-xs md:text-sm">
-              <Loader2 className="animate-spin" />
-            </Button>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                className="text-xs md:text-sm"
-                disabled={currentMeta.page === 1}
-                onClick={() => setPage((p) => p - 1)}
-              >
-                <ChevronLeft />
-              </Button>
-
-              <Button
-                variant="outline"
-                className="text-xs md:text-sm"
-                disabled={currentMeta.page === currentMeta.totalPages}
-                onClick={() => setPage((p) => p + 1)}
-              >
-                <ChevronRight />
-              </Button>
-            </div>
-          )
-        ) : (
-          <Button
-            variant="outline"
-            className="invisible text-xs md:text-sm"
-            disabled={true}
-          >
-            <ChevronLeft />
-          </Button>
-        )}
-      </div>
+      <TablePagination
+        page={currentMeta.page}
+        totalPages={currentMeta.totalPages}
+        total={currentMeta.total}
+        start={start}
+        end={end}
+        label="Contas"
+        isLoading={isPlaceholderData}
+        className="pt-4 pb-5"
+        onPrev={() => setPage((p) => p - 1)}
+        onNext={() => setPage((p) => p + 1)}
+      />
     </div>
   )
 }

@@ -12,13 +12,21 @@ import { StoreHydration } from '@/providers/store-hydration'
 import { StoreInitializer } from '@/providers/store-initializer'
 import type { Metadata, Viewport } from 'next'
 import { redirect } from 'next/navigation'
-import { Poppins } from 'next/font/google'
+// eslint-disable-next-line camelcase
+import { DM_Serif_Display, Poppins } from 'next/font/google'
 import { Toaster } from 'sonner'
 import './globals.css'
 
 const poppins = Poppins({
   subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-poppins',
+})
+
+const dmSerifDisplay = DM_Serif_Display({
+  subsets: ['latin'],
   weight: ['400'],
+  variable: '--font-serif-display',
 })
 
 export const metadata: Metadata = {
@@ -72,7 +80,7 @@ export default async function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${poppins.className} dark flex min-h-dvh flex-col antialiased`}
+        className={`${poppins.variable} ${dmSerifDisplay.variable} dark flex min-h-dvh flex-col font-sans antialiased`}
       >
         <QueryClientContext>
           <StoreHydration token={token} />

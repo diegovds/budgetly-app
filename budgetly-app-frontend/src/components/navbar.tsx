@@ -7,7 +7,7 @@ import { useAuthStore } from '@/store/auth'
 import { useCategoriesStore } from '@/store/categories'
 import { useCategoryTypesStore } from '@/store/category-type'
 import { useQueryClient } from '@tanstack/react-query'
-import { LogOut, Menu, X } from 'lucide-react'
+import { LogOut, Menu, TrendingUp, X } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -53,80 +53,109 @@ export function Navbar({ token }: NavbarProps) {
     router.push('/login')
   }
 
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href)
+
   return (
-    <nav className="bg-card">
-      <div className="container mx-auto hidden items-center justify-between px-10 py-2 md:flex">
-        <h1 className="text-xl font-bold">Budgetly</h1>
+    <nav className="bg-card/80 border-border/50 sticky top-0 z-50 border-b backdrop-blur-md">
+      {/* Desktop */}
+      <div className="container mx-auto hidden items-center justify-between px-10 py-3 md:flex">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="bg-primary/15 flex size-7 items-center justify-center rounded-lg">
+            <TrendingUp className="text-primary size-4" />
+          </div>
+          <span className="text-base font-semibold tracking-tight">
+            Budgetly
+          </span>
+        </Link>
+
         {token && (
           <>
-            <div className="flex gap-2">
-              {menu.map((item) =>
-                item.href === pathname ? (
-                  <Button key={item.href}>{item.label}</Button>
-                ) : (
-                  <Link key={item.href} href={item.href}>
-                    <Button variant="ghost">{item.label}</Button>
-                  </Link>
-                ),
-              )}
+            <div className="flex items-center gap-1">
+              {menu.map((item) => (
+                <Link key={item.href} href={item.href}>
+                  <span
+                    className={`relative px-3 py-1.5 text-sm transition-colors duration-150 ${
+                      isActive(item.href)
+                        ? 'text-foreground font-medium'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {item.label}
+                    {isActive(item.href) && (
+                      <span className="bg-primary absolute right-1/2 -bottom-3.25 h-0.5 w-4/5 translate-x-1/2 rounded-full" />
+                    )}
+                  </span>
+                </Link>
+              ))}
             </div>
+
             <Button
-              className="flex items-center justify-center"
               variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground gap-1.5 text-sm"
               onClick={handleLogout}
             >
-              Sair <LogOut />
+              <LogOut className="size-4" />
+              Sair
             </Button>
           </>
         )}
       </div>
-      <div
-        className={`container mx-auto flex flex-col items-center justify-between px-4 py-2 md:hidden`}
-      >
-        <div className="flex w-full items-center justify-between">
-          <h1 className="text-xl font-bold">Budgetly</h1>
+
+      {/* Mobile */}
+      <div className="container mx-auto flex flex-col px-4 md:hidden">
+        <div className="flex items-center justify-between py-3">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="bg-primary/15 flex size-7 items-center justify-center rounded-lg">
+              <TrendingUp className="text-primary size-4" />
+            </div>
+            <span className="text-base font-semibold tracking-tight">
+              Budgetly
+            </span>
+          </Link>
           {token && (
             <Button
               variant="outline"
+              size="icon"
+              className="size-8"
               onClick={() => setMenuOpened(!menuOpened)}
             >
-              {menuOpened ? <X size={15} /> : <Menu size={15} />}
+              {menuOpened ? <X className="size-4" /> : <Menu className="size-4" />}
             </Button>
           )}
         </div>
+
         {token && (
           <div
-            className={`flex w-full flex-col items-center overflow-hidden duration-500 ${menuOpened ? 'max-h-90' : 'max-h-0'}`}
+            className={`overflow-hidden transition-all duration-300 ease-in-out ${menuOpened ? 'max-h-96 pb-3' : 'max-h-0'}`}
           >
-            <div className="mt-4 flex w-full flex-col items-center gap-2">
-              {menu.map((item) =>
-                item.href === pathname ? (
-                  <Button className="w-full text-xs" key={item.href}>
-                    {item.label}
-                  </Button>
-                ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setMenuOpened(!menuOpened)}
-                  >
-                    <Button className="w-full text-xs" variant="ghost">
-                      {item.label}
-                    </Button>
-                  </Link>
-                ),
-              )}
+            <div className="border-border/50 flex flex-col gap-1 border-t pt-3">
+              {menu.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpened(false)}
+                  className={`rounded-md px-3 py-2 text-sm transition-colors ${
+                    isActive(item.href)
+                      ? 'bg-primary/10 text-primary font-medium'
+                      : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <button
+                onClick={() => {
+                  setMenuOpened(false)
+                  handleLogout()
+                }}
+                className="text-muted-foreground hover:text-foreground mt-1 flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors"
+              >
+                <LogOut className="size-4" />
+                Sair
+              </button>
             </div>
-            <Button
-              className="flex items-center justify-center text-xs"
-              variant="ghost"
-              onClick={() => {
-                setMenuOpened(!menuOpened)
-                handleLogout()
-              }}
-            >
-              Sair <LogOut />
-            </Button>
           </div>
         )}
       </div>

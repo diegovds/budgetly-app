@@ -24,39 +24,34 @@ export function HeaderPage({
   const { setIsOpen, setWhoOpened } = useModalStore()
 
   return (
-    <header className="lg-gap-0 flex flex-col justify-between gap-4 md:items-center lg:flex-row">
+    <header className="flex flex-col justify-between gap-3 md:items-center lg:flex-row lg:gap-0">
       <div>
-        <h1 className="mb-4 text-center text-2xl font-bold md:text-3xl lg:text-left">
+        <h1 className="mb-1.5 text-center text-3xl font-(family-name:--font-serif-display) md:text-4xl lg:text-left">
           {title}
         </h1>
-        <p className="text-muted-foreground text-center text-sm font-medium text-balance md:text-base lg:text-left">
+        <p className="text-muted-foreground text-center text-sm text-balance lg:text-left">
           {description}
         </p>
       </div>
 
       {icon !== false ? (
         <Button
-          className="w-full text-xs md:w-fit md:text-sm"
+          className="w-full gap-2 md:w-fit"
           onClick={() => {
             setIsOpen(true)
             setWhoOpened(href)
           }}
         >
-          <CirclePlus /> {buttonText}
+          <CirclePlus className="size-4" />
+          {buttonText}
         </Button>
       ) : (
         <Link href="/">
-          <Button className="w-full text-xs md:w-fit md:text-sm">
-            Voltar para a Home
-          </Button>
+          <Button className="w-full md:w-fit">Voltar para a Home</Button>
         </Link>
       )}
 
-      <Modal
-        onClose={() => {
-          setIsOpen(false)
-        }}
-      />
+      <Modal onClose={() => setIsOpen(false)} />
     </header>
   )
 }

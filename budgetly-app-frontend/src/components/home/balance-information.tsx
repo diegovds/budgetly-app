@@ -5,6 +5,25 @@ type BalanceInformationProps = {
   icon: React.ReactNode
   text: string
   isLoading: boolean
+  variant?: 'neutral' | 'income' | 'expense'
+}
+
+const variantStyles = {
+  neutral: {
+    wrapper: 'border-border/60 bg-card',
+    icon: 'bg-primary/10 text-primary',
+    value: 'text-foreground',
+  },
+  income: {
+    wrapper: 'border-border/60 bg-card',
+    icon: 'bg-emerald-500/10 text-emerald-400',
+    value: 'text-emerald-400',
+  },
+  expense: {
+    wrapper: 'border-border/60 bg-card',
+    icon: 'bg-destructive/10 text-destructive',
+    value: 'text-destructive',
+  },
 }
 
 export function BalanceInformation({
@@ -12,19 +31,24 @@ export function BalanceInformation({
   icon,
   text,
   isLoading,
+  variant = 'neutral',
 }: BalanceInformationProps) {
+  const styles = variantStyles[variant]
+
   return (
     <div
-      className={`bg-accent space-y-2 rounded p-4 ${isLoading ? 'animate-pulse' : ''}`}
+      className={`card-hover rounded-xl border p-5 ${styles.wrapper} ${isLoading ? 'animate-pulse' : ''}`}
     >
-      <div
-        className={`text-muted-foreground flex items-center justify-between ${isLoading ? 'invisible' : ''}`}
-      >
-        <p className="text-sm font-semibold md:text-base">{text}</p>
-        {icon}
+      <div className={`flex items-center justify-between ${isLoading ? 'invisible' : ''}`}>
+        <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+          {text}
+        </p>
+        <div className={`flex size-8 items-center justify-center rounded-lg ${styles.icon}`}>
+          {icon}
+        </div>
       </div>
       <p
-        className={`text-2xl font-semibold md:text-3xl ${isLoading ? 'invisible' : ''}`}
+        className={`mt-3 text-3xl font-semibold tracking-tight md:text-4xl ${styles.value} ${isLoading ? 'invisible' : ''}`}
       >
         {!isLoading && balance !== undefined ? formatCurrency(balance) : '_'}
       </p>

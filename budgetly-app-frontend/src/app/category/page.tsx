@@ -25,22 +25,22 @@ export default async function CategoryPage() {
         title="Gerenciar Categorias"
       />
       <div className="flex flex-col items-start gap-8 md:flex-row">
-        <div className="bg-card w-full flex-1 space-y-4 rounded p-4">
-          <div className="flex items-center gap-2">
-            <div className="rounded-full bg-green-200 p-1">
-              <TrendingUp className="text-green-500" size={20} />
+        <div className="bg-card w-full flex-1 space-y-4 rounded-xl border p-5 pb-0">
+          <div className="flex items-center gap-2.5">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-500/10">
+              <TrendingUp className="size-4 text-emerald-400" />
             </div>
-            <h3 className="font-semibold md:text-xl">Categoria de Receita</h3>
+            <h3 className="font-semibold">Categoria de Receita</h3>
           </div>
           <CategoryList label="Receitas" type="INCOME" />
         </div>
 
-        <div className="bg-card w-full flex-1 space-y-4 rounded p-4">
-          <div className="flex items-center gap-2">
-            <div className="rounded-full bg-red-200 p-1">
-              <TrendingDown className="text-red-500" size={20} />
+        <div className="bg-card w-full flex-1 space-y-4 rounded-xl border p-5 pb-0">
+          <div className="flex items-center gap-2.5">
+            <div className="bg-destructive/10 flex size-8 items-center justify-center rounded-lg">
+              <TrendingDown className="text-destructive size-4" />
             </div>
-            <h3 className="font-semibold md:text-xl">Categoria de Despesa</h3>
+            <h3 className="font-semibold">Categoria de Despesa</h3>
           </div>
           <CategoryList label="Despesas" type="EXPENSE" />
         </div>

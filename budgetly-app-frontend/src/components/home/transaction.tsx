@@ -7,15 +7,15 @@ type TransactionProps = {
 
 export function Transaction({ transaction }: TransactionProps) {
   return (
-    <div className="bg-accent flex items-center justify-between rounded p-4">
-      <div className="flex-1 space-y-2">
-        <h3 className="text-base font-medium md:text-xl">{transaction.name}</h3>
-        <p className="text-muted-foreground text-xs md:text-sm">
+    <div className="border-border/60 card-hover flex items-center justify-between rounded-lg border px-4 py-3">
+      <div className="flex-1 space-y-0.5">
+        <h3 className="text-sm font-medium">{transaction.name}</h3>
+        <p className="text-muted-foreground text-xs">
           {formatDate(new Date(transaction.date))}
         </p>
       </div>
       <p
-        className={`flex-1 text-right text-sm font-semibold md:text-base ${transaction.amount < 0 ? 'text-red-500' : 'text-green-500'}`}
+        className={`text-sm font-semibold ${transaction.amount < 0 ? 'text-destructive' : 'text-emerald-400'}`}
       >
         {formatCurrency(transaction.amount)}
       </p>

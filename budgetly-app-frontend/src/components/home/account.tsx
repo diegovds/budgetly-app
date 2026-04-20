@@ -10,10 +10,10 @@ type AccountProps = {
 
 export function Account({ account }: AccountProps) {
   return (
-    <div className="bg-accent flex items-center justify-between rounded p-4">
-      <h3 className="text-sm font-medium md:text-base">{account.name}</h3>
+    <div className="border-border/60 card-hover flex items-center justify-between rounded-lg border px-4 py-3">
+      <h3 className="text-sm font-medium">{account.name}</h3>
       <p
-        className={`text-sm font-semibold md:text-base ${account.balance >= 0 ? 'text-green-500' : 'text-red-500'}`}
+        className={`text-sm font-semibold ${account.balance >= 0 ? 'text-emerald-400' : 'text-destructive'}`}
       >
         {formatCurrency(account.balance)}
       </p>

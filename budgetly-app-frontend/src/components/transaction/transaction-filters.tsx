@@ -5,7 +5,7 @@ import { useCategoriesStore } from '@/store/categories'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { CalendarIcon, Loader2 } from 'lucide-react'
+import { CalendarIcon, Loader2, RotateCcw, SlidersHorizontal } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
@@ -90,233 +90,228 @@ export function TransactionFilters({ params }: TransactionFiltersProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-card flex flex-col justify-between gap-4 rounded border p-4 lg:flex-row"
+        className="bg-card flex flex-col justify-between gap-5 rounded-xl border p-5 lg:flex-row"
       >
-        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-5">
-          {/* DATA INICIAL */}
-          <FormField
-            control={form.control}
-            name="startDate"
-            render={({ field }) => (
-              <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel className="text-sm md:text-base">
-                  Data inicial
-                </FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        className={`w-full justify-start text-left text-xs font-normal md:text-base ${
-                          !field.value && 'text-muted-foreground'
-                        }`}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {field.value ? (
-                          format(field.value, 'dd/MM/yyyy', {
-                            locale: ptBR,
-                          })
-                        ) : (
-                          <span>Data</span>
-                        )}
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto rounded p-0">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(day) =>
-                        day > new Date(new Date().setHours(0, 0, 0, 0))
-                      }
-                      locale={ptBR}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <SlidersHorizontal className="text-muted-foreground size-3.5" />
+            <span className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+              Filtros
+            </span>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-5">
+            {/* DATA INICIAL */}
+            <FormField
+              control={form.control}
+              name="startDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1.5">
+                  <FormLabel className="text-xs font-medium">
+                    Data inicial
+                  </FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className={`w-full justify-start text-left text-sm font-normal ${
+                            !field.value && 'text-muted-foreground'
+                          }`}
+                        >
+                          <CalendarIcon className="size-3.5" />
+                          {field.value ? (
+                            format(field.value, 'dd/MM/yyyy', { locale: ptBR })
+                          ) : (
+                            <span>Data</span>
+                          )}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto rounded-xl p-0">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(day) =>
+                          day > new Date(new Date().setHours(0, 0, 0, 0))
+                        }
+                        locale={ptBR}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* DATA FINAL */}
-          <FormField
-            control={form.control}
-            name="endDate"
-            render={({ field }) => (
-              <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel className="text-sm md:text-base">
-                  Data final
-                </FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        className={`w-full justify-start text-left text-xs font-normal md:text-base ${
-                          !field.value && 'text-muted-foreground'
-                        }`}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {field.value ? (
-                          format(field.value, 'dd/MM/yyyy', {
-                            locale: ptBR,
-                          })
-                        ) : (
-                          <span>Data</span>
-                        )}
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto rounded p-0">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(day) =>
-                        day > new Date(new Date().setHours(0, 0, 0, 0))
-                      }
-                      locale={ptBR}
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            {/* DATA FINAL */}
+            <FormField
+              control={form.control}
+              name="endDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1.5">
+                  <FormLabel className="text-xs font-medium">
+                    Data final
+                  </FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className={`w-full justify-start text-left text-sm font-normal ${
+                            !field.value && 'text-muted-foreground'
+                          }`}
+                        >
+                          <CalendarIcon className="size-3.5" />
+                          {field.value ? (
+                            format(field.value, 'dd/MM/yyyy', { locale: ptBR })
+                          ) : (
+                            <span>Data</span>
+                          )}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto rounded-xl p-0">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(day) =>
+                          day > new Date(new Date().setHours(0, 0, 0, 0))
+                        }
+                        locale={ptBR}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* CONTA */}
-          <FormField
-            control={form.control}
-            name="accountId"
-            render={({ field }) => (
-              <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel className="text-sm md:text-base">Conta</FormLabel>
-                <Select
-                  value={field.value ?? ALL_VALUE}
-                  onValueChange={(value) =>
-                    field.onChange(value === ALL_VALUE ? undefined : value)
-                  }
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full text-xs md:text-base">
-                      <SelectValue placeholder="Selecione a Conta" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem
-                      className="text-xs md:text-base"
-                      value={ALL_VALUE}
-                    >
-                      Todas
-                    </SelectItem>
-                    {accounts.map((account) => (
-                      <SelectItem
-                        className="text-xs md:text-base"
-                        key={account.id}
-                        value={account.id}
-                      >
-                        {account.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* CATEGORIA */}
-          <FormField
-            control={form.control}
-            name="categoryId"
-            render={({ field }) => (
-              <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel className="text-sm md:text-base">
-                  Categoria
-                </FormLabel>
-                <Select
-                  value={field.value ?? ALL_VALUE}
-                  onValueChange={(value) =>
-                    field.onChange(value === ALL_VALUE ? undefined : value)
-                  }
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-full text-xs md:text-base">
-                      <SelectValue placeholder="Selecione a Categoria" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem
-                      className="text-xs md:text-base"
-                      value={ALL_VALUE}
-                    >
-                      Todas
-                    </SelectItem>
-                    {categories.map((category) => (
-                      <SelectItem
-                        className="text-xs md:text-base"
-                        key={category.id}
-                        value={category.id}
-                      >
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* BUSCA */}
-          <FormField
-            control={form.control}
-            name="search"
-            render={({ field }) => (
-              <FormItem className="flex flex-col items-center justify-between">
-                <FormLabel className="text-sm md:text-base">
-                  Descrição
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Conta da luz"
-                    className="text-xs md:text-base"
-                    value={field.value ?? ''}
-                    onChange={(e) =>
-                      field.onChange(
-                        e.target.value === '' ? undefined : e.target.value,
-                      )
+            {/* CONTA */}
+            <FormField
+              control={form.control}
+              name="accountId"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1.5">
+                  <FormLabel className="text-xs font-medium">Conta</FormLabel>
+                  <Select
+                    value={field.value ?? ALL_VALUE}
+                    onValueChange={(value) =>
+                      field.onChange(value === ALL_VALUE ? undefined : value)
                     }
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full text-sm">
+                        <SelectValue placeholder="Todas" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={ALL_VALUE}>Todas</SelectItem>
+                      {accounts.map((account) => (
+                        <SelectItem key={account.id} value={account.id}>
+                          {account.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* CATEGORIA */}
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1.5">
+                  <FormLabel className="text-xs font-medium">
+                    Categoria
+                  </FormLabel>
+                  <Select
+                    value={field.value ?? ALL_VALUE}
+                    onValueChange={(value) =>
+                      field.onChange(value === ALL_VALUE ? undefined : value)
+                    }
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full text-sm">
+                        <SelectValue placeholder="Todas" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={ALL_VALUE}>Todas</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* BUSCA */}
+            <FormField
+              control={form.control}
+              name="search"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-1.5">
+                  <FormLabel className="text-xs font-medium">
+                    Descrição
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Conta da luz..."
+                      className="text-sm"
+                      value={field.value ?? ''}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value === '' ? undefined : e.target.value,
+                        )
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
-        <div className="flex gap-4 self-center md:self-end">
+        <div className="flex items-end gap-2">
           <Button
             type="button"
-            className="text-xs md:text-sm"
+            size="sm"
             variant="outline"
             onClick={handleReset}
             disabled={isFiltering || isResetting}
+            className="gap-1.5"
           >
             {isResetting ? (
-              <Loader2 className="animate-spin" />
+              <Loader2 className="size-3.5 animate-spin" />
             ) : (
-              'Limpar filtros'
+              <>
+                <RotateCcw className="size-3.5" />
+                Limpar
+              </>
             )}
           </Button>
 
           <Button
             type="submit"
-            className="text-xs md:text-sm"
+            size="sm"
             disabled={isFiltering || isResetting}
+            className="gap-1.5"
           >
-            {isFiltering ? <Loader2 className="animate-spin" /> : 'Filtrar'}
+            {isFiltering ? (
+              <Loader2 className="size-3.5 animate-spin" />
+            ) : (
+              'Filtrar'
+            )}
           </Button>
         </div>
       </form>

@@ -12,25 +12,34 @@ export function SummaryInformation() {
   })
 
   return (
-    <div className="bg-card grid gap-4 rounded p-4 md:grid-cols-3 lg:gap-8">
-      <BalanceInformation
-        balance={data?.totalBalance}
-        icon={<Landmark size={20} />}
-        text="Saldo Total"
-        isLoading={isLoading}
-      />
-      <BalanceInformation
-        balance={data?.monthIncome}
-        icon={<Banknote size={20} />}
-        text="Receitas do mês"
-        isLoading={isLoading}
-      />
-      <BalanceInformation
-        balance={data?.monthExpense}
-        icon={<ShoppingCart size={20} />}
-        text="Despesas do mês"
-        isLoading={isLoading}
-      />
+    <div className="grid gap-4 md:grid-cols-3">
+      <div className="animate-fade-in-up stagger-1">
+        <BalanceInformation
+          balance={data?.totalBalance}
+          icon={<Landmark className="size-4" />}
+          text="Saldo Total"
+          isLoading={isLoading}
+          variant="neutral"
+        />
+      </div>
+      <div className="animate-fade-in-up stagger-2">
+        <BalanceInformation
+          balance={data?.monthIncome}
+          icon={<Banknote className="size-4" />}
+          text="Receitas do mês"
+          isLoading={isLoading}
+          variant="income"
+        />
+      </div>
+      <div className="animate-fade-in-up stagger-3">
+        <BalanceInformation
+          balance={data?.monthExpense}
+          icon={<ShoppingCart className="size-4" />}
+          text="Despesas do mês"
+          isLoading={isLoading}
+          variant="expense"
+        />
+      </div>
     </div>
   )
 }

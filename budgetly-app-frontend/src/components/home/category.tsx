@@ -9,19 +9,17 @@ type CategoryProps = {
 
 export function Category({ category }: CategoryProps) {
   return (
-    <div className="bg-accent flex flex-col justify-between space-y-4 rounded p-4">
+    <div className="border-border/60 card-hover flex flex-col justify-between gap-3 rounded-xl border p-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-base font-medium md:text-xl">{category.name}</h3>
+        <h3 className="text-sm font-medium">{category.name}</h3>
         <Link href={`/transaction?categoryId=${category.id}`}>
-          <ChevronRight size={15} />
+          <ChevronRight className="text-muted-foreground hover:text-foreground size-4 transition-colors" />
         </Link>
       </div>
       <div className="space-y-0.5">
-        <p className="text-muted-foreground text-xs md:text-sm">
-          Últimos 30 dias
-        </p>
+        <p className="text-muted-foreground text-xs">Últimos 30 dias</p>
         <span
-          className={`text-base font-medium md:text-xl ${category.total < 0 ? 'text-red-500' : 'text-green-500'}`}
+          className={`text-base font-semibold ${category.total < 0 ? 'text-destructive' : 'text-emerald-400'}`}
         >
           {formatCurrency(category.total)}
         </span>

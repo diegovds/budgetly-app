@@ -46,22 +46,50 @@ export function Login() {
 
   return (
     <div className="flex w-full flex-col gap-8 lg:flex-row">
-      <div className="flex flex-col justify-center space-y-4 lg:flex-1">
-        <h1 className="text-center text-2xl font-bold text-balance md:text-5xl lg:text-left">
-          Garanta seu Futuro Financeiro
-        </h1>
-        <p className="text-muted-foreground text-center text-sm font-medium text-balance md:text-base lg:text-left">
-          Faça login para acessar suas finanças e alcançar seus objetivos
-        </p>
+      {/* Branding panel */}
+      <div className="from-primary/20 via-primary/10 to-background relative flex flex-col justify-between overflow-hidden rounded-2xl bg-linear-to-br p-8 lg:flex-1 lg:p-12">
+        {/* Geometric decorations */}
+        <div className="border-primary/20 absolute -top-12 -right-12 size-48 rounded-full border" />
+        <div className="border-primary/10 absolute -top-6 -right-6 size-48 rounded-full border" />
+        <div className="border-primary/10 absolute -bottom-16 -left-16 size-64 rounded-full border" />
+
+        <div className="relative">
+          <p className="text-primary mb-3 text-xs font-semibold uppercase tracking-widest">
+            Bem-vindo de volta
+          </p>
+          <h1
+            className="text-foreground mb-4 text-4xl leading-tight font-(family-name:--font-serif-display) md:text-5xl lg:text-6xl"
+          >
+            Garanta seu
+            <br />
+            <span className="text-primary">Futuro</span>
+            <br />
+            Financeiro
+          </h1>
+          <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
+            Acompanhe receitas, despesas e conquiste seus objetivos financeiros com clareza.
+          </p>
+        </div>
+
+        <div className="relative mt-8 grid grid-cols-2 gap-3 lg:mt-0">
+          {[
+            { value: '100%', label: 'Controle total' },
+            { value: '30s', label: 'Para começar' },
+          ].map((stat) => (
+            <div key={stat.label} className="bg-card/40 rounded-xl border border-white/5 p-4 backdrop-blur-sm">
+              <p className="text-primary text-2xl font-semibold">{stat.value}</p>
+              <p className="text-muted-foreground mt-0.5 text-xs">{stat.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="bg-card flex flex-col items-center justify-center rounded p-4 lg:min-w-lg">
-        <div className="w-full max-w-md space-y-6">
-          <div className="space-y-0.5">
-            <h2 className="text-center text-2xl font-semibold md:text-3xl">
-              Acesse sua conta
-            </h2>
-            <p className="text-muted-foreground text-center text-sm lg:text-base">
+      {/* Form panel */}
+      <div className="bg-card flex flex-col items-center justify-center rounded-2xl p-6 lg:min-w-sm lg:p-10">
+        <div className="w-full max-w-sm space-y-6">
+          <div className="space-y-1">
+            <h2 className="text-2xl font-semibold">Acesse sua conta</h2>
+            <p className="text-muted-foreground text-sm">
               Insira seus dados para continuar
             </p>
           </div>
@@ -69,25 +97,22 @@ export function Login() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-6 rounded border p-4"
+              className="space-y-5"
             >
-              {/* EMAIL */}
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm md:text-base">
-                      E-mail
-                    </FormLabel>
+                    <FormLabel className="text-sm">E-mail</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           placeholder="nome@empresa.com"
-                          className="pr-10 text-xs md:text-base"
+                          className="pr-10"
                           {...field}
                         />
-                        <Mail className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2" />
+                        <Mail className="text-muted-foreground pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2" />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -95,32 +120,29 @@ export function Login() {
                 )}
               />
 
-              {/* PASSWORD */}
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm md:text-base">
-                      Senha
-                    </FormLabel>
+                    <FormLabel className="text-sm">Senha</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           type={showPassword ? 'text' : 'password'}
                           placeholder="••••••••"
-                          className="pr-10 text-xs md:text-base"
+                          className="pr-10"
                           {...field}
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword((prev) => !prev)}
-                          className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer"
+                          className="text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer transition-colors hover:text-foreground"
                         >
                           {showPassword ? (
-                            <EyeOff className="size-5" />
+                            <EyeOff className="size-4" />
                           ) : (
-                            <Eye className="size-5" />
+                            <Eye className="size-4" />
                           )}
                         </button>
                       </div>
@@ -131,27 +153,27 @@ export function Login() {
               />
 
               {error && (
-                <p className="text-destructive text-center text-sm">
+                <p className="bg-destructive/10 text-destructive rounded-lg px-3 py-2 text-center text-sm">
                   {error.message}
                 </p>
               )}
 
               <Button
                 type="submit"
-                className="w-full text-xs md:text-sm"
+                className="w-full"
                 disabled={isPending || isSuccess}
               >
-                Entrar
+                {isPending ? 'Entrando...' : 'Entrar'}
               </Button>
             </form>
           </Form>
 
-          <div className="text-muted-foreground text-center text-xs lg:text-sm">
+          <p className="text-muted-foreground text-center text-sm">
             Não tem uma conta?{' '}
-            <Link href="/register" className="text-primary font-bold">
+            <Link href="/register" className="text-primary font-semibold hover:underline">
               Criar conta
             </Link>
-          </div>
+          </p>
         </div>
       </div>
     </div>
