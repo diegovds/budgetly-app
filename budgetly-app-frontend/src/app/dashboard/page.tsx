@@ -37,7 +37,7 @@ export default async function Dashboard() {
       </div>
 
       <div className="grid w-full items-start gap-8 lg:grid-cols-2">
-        <div className="bg-card w-full space-y-4 rounded-xl border p-5 pb-0">
+        <div className="bg-card w-full space-y-4 overflow-x-auto rounded-xl border p-5 pb-0">
           <div className="flex items-center gap-2.5">
             <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-500/10">
               <TrendingUp className="size-4 text-emerald-400" />
@@ -47,7 +47,7 @@ export default async function Dashboard() {
           <CategoryGrid type="INCOME" />
         </div>
 
-        <div className="bg-card w-full space-y-4 rounded-xl border p-5 pb-0">
+        <div className="bg-card w-full space-y-4 overflow-x-auto rounded-xl border p-5 pb-0">
           <div className="flex items-center gap-2.5">
             <div className="bg-destructive/10 flex size-8 items-center justify-center rounded-lg">
               <TrendingDown className="text-destructive size-4" />
