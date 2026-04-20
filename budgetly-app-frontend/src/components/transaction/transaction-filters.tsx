@@ -5,7 +5,12 @@ import { useCategoriesStore } from '@/store/categories'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { CalendarIcon, Loader2, RotateCcw, SlidersHorizontal } from 'lucide-react'
+import {
+  CalendarIcon,
+  Loader2,
+  RotateCcw,
+  SlidersHorizontal,
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
@@ -95,7 +100,7 @@ export function TransactionFilters({ params }: TransactionFiltersProps) {
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <SlidersHorizontal className="text-muted-foreground size-3.5" />
-            <span className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+            <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
               Filtros
             </span>
           </div>
