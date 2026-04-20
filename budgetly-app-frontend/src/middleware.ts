@@ -16,12 +16,15 @@ export async function middleware(req: NextRequest) {
   ]
 
   // usuário logado tentando acessar rota pública
-  if (token && publicRoutes.includes(pathname)) {
+  if (token && publicRoutes.some((r) => pathname === r)) {
     return NextResponse.redirect(new URL('/', req.url))
   }
 
   // usuário não logado tentando acessar rota privada
-  if (!token && privateRoutes.includes(pathname)) {
+  if (
+    !token &&
+    privateRoutes.some((r) => pathname === r || pathname.startsWith(`${r}/`))
+  ) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
 
