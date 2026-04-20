@@ -11,6 +11,7 @@ import { QueryClientContext } from '@/providers/query-client'
 import { StoreHydration } from '@/providers/store-hydration'
 import { StoreInitializer } from '@/providers/store-initializer'
 import type { Metadata, Viewport } from 'next'
+import { redirect } from 'next/navigation'
 import { Poppins } from 'next/font/google'
 import { Toaster } from 'sonner'
 import './globals.css'
@@ -50,14 +51,23 @@ export default async function RootLayout({
 }>) {
   const { token } = await getAuthState()
 
-  const [accounts, categories, categoryTypes, accountTypes] = token
-    ? await Promise.all([
+  let accounts = null
+  let categories = null
+  let categoryTypes = null
+  let accountTypes = null
+
+  if (token) {
+    try {
+      ;[accounts, categories, categoryTypes, accountTypes] = await Promise.all([
         getAccount({ limit: 50 }),
         getCategory({ limit: 50, dateRange: 'all' }),
         getCategoryTypes(),
         getAccountTypes(),
       ])
-    : [null, null, null, null]
+    } catch {
+      redirect('/api/auth/signout')
+    }
+  }
 
   return (
     <html lang="pt-BR">
