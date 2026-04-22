@@ -19,14 +19,22 @@ export function StatCard({
   value,
   variant = 'default',
 }: StatCardProps) {
+  if (isLoading) {
+    return (
+      <div className="border-border/60 animate-pulse rounded-xl border p-5">
+        <div className="flex items-center justify-between">
+          <div className="bg-accent h-3 w-24 rounded" />
+          <div className="bg-accent size-8 rounded-lg" />
+        </div>
+        <div className="bg-accent mt-4 h-9 w-16 rounded" />
+      </div>
+    )
+  }
+
   return (
-    <div
-      className={`border-border/60 card-hover rounded-xl border p-5 ${isLoading ? 'animate-pulse' : ''}`}
-    >
-      <div
-        className={`flex items-center justify-between ${isLoading ? 'invisible' : ''}`}
-      >
-        <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
+    <div className="border-border/60 card-hover rounded-xl border p-5">
+      <div className="flex items-center justify-between">
+        <p className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
           {label}
         </p>
         <div
@@ -35,9 +43,7 @@ export function StatCard({
           {icon}
         </div>
       </div>
-      <p
-        className={`mt-3 text-3xl font-semibold tracking-tight md:text-4xl ${isLoading ? 'invisible' : ''}`}
-      >
+      <p className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
         {value}
       </p>
     </div>
