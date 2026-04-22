@@ -95,7 +95,25 @@ export default async function RootLayout({
           <Navbar token={token} />
           <main className="container mx-auto my-5 flex flex-1 px-4 md:my-10 md:px-10">
             {children}
-            <Toaster theme="dark" position="top-center" />
+            <Toaster
+              theme="dark"
+              position="bottom-right"
+              offset={20}
+              gap={8}
+              toastOptions={{
+                style: {
+                  background: 'oklch(0.20 0.008 285.885)',
+                  border: '1px solid oklch(1 0 0 / 10%)',
+                  borderRadius: '0.75rem',
+                  boxShadow:
+                    '0 8px 40px oklch(0 0 0 / 50%), 0 1px 0 oklch(1 0 0 / 6%) inset',
+                  color: 'oklch(0.985 0 0)',
+                  fontSize: '13px',
+                  fontFamily: 'var(--font-poppins, sans-serif)',
+                  padding: '12px 16px',
+                },
+              }}
+            />
           </main>
           <Footer />
         </QueryClientContext>
