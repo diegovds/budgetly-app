@@ -30,9 +30,13 @@ export function TablePagination({
     <div
       className={`flex flex-col items-center justify-between gap-3 lg:flex-row ${className ?? ''}`}
     >
-      <p className="text-muted-foreground text-xs">
-        Mostrando {start}–{end} de {total} {label}
-      </p>
+      {isLoading ? (
+        <div className="bg-accent h-3 w-36 animate-pulse rounded" />
+      ) : (
+        <p className="text-muted-foreground text-xs">
+          Mostrando {start}–{end} de {total} {label}
+        </p>
+      )}
 
       {totalPages > 1 &&
         (isLoading ? (
