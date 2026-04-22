@@ -53,8 +53,8 @@ export function ChartArea() {
             accessibilityLayer
             data={data}
             margin={{
-              left: 12,
-              right: 12,
+              left: 20,
+              right: 20,
             }}
           >
             <CartesianGrid vertical={false} />
@@ -62,8 +62,13 @@ export function ChartArea() {
               dataKey="monthLabel"
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
+              tickMargin={4}
               tickFormatter={(value) => value.slice(0, 3)}
+              interval={0}
+              angle={-35}
+              textAnchor="end"
+              height={36}
+              fontSize={11}
             />
             <ChartTooltip
               cursor={false}
