@@ -35,11 +35,21 @@ export function BalanceInformation({
 }: BalanceInformationProps) {
   const styles = variantStyles[variant]
 
+  if (isLoading) {
+    return (
+      <div className="border-border/60 bg-card animate-pulse rounded-xl border p-5">
+        <div className="flex items-center justify-between">
+          <div className="bg-accent h-3 w-24 rounded" />
+          <div className="bg-accent size-8 rounded-lg" />
+        </div>
+        <div className="bg-accent mt-4 h-9 w-28 rounded" />
+      </div>
+    )
+  }
+
   return (
-    <div
-      className={`card-hover rounded-xl border p-5 ${styles.wrapper} ${isLoading ? 'animate-pulse' : ''}`}
-    >
-      <div className={`flex items-center justify-between ${isLoading ? 'invisible' : ''}`}>
+    <div className={`card-hover rounded-xl border p-5 ${styles.wrapper}`}>
+      <div className="flex items-center justify-between">
         <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider">
           {text}
         </p>
@@ -47,10 +57,8 @@ export function BalanceInformation({
           {icon}
         </div>
       </div>
-      <p
-        className={`mt-3 text-3xl font-semibold tracking-tight md:text-4xl ${styles.value} ${isLoading ? 'invisible' : ''}`}
-      >
-        {!isLoading && balance !== undefined ? formatCurrency(balance) : '_'}
+      <p className={`mt-3 text-3xl font-semibold tracking-tight md:text-4xl ${styles.value}`}>
+        {balance !== undefined ? formatCurrency(balance) : '—'}
       </p>
     </div>
   )
