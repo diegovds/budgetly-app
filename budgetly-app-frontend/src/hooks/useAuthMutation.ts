@@ -3,25 +3,17 @@ import { postAuth, PostAuth200, PostAuthBody } from '@/http/api'
 import { useAuthStore } from '@/store/auth'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
 
 export function useAuthMutation() {
   const { setToken } = useAuthStore()
   const router = useRouter()
 
-  return useMutation<PostAuth200, Error, PostAuthBody, string | number>({
+  return useMutation<PostAuth200, Error, PostAuthBody>({
     mutationFn: (data) => postAuth(data),
-    onMutate: () => {
-      return toast.loading('Autenticando...')
-    },
-    onSuccess: async (data, _, toastId) => {
-      toast.dismiss(toastId)
+    onSuccess: async (data) => {
       await setAuthCookie(data.token)
       setToken(data.token)
       router.push('/')
-    },
-    onError: (error, _, toastId) => {
-      toast.error(error.message ?? 'Erro ao fazer login.', { id: toastId })
     },
   })
 }
