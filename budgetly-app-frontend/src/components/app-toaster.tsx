@@ -7,8 +7,9 @@ export function AppToaster() {
   useEffect(() => {
     let rafId = 0
     let styleObserver: MutationObserver | null = null
-    let bodyObserver: MutationObserver | null = null
     let resizeObserver: ResizeObserver | null = null
+    let bodyObserver: MutationObserver | null = null
+    let currentToaster: Element | null = null
     let isApplying = false
 
     const applyPosition = () => {
@@ -53,41 +54,58 @@ export function AppToaster() {
       rafId = requestAnimationFrame(applyPosition)
     }
 
-    const attachObservers = () => {
+    const syncToaster = () => {
       const toaster = document.querySelector('[data-sonner-toaster]')
-      const main = document.querySelector('main')
-      if (!toaster || !main) return false
+      if (toaster === currentToaster) return
 
-      styleObserver = new MutationObserver(scheduleApply)
-      styleObserver.observe(toaster, {
-        attributes: true,
-        attributeFilter: ['style'],
-      })
+      styleObserver?.disconnect()
+      styleObserver = null
+      currentToaster = toaster
 
-      resizeObserver = new ResizeObserver(scheduleApply)
-      resizeObserver.observe(main)
-
-      applyPosition()
-      return true
+      if (toaster) {
+        styleObserver = new MutationObserver(scheduleApply)
+        styleObserver.observe(toaster, {
+          attributes: true,
+          attributeFilter: ['style'],
+        })
+        scheduleApply()
+      }
     }
 
-    if (!attachObservers()) {
-      bodyObserver = new MutationObserver(() => {
-        if (attachObservers()) {
-          bodyObserver?.disconnect()
-          bodyObserver = null
-        }
-      })
-      bodyObserver.observe(document.body, { childList: true, subtree: true })
+    const main = document.querySelector('main')
+    if (main) {
+      resizeObserver = new ResizeObserver(scheduleApply)
+      resizeObserver.observe(main)
+    }
+
+    bodyObserver = new MutationObserver(syncToaster)
+    bodyObserver.observe(document.body, { childList: true, subtree: true })
+
+    syncToaster()
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        syncToaster()
+        scheduleApply()
+      }
+    }
+
+    const handleFocus = () => {
+      syncToaster()
+      scheduleApply()
     }
 
     window.addEventListener('resize', scheduleApply)
     window.addEventListener('scroll', scheduleApply, { passive: true })
+    window.addEventListener('focus', handleFocus)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
       cancelAnimationFrame(rafId)
       window.removeEventListener('resize', scheduleApply)
       window.removeEventListener('scroll', scheduleApply)
+      window.removeEventListener('focus', handleFocus)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
       styleObserver?.disconnect()
       bodyObserver?.disconnect()
       resizeObserver?.disconnect()
