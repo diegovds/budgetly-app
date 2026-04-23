@@ -1,13 +1,6 @@
+import { navItems } from '@/lib/navigation'
 import { TrendingUp } from 'lucide-react'
 import Link from 'next/link'
-
-const links = [
-  { label: 'Painel', href: '/' },
-  { label: 'Transações', href: '/transaction' },
-  { label: 'Contas', href: '/account' },
-  { label: 'Categorias', href: '/category' },
-  { label: 'Dashboard', href: '/dashboard' },
-]
 
 export function Footer() {
   return (
@@ -24,13 +17,13 @@ export function Footer() {
           </div>
 
           <nav className="flex flex-wrap justify-center gap-x-5 gap-y-1">
-            {links.map((link) => (
+            {navItems.map((item) => (
               <Link
-                key={link.href}
-                href={link.href}
+                key={item.href}
+                href={item.href}
                 className="text-muted-foreground hover:text-foreground text-xs transition-colors"
               >
-                {link.label}
+                {item.label}
               </Link>
             ))}
           </nav>

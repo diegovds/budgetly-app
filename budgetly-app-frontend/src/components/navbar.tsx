@@ -1,6 +1,7 @@
 'use client'
 
 import { clearAuthCookie } from '@/actions/clear-auth-cookie'
+import { navItems } from '@/lib/navigation'
 import { useAccountsStore } from '@/store/account'
 import { useAccountTypesStore } from '@/store/account-type'
 import { useAuthStore } from '@/store/auth'
@@ -17,11 +18,6 @@ type NavbarProps = {
   token: string | null
 }
 
-type MenuItem = {
-  label: string
-  href: string
-}
-
 export function Navbar({ token }: NavbarProps) {
   const queryClient = useQueryClient()
   const [menuOpened, setMenuOpened] = useState(false)
@@ -32,15 +28,6 @@ export function Navbar({ token }: NavbarProps) {
   const { clearAccountTypes } = useAccountTypesStore()
   const { clearCategories } = useCategoriesStore()
   const { clearCategoryTypes } = useCategoryTypesStore()
-
-  const menu: MenuItem[] = [
-    { label: 'Painel', href: '/' },
-    { label: 'Transações', href: '/transaction' },
-    { label: 'Contas', href: '/account' },
-    { label: 'Categorias', href: '/category' },
-    { label: 'Dashboard', href: '/dashboard' },
-    { label: 'Perfil', href: '/profile' },
-  ]
 
   async function handleLogout() {
     await clearAuthCookie()
@@ -72,7 +59,7 @@ export function Navbar({ token }: NavbarProps) {
         {token && (
           <>
             <div className="flex items-center gap-1">
-              {menu.map((item) => (
+              {navItems.map((item) => (
                 <Link key={item.href} href={item.href}>
                   <span
                     className={`relative px-3 py-1.5 text-sm transition-colors duration-150 ${
@@ -121,7 +108,11 @@ export function Navbar({ token }: NavbarProps) {
               className="size-8"
               onClick={() => setMenuOpened(!menuOpened)}
             >
-              {menuOpened ? <X className="size-4" /> : <Menu className="size-4" />}
+              {menuOpened ? (
+                <X className="size-4" />
+              ) : (
+                <Menu className="size-4" />
+              )}
             </Button>
           )}
         </div>
@@ -131,7 +122,7 @@ export function Navbar({ token }: NavbarProps) {
             className={`overflow-hidden transition-all duration-300 ease-in-out ${menuOpened ? 'max-h-96 pb-3' : 'max-h-0'}`}
           >
             <div className="border-border/50 flex flex-col gap-1 border-t pt-3">
-              {menu.map((item) => (
+              {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
