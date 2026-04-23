@@ -250,3 +250,15 @@ body::after {
   opacity: 0.65;
   font-size: 12px;
 }
+
+/* Mobile: toast spans full width of bottom */
+@media (max-width: 767px) {
+  [data-sonner-toaster] {
+    --width: 100% !important;
+    width: auto !important;
+  }
+  [data-sonner-toast] {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
