@@ -12,6 +12,7 @@ import {
 import { QueryClientContext } from '@/providers/query-client'
 import { StoreHydration } from '@/providers/store-hydration'
 import { StoreInitializer } from '@/providers/store-initializer'
+import { HttpError } from '../../fetchMutator'
 import type { Metadata, Viewport } from 'next'
 import { redirect } from 'next/navigation'
 // eslint-disable-next-line camelcase
@@ -86,8 +87,11 @@ export default async function RootLayout({
       categoryTypes = categoryTypesData
       accountTypes = accountTypesData
       userName = userData.name
-    } catch {
-      redirect('/api/auth/signout')
+    } catch (error) {
+      if (error instanceof HttpError && error.status === 401) {
+        redirect('/api/auth/signout')
+      }
+      throw error
     }
   }
 

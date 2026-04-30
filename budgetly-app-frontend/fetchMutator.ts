@@ -1,6 +1,16 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { env } from '@/env'
 
+export class HttpError extends Error {
+  constructor(
+    public readonly status: number,
+    message: string,
+  ) {
+    super(message)
+    this.name = 'HttpError'
+  }
+}
+
 export const customFetch = async <T>(
   input: RequestInfo,
   init?: RequestInit,
@@ -33,7 +43,10 @@ export const customFetch = async <T>(
   const data = await response.json()
 
   if (!response.ok) {
-    throw new Error(data?.message ?? `HTTP error ${response.status}`)
+    throw new HttpError(
+      response.status,
+      data?.message ?? `HTTP error ${response.status}`,
+    )
   }
 
   return data
