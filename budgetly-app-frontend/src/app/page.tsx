@@ -3,7 +3,7 @@ import { HeaderPage } from '@/components/header-page'
 import { MyAccounts } from '@/components/home/my-accounts'
 import { MyTransactions } from '@/components/home/my-transactions'
 import { SummaryInformation } from '@/components/home/summary-information'
-import { getUser } from '@/http/api'
+import { getCurrentUser } from '@/lib/get-current-user'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -18,7 +18,7 @@ export default async function Home() {
     redirect('/login')
   }
 
-  const { name } = await getUser()
+  const { name } = await getCurrentUser()
   const firstName = name.split(' ')[0]
 
   return (

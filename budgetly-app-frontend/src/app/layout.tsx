@@ -7,8 +7,8 @@ import {
   getAccountTypes,
   getCategory,
   getCategoryTypes,
-  getUser,
 } from '@/http/api'
+import { getCurrentUser } from '@/lib/get-current-user'
 import { QueryClientContext } from '@/providers/query-client'
 import { StoreHydration } from '@/providers/store-hydration'
 import { StoreInitializer } from '@/providers/store-initializer'
@@ -80,7 +80,7 @@ export default async function RootLayout({
         getCategory({ limit: 50, dateRange: 'all' }),
         getCategoryTypes(),
         getAccountTypes(),
-        getUser(),
+        getCurrentUser(),
       ])
       accounts = accountsData
       categories = categoriesData

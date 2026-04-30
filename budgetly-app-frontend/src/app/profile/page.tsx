@@ -3,7 +3,7 @@ import { ChangePasswordForm } from '@/components/profile/change-password-form'
 import { UserStats } from '@/components/profile/user-stats'
 import { UserProfileCard } from '@/components/profile/user-profile-card'
 import { HeaderPage } from '@/components/header-page'
-import { getUser } from '@/http/api'
+import { getCurrentUser } from '@/lib/get-current-user'
 import { BarChart3 } from 'lucide-react'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -19,7 +19,7 @@ export default async function ProfilePage() {
     redirect('/login')
   }
 
-  const { name } = await getUser()
+  const { name } = await getCurrentUser()
 
   return (
     <div className="w-full space-y-8">
