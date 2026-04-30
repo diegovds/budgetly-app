@@ -1,7 +1,9 @@
 import { getAuthState } from '@/actions/get-auth-state'
 import { ChangePasswordForm } from '@/components/profile/change-password-form'
 import { UserStats } from '@/components/profile/user-stats'
+import { UserProfileCard } from '@/components/profile/user-profile-card'
 import { HeaderPage } from '@/components/header-page'
+import { getUser } from '@/http/api'
 import { BarChart3 } from 'lucide-react'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
@@ -17,6 +19,8 @@ export default async function ProfilePage() {
     redirect('/login')
   }
 
+  const { name } = await getUser()
+
   return (
     <div className="w-full space-y-8">
       <HeaderPage
@@ -26,6 +30,8 @@ export default async function ProfilePage() {
         title="Meu Perfil"
         icon={false}
       />
+
+      <UserProfileCard name={name} />
 
       <div className="bg-card space-y-4 rounded-xl border p-5">
         <div className="flex items-center gap-2.5">

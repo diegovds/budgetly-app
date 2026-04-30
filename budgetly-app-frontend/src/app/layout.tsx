@@ -7,6 +7,7 @@ import {
   getAccountTypes,
   getCategory,
   getCategoryTypes,
+  getUser,
 } from '@/http/api'
 import { QueryClientContext } from '@/providers/query-client'
 import { StoreHydration } from '@/providers/store-hydration'
@@ -63,15 +64,28 @@ export default async function RootLayout({
   let categories = null
   let categoryTypes = null
   let accountTypes = null
+  let userName: string | null = null
 
   if (token) {
     try {
-      ;[accounts, categories, categoryTypes, accountTypes] = await Promise.all([
+      const [
+        accountsData,
+        categoriesData,
+        categoryTypesData,
+        accountTypesData,
+        userData,
+      ] = await Promise.all([
         getAccount({ limit: 50 }),
         getCategory({ limit: 50, dateRange: 'all' }),
         getCategoryTypes(),
         getAccountTypes(),
+        getUser(),
       ])
+      accounts = accountsData
+      categories = categoriesData
+      categoryTypes = categoryTypesData
+      accountTypes = accountTypesData
+      userName = userData.name
     } catch {
       redirect('/api/auth/signout')
     }
@@ -92,7 +106,7 @@ export default async function RootLayout({
               accountTypes={accountTypes}
             />
           )}
-          <Navbar token={token} />
+          <Navbar token={token} userName={userName} />
           <main className="container mx-auto my-5 flex flex-1 px-4 md:my-10 md:px-10">
             {children}
             <AppToaster />

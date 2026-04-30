@@ -16,9 +16,10 @@ import { Button } from './ui/button'
 
 type NavbarProps = {
   token: string | null
+  userName?: string | null
 }
 
-export function Navbar({ token }: NavbarProps) {
+export function Navbar({ token, userName }: NavbarProps) {
   const queryClient = useQueryClient()
   const [menuOpened, setMenuOpened] = useState(false)
   const pathname = usePathname()
@@ -42,6 +43,9 @@ export function Navbar({ token }: NavbarProps) {
 
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href)
+
+  const firstName = userName?.split(' ')[0] ?? ''
+  const initial = firstName.charAt(0).toUpperCase()
 
   return (
     <nav className="bg-card/80 border-border/50 sticky top-0 z-50 border-b backdrop-blur-md">
@@ -77,15 +81,27 @@ export function Navbar({ token }: NavbarProps) {
               ))}
             </div>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground gap-1.5 text-sm"
-              onClick={handleLogout}
-            >
-              <LogOut className="size-4" />
-              Sair
-            </Button>
+            <div className="flex items-center gap-3">
+              {firstName && (
+                <div className="flex items-center gap-2">
+                  <div className="bg-primary/15 text-primary flex size-7 items-center justify-center rounded-full text-xs font-semibold">
+                    {initial}
+                  </div>
+                  <span className="text-muted-foreground text-sm">
+                    {firstName}
+                  </span>
+                </div>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground gap-1.5 text-sm"
+                onClick={handleLogout}
+              >
+                <LogOut className="size-4" />
+                Sair
+              </Button>
+            </div>
           </>
         )}
       </div>
@@ -122,6 +138,14 @@ export function Navbar({ token }: NavbarProps) {
             className={`overflow-hidden transition-all duration-300 ease-in-out ${menuOpened ? 'max-h-96 pb-3' : 'max-h-0'}`}
           >
             <div className="border-border/50 flex flex-col gap-1 border-t pt-3">
+              {firstName && (
+                <div className="mb-1 flex items-center gap-2 px-3 py-2">
+                  <div className="bg-primary/15 text-primary flex size-7 items-center justify-center rounded-full text-xs font-semibold">
+                    {initial}
+                  </div>
+                  <span className="text-sm font-medium">{firstName}</span>
+                </div>
+              )}
               {navItems.map((item) => (
                 <Link
                   key={item.href}

@@ -1,9 +1,12 @@
 'use client'
 
-import { GetAccount200AccountsItem } from '@/http/api'
-import { GetAccountTypes200Item } from '@/http/api'
-import { GetCategory200CategoriesItem } from '@/http/api'
-import { GetCategoryTypes200Item } from '@/http/api'
+import {
+  GetAccount200AccountsItem,
+  GetAccountTypes200Item,
+  GetCategory200CategoriesItem,
+  GetCategoryTypes200Item,
+} from '@/http/api'
+
 import { useAccountsStore } from '@/store/account'
 import { useAccountTypesStore } from '@/store/account-type'
 import { useCategoriesStore } from '@/store/categories'

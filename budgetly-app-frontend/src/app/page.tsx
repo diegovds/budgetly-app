@@ -3,6 +3,7 @@ import { HeaderPage } from '@/components/header-page'
 import { MyAccounts } from '@/components/home/my-accounts'
 import { MyTransactions } from '@/components/home/my-transactions'
 import { SummaryInformation } from '@/components/home/summary-information'
+import { getUser } from '@/http/api'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
@@ -17,11 +18,14 @@ export default async function Home() {
     redirect('/login')
   }
 
+  const { name } = await getUser()
+  const firstName = name.split(' ')[0]
+
   return (
     <div className="w-full space-y-8">
       <HeaderPage
         buttonText="Adicionar Transação"
-        description="Bem-vindo de volta, aqui está o seu resumo financeiro."
+        description={`Bem-vindo de volta, ${firstName}! Aqui está o seu resumo financeiro.`}
         href="/transaction/new"
         title="Visão Geral Financeira"
       />
