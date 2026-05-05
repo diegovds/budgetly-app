@@ -36,13 +36,28 @@ export const metadata: Metadata = {
     default: 'Budgetly',
     template: '%s | Budgetly',
   },
-  description: '',
+  description:
+    'Controle financeiro pessoal. Gerencie contas, categorias e transações com clareza visual e dados em tempo real.',
   openGraph: {
-    title: {
-      default: 'Budgetly',
-      template: '%s | Budgetly',
-    },
-    description: '',
+    title: 'Budgetly',
+    description:
+      'Controle financeiro pessoal. Gerencie contas, categorias e transações com clareza visual e dados em tempo real.',
+    images: [
+      {
+        url: '/og.png',
+        width: 1200,
+        height: 630,
+        alt: 'Budgetly — Controle financeiro pessoal',
+      },
+    ],
+    type: 'website',
+    locale: 'pt_BR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Budgetly',
+    description:
+      'Controle financeiro pessoal. Gerencie contas, categorias e transações com clareza visual e dados em tempo real.',
     images: ['/og.png'],
   },
 }
