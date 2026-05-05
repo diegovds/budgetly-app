@@ -9,7 +9,9 @@ export function OgImage() {
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        padding: '64px 80px 0',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '0 80px',
         fontFamily: 'var(--font-poppins, sans-serif)',
       }}
     >
@@ -111,7 +113,7 @@ export function OgImage() {
           display: 'flex',
           alignItems: 'center',
           gap: 12,
-          marginBottom: 52,
+          marginBottom: 40,
         }}
       >
         <div
@@ -156,31 +158,29 @@ export function OgImage() {
       </div>
 
       {/* Headline */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <h1
           style={{
             margin: 0,
-            fontSize: 86,
+            fontSize: 56,
             fontFamily: 'var(--font-serif-display, Georgia, serif)',
             color: '#F4F4F5',
-            lineHeight: 1.0,
+            lineHeight: 1.05,
             letterSpacing: '-0.025em',
             fontWeight: 400,
           }}
         >
-          Controle financeiro
-          <br />
-          pessoal, <span style={{ color: '#E8895A' }}>do seu jeito.</span>
+          Controle financeiro pessoal,{' '}
+          <span style={{ color: '#E8895A' }}>do seu jeito.</span>
         </h1>
 
         <p
           style={{
-            margin: '28px 0 0',
+            margin: '24px 0 0',
             fontSize: 26,
             color: '#71717A',
             letterSpacing: '-0.02em',
             lineHeight: 1.4,
-            whiteSpace: 'nowrap',
             fontWeight: 400,
           }}
         >
