@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       template: '%s | Budgetly',
     },
     description: '',
-    images: [''],
+    images: ['/og.png'],
   },
 }
 
