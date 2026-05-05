@@ -12,9 +12,9 @@ import { getCurrentUser } from '@/lib/get-current-user'
 import { QueryClientContext } from '@/providers/query-client'
 import { StoreHydration } from '@/providers/store-hydration'
 import { StoreInitializer } from '@/providers/store-initializer'
-import { HttpError } from '../../fetchMutator'
 import type { Metadata, Viewport } from 'next'
 import { redirect } from 'next/navigation'
+import { HttpError } from '../../fetchMutator'
 // eslint-disable-next-line camelcase
 import { DM_Serif_Display, Poppins } from 'next/font/google'
 import './globals.css'
@@ -66,6 +66,7 @@ export default async function RootLayout({
   let categoryTypes = null
   let accountTypes = null
   let userName: string | null = null
+  let shouldSignOut = false
 
   if (token) {
     try {
@@ -88,11 +89,19 @@ export default async function RootLayout({
       accountTypes = accountTypesData
       userName = userData.name
     } catch (error) {
-      if (error instanceof HttpError && error.status === 401) {
-        redirect('/api/auth/signout')
+      if (
+        error instanceof HttpError &&
+        (error.status === 401 || error.status === 404)
+      ) {
+        shouldSignOut = true
+      } else {
+        throw error
       }
-      throw error
     }
+  }
+
+  if (shouldSignOut) {
+    redirect('/api/auth/signout')
   }
 
   return (
