@@ -170,7 +170,8 @@ export function OgImage() {
             fontWeight: 400,
           }}
         >
-          Controle financeiro pessoal,{' '}
+          Controle financeiro pessoal,
+          <br />
           <span style={{ color: '#E8895A' }}>do seu jeito.</span>
         </h1>
 
